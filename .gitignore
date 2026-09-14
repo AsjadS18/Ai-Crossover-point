@@ -4,3 +4,6 @@ charts/
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# cloned repo sitting in the project root - not part of this tree
+/Ai crossover point/
