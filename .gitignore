@@ -1,2 +1,6 @@
 models/
-CLAUDE.md
+results/
+charts/
+__pycache__/
+*.pyc
+.pytest_cache/
