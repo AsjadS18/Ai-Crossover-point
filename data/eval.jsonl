@@ -1,0 +1,12 @@
+{"id": "st_001", "domain": "structured", "prompt": "Return a JSON object describing a book: title, author, year, and a list of three tags. No prose.", "source": "interim-handwritten"}
+{"id": "st_002", "domain": "structured", "prompt": "Give me a YAML config for a web service with a port, two environment variables, and a health check path.", "source": "interim-handwritten"}
+{"id": "cd_001", "domain": "code", "prompt": "Write a Python function that reverses a list in place.", "source": "interim-handwritten"}
+{"id": "cd_002", "domain": "code", "prompt": "In Python, read a CSV file and return the mean of its 'amount' column. Handle a missing file.", "source": "interim-handwritten"}
+{"id": "cd_003", "domain": "code", "prompt": "why does this leak? def f(): return [x for x in open('a.txt')]", "source": "interim-handwritten"}
+{"id": "rs_001", "domain": "reasoning", "prompt": "A train leaves at 14:05 and the journey takes 2 hours 50 minutes. There is a 25 minute delay halfway. When does it arrive? Think it through.", "source": "interim-handwritten"}
+{"id": "rs_002", "domain": "reasoning", "prompt": "Three switches outside a room control three bulbs inside. You may enter the room once. How do you work out which switch controls which bulb, and why does it work?", "source": "interim-handwritten"}
+{"id": "pr_001", "domain": "prose", "prompt": "Explain what a hash map is and when you would use one.", "source": "interim-handwritten"}
+{"id": "pr_002", "domain": "prose", "prompt": "Write a short, plain-English changelog entry for a release that fixed a caching bug and added dark mode.", "source": "interim-handwritten"}
+{"id": "mt_001", "domain": "math", "prompt": "Compute 17 * 24 and show the working.", "source": "interim-handwritten"}
+{"id": "mt_002", "domain": "math", "prompt": "What is the derivative of x^3 * sin(x)? Show each step.", "source": "interim-handwritten"}
+{"id": "tr_001", "domain": "translation", "prompt": "Translate into Urdu: 'The library closes at eight on weekdays.'", "source": "interim-handwritten"}
