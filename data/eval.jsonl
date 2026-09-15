@@ -24,7 +24,7 @@
 {"id": "st_024", "domain": "structured", "prompt": "compose toml for a web server configuration ip 127 0 0 1 port 8080", "source": "hand-edited"}
 {"id": "st_025", "domain": "structured", "prompt": "prepare csv for a survey question response 1 yes 2 no 3 maybe", "source": "hand-edited"}
 {"id": "st_026", "domain": "structured", "prompt": "draft json for a product id 101 name coffee price 9 99 category beverages", "source": "hand-edited"}
-{"id": "st_027", "domain": "structured", "prompt": "PLEASE FORMAT THE FOLLOWING DATA AS CSV NAME AGE EMAIL alice 30 alice@example.com bob 25 bob@example.com", "source": "hand-edited"}
+{"id": "st_027", "domain": "structured", "prompt": "Please format the fpollowing data as name age email: alice 30 alice@example.com bob 25 bob@example.com", "source": "hand-edited"}
 {"id": "st_028", "domain": "structured", "prompt": "generate json object with user id 123 and name john doe", "source": "hand-edited"}
 {"id": "st_029", "domain": "structured", "prompt": "convert yaml file with key value pair name alice to json", "source": "hand-edited"}
 {"id": "st_030", "domain": "structured", "prompt": "create toml config for database with host localhost port 5432", "source": "hand-edited"}
@@ -60,7 +60,7 @@
 {"id": "cd_025", "domain": "code", "prompt": "how do i modify javascript function to handle null inputs gracefully?", "source": "hand-edited"}
 {"id": "cd_026", "domain": "code", "prompt": "could you help me explaining what is sql?", "source": "hand-edited"}
 {"id": "cd_027", "domain": "code", "prompt": "please write a shell script to find and delete all empty files in a directory.", "source": "hand-edited"}
-{"id": "cd_028", "domain": "code", "prompt": "what changes need to be made to this python class to ensure thread safety?", "source": "hand-edited"}
+{"id": "cd_028", "domain": "code", "prompt": "what changes need to be made in a python class to ensure thread safety?", "source": "hand-edited"}
 {"id": "cd_029", "domain": "code", "prompt": "can you provide a detailed explanation of what is a relational database?", "source": "hand-edited"}
 {"id": "cd_030", "domain": "code", "prompt": "how can i update javascript code to work with the latest version of react?", "source": "hand-edited"}
 {"id": "cd_031", "domain": "code", "prompt": "would it be possible to write a python function that generates a random password?", "source": "hand-edited"}
@@ -185,18 +185,18 @@
 {"id": "tr_010", "domain": "translation", "prompt": "Convert the sentence \"Je parle couramment le français\" into Chinese.", "source": "hand-edited"}
 {"id": "tr_011", "domain": "translation", "prompt": "Translate \"من فضلك اخبرني كيف يمكنني مساعدتك\" into English.", "source": "hand-edited"}
 {"id": "tr_012", "domain": "translation", "prompt": "Convert the phrase \"I want to learn more about Chinese\" into Arabic.", "source": "hand-edited"}
-{"id": "tr_013", "domain": "translation", "prompt": "what is origin of urdu language", "source": "hand-edited"}
-{"id": "tr_014", "domain": "translation", "prompt": "In which country, french is the native language?", "source": "hand-edited"}
+{"id": "tr_013", "domain": "translation", "prompt": "Translate the word nice job in urdu", "source": "hand-edited"}
+{"id": "tr_014", "domain": "translation", "prompt": "Translate the word \"سلام\" in english?", "source": "hand-edited"}
 {"id": "tr_015", "domain": "translation", "prompt": "what is the arabic translation of happy birthday", "source": "hand-edited"}
-{"id": "tr_016", "domain": "translation", "prompt": "How to learnm chinese language?", "source": "hand-edited"}
-{"id": "tr_017", "domain": "translation", "prompt": "Is urdu spoken in any country other than Pakistan?", "source": "hand-edited"}
+{"id": "tr_016", "domain": "translation", "prompt": "Translate word \"سلام\" in chinese?", "source": "hand-edited"}
+{"id": "tr_017", "domain": "translation", "prompt": "Translate word healthy into french", "source": "hand-edited"}
 {"id": "tr_018", "domain": "translation", "prompt": "arabic to english best translator", "source": "hand-edited"}
 {"id": "tr_019", "domain": "translation", "prompt": "how would you say hello in chinese", "source": "hand-edited"}
 {"id": "tr_020", "domain": "translation", "prompt": "french to english translation for the word hello", "source": "hand-edited"}
 {"id": "tr_021", "domain": "translation", "prompt": "english to arabic translation required for word greeting", "source": "hand-edited"}
 {"id": "tr_022", "domain": "translation", "prompt": "translate the word Bye into chinese please", "source": "hand-edited"}
-{"id": "tr_023", "domain": "translation", "prompt": "please teach me urdu", "source": "hand-edited"}
-{"id": "tr_024", "domain": "translation", "prompt": "Best  Arabic translator?", "source": "hand-edited"}
+{"id": "tr_023", "domain": "translation", "prompt": "Translate word livelyhood into chinese", "source": "hand-edited"}
+{"id": "tr_024", "domain": "translation", "prompt": "Translate the word \"سلام\" into Arabic?", "source": "hand-edited"}
 {"id": "tr_025", "domain": "translation", "prompt": "KINDLY CONVERT THIS FRENCH SENTENCE TO ENGLISH: \"Bonjour, comment allez-vous aujourd'hui?", "source": "hand-edited"}
 {"id": "tr_026", "domain": "translation", "prompt": "Translate the sentence \"I love programming\" into Urdu.", "source": "hand-edited"}
 {"id": "tr_027", "domain": "translation", "prompt": "Please convert the following Arabic text to English - كيف حالك اليوم؟", "source": "hand-edited"}

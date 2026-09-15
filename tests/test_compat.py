@@ -137,6 +137,177 @@ def test_crop_beyond_current_length(fixture):
     assert diff <= ATOL
 
 
+MAX_CACHE = 256
+
+
+@torch.inference_mode()
+def test_static_cache_matches_dynamic(fixture):
+    """A StaticCache must produce the same logits as a DynamicCache."""
+    model, ids = fixture
+    ref = _reference(model, ids, ids.shape[1] - 10)
+
+    static = compat.make_static_cache(model, MAX_CACHE)
+    keep = ids.shape[1] - 10
+    model(input_ids=ids[:, :keep], past_key_values=static, use_cache=True)
+    got = model(input_ids=ids[:, keep:], past_key_values=static,
+                use_cache=True).logits
+
+    diff = (ref - got).abs().max().item()
+    _report("static cache vs dynamic", diff)
+    assert diff <= ATOL
+
+
+@torch.inference_mode()
+def test_static_cache_rollback_is_bit_exact(fixture):
+    """Rolling a StaticCache back must equal a real crop, exactly.
+
+    StaticLayer.update writes at cumulative_length and ignores cache_position,
+    so a rollback that failed to move that counter would write to the wrong slot
+    and corrupt attention silently. This is the graphed decoder's foundation.
+    """
+    model, ids = fixture
+    keep = ids.shape[1] - 10
+    junk = torch.tensor([[100, 200, 300, 400, 500]], device=ids.device)
+
+    ref = _reference(model, ids, keep)
+
+    static = compat.make_static_cache(model, MAX_CACHE)
+    model(input_ids=ids[:, :keep], past_key_values=static, use_cache=True)
+    assert compat.cache_length(static) == keep
+    model(input_ids=junk, past_key_values=static, use_cache=True)
+    assert compat.cache_length(static) == keep + junk.shape[1]
+
+    compat.crop_cache(static, keep)
+    assert compat.cache_length(static) == keep
+
+    got = model(input_ids=ids[:, keep:], past_key_values=static,
+                use_cache=True).logits
+    diff = (ref - got).abs().max().item()
+    _report("static rollback after junk", diff)
+    assert diff == 0.0, "rollback must be bit-exact, not merely close"
+
+
+@torch.inference_mode()
+def test_static_cache_is_not_croppable(fixture):
+    """Guard the assumption the rollback path depends on."""
+    model, _ = fixture
+    static = compat.make_static_cache(model, MAX_CACHE)
+    assert getattr(static, "is_croppable", False) is False
+    print("[PASS] StaticCache.is_croppable is False, so crop_cache must roll back")
+
+
+def _decode_static_eager(model, ids, steps: int) -> list[int]:
+    cache = compat.make_static_cache(model, MAX_CACHE)
+    model(input_ids=ids, past_key_values=cache, use_cache=True)
+    cur, out = ids[:, -1:].clone(), []
+    for _ in range(steps):
+        logits = model(input_ids=cur, past_key_values=cache,
+                       use_cache=True).logits
+        nxt = logits[:, -1, :].argmax(dim=-1, keepdim=True)
+        out.append(int(nxt.item()))
+        cur = nxt
+    return out
+
+
+def _decode_dynamic_eager(model, ids, steps: int) -> list[int]:
+    cache = compat.make_cache(model)
+    seq, cached, out = ids, 0, []
+    for _ in range(steps):
+        logits = model(input_ids=seq[:, cached:], past_key_values=cache,
+                       use_cache=True).logits
+        cached = seq.shape[1]
+        nxt = logits[:, -1, :].argmax(dim=-1, keepdim=True)
+        seq = torch.cat([seq, nxt], dim=1)
+        out.append(int(nxt.item()))
+    return out
+
+
+@torch.inference_mode()
+def test_graphed_forward_matches_static_eager(fixture):
+    """The graph must reproduce the eager computation of the SAME cache type.
+
+    This is the graph's own correctness property, and it must be exact. It is
+    deliberately measured against static-eager rather than dynamic-eager: a
+    StaticCache and a DynamicCache are not numerically identical over a long
+    decode (see test_static_vs_dynamic_numerical_drift), so comparing across
+    both cache type and execution mode at once would conflate two effects.
+    """
+    model, ids = fixture
+    steps = 64
+
+    ref = _decode_static_eager(model, ids, steps)
+
+    static = compat.make_static_cache(model, MAX_CACHE)
+    model(input_ids=ids, past_key_values=static, use_cache=True)
+    graph = compat.GraphedForward(model, static, width=1)
+    static.reset()
+    model(input_ids=ids, past_key_values=static, use_cache=True)
+
+    tok_buf = ids[:, -1:].clone()
+    got = []
+    for _ in range(steps):
+        logits = graph.replay(tok_buf)
+        got.append(int(logits[0, -1, :].argmax().item()))
+        tok_buf.fill_(got[-1])
+
+    match = got == ref
+    first = next((i for i, (a, b) in enumerate(zip(ref, got)) if a != b), -1)
+    print(f"[{'PASS' if match else 'FAIL'}] graphed vs static-eager: {steps} "
+          f"tokens, identical={match}"
+          + ("" if match else f", diverges at {first}"))
+    assert match
+
+
+@torch.inference_mode()
+def test_static_vs_dynamic_numerical_drift(fixture):
+    """Characterise, do not hide, the StaticCache/DynamicCache difference.
+
+    A single forward matches at 0.0, but attention over a fully-allocated static
+    cache reduces in a different order than over a snug dynamic one, and that
+    drift compounds. It can eventually flip a token. This test records the
+    per-forward logit drift so a regression in it would be visible; it is NOT a
+    losslessness gate. Losslessness is compared WITHIN one cache type.
+    """
+    model, ids = fixture
+    steps = 64
+
+    dyn_toks = _decode_dynamic_eager(model, ids, steps)
+    st_toks = _decode_static_eager(model, ids, steps)
+
+    first = next((i for i, (a, b) in enumerate(zip(dyn_toks, st_toks))
+                  if a != b), -1)
+
+    # Per-forward drift on a shared prefix, before any divergence can compound.
+    prefix = ids
+    dyn = compat.make_cache(model)
+    a = model(input_ids=prefix, past_key_values=dyn, use_cache=True
+              ).logits[0, -1, :].float()
+    st = compat.make_static_cache(model, MAX_CACHE)
+    b = model(input_ids=prefix, past_key_values=st, use_cache=True
+              ).logits[0, -1, :].float()
+    drift = (a - b).abs().max().item()
+
+    print(f"[INFO] static vs dynamic over {steps} tokens: "
+          f"{'identical' if first == -1 else f'first token difference at {first}'}")
+    print(f"[INFO] single-forward max logit drift on the prompt: {drift}")
+    assert drift <= ATOL, (
+        f"per-forward drift {drift} exceeds {ATOL}; the two cache types should "
+        "agree closely on a single forward even if long decodes diverge"
+    )
+
+
+@torch.inference_mode()
+def test_graphed_forward_rejects_wrong_width(fixture):
+    """A graph is valid only at its captured width."""
+    model, ids = fixture
+    static = compat.make_static_cache(model, MAX_CACHE)
+    model(input_ids=ids, past_key_values=static, use_cache=True)
+    graph = compat.GraphedForward(model, static, width=1)
+    with pytest.raises(ValueError):
+        graph.replay(ids[:, -3:])
+    print("[PASS] replay rejects a token width the graph was not captured at")
+
+
 if __name__ == "__main__":
     model, ids = _load()
     print("describe():", compat.describe())
