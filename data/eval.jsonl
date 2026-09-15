@@ -1,12 +1,210 @@
-{"id": "st_001", "domain": "structured", "prompt": "Return a JSON object describing a book: title, author, year, and a list of three tags. No prose.", "source": "interim-handwritten"}
-{"id": "st_002", "domain": "structured", "prompt": "Give me a YAML config for a web service with a port, two environment variables, and a health check path.", "source": "interim-handwritten"}
-{"id": "cd_001", "domain": "code", "prompt": "Write a Python function that reverses a list in place.", "source": "interim-handwritten"}
-{"id": "cd_002", "domain": "code", "prompt": "In Python, read a CSV file and return the mean of its 'amount' column. Handle a missing file.", "source": "interim-handwritten"}
-{"id": "cd_003", "domain": "code", "prompt": "why does this leak? def f(): return [x for x in open('a.txt')]", "source": "interim-handwritten"}
-{"id": "rs_001", "domain": "reasoning", "prompt": "A train leaves at 14:05 and the journey takes 2 hours 50 minutes. There is a 25 minute delay halfway. When does it arrive? Think it through.", "source": "interim-handwritten"}
-{"id": "rs_002", "domain": "reasoning", "prompt": "Three switches outside a room control three bulbs inside. You may enter the room once. How do you work out which switch controls which bulb, and why does it work?", "source": "interim-handwritten"}
-{"id": "pr_001", "domain": "prose", "prompt": "Explain what a hash map is and when you would use one.", "source": "interim-handwritten"}
-{"id": "pr_002", "domain": "prose", "prompt": "Write a short, plain-English changelog entry for a release that fixed a caching bug and added dark mode.", "source": "interim-handwritten"}
-{"id": "mt_001", "domain": "math", "prompt": "Compute 17 * 24 and show the working.", "source": "interim-handwritten"}
-{"id": "mt_002", "domain": "math", "prompt": "What is the derivative of x^3 * sin(x)? Show each step.", "source": "interim-handwritten"}
-{"id": "tr_001", "domain": "translation", "prompt": "Translate into Urdu: 'The library closes at eight on weekdays.'", "source": "interim-handwritten"}
+{"id": "st_001", "domain": "structured", "prompt": "Return a JSON object describing a book: title, author, year, and a list of three tags. No prose.", "source": "handwritten"}
+{"id": "st_002", "domain": "structured", "prompt": "Give me a YAML config for a web service with a port, two environment variables, and a health check path.", "source": "handwritten"}
+{"id": "st_003", "domain": "structured", "prompt": "generate a yaml config file for a web server with port 8080", "source": "ollama-32b"}
+{"id": "st_004", "domain": "structured", "prompt": "convert this list to json [\"apple\", \"banana\", \"cherry\"]", "source": "ollama-32b"}
+{"id": "st_005", "domain": "structured", "prompt": "write a sql ddl statement for a table named employees with id int and name varchar", "source": "ollama-32b"}
+{"id": "st_006", "domain": "structured", "prompt": "provide an http request body for a post request to /api/login with username admin and password 1234", "source": "ollama-32b"}
+{"id": "st_007", "domain": "structured", "prompt": "export this data to csv id,name 1,john 2,jane", "source": "ollama-32b"}
+{"id": "st_008", "domain": "structured", "prompt": "create a toml file for a logging configuration with level set to info", "source": "ollama-32b"}
+{"id": "st_009", "domain": "structured", "prompt": "format this data as toml users = [{\"name\": \"alice\", \"age\": 30}]", "source": "ollama-32b"}
+{"id": "st_010", "domain": "structured", "prompt": "translate this json to yaml {\"key\": \"value\", \"items\": [1, 2, 3]}", "source": "ollama-32b"}
+{"id": "st_011", "domain": "structured", "prompt": "generate an sql ddl for products table with id pk autoincrement name varchar", "source": "ollama-32b"}
+{"id": "st_012", "domain": "structured", "prompt": "write a csv with headers and these rows id,name 1,alice 2,bob", "source": "ollama-32b"}
+{"id": "st_013", "domain": "structured", "prompt": "convert this yaml to json key: value items: [1, 2, 3]", "source": "ollama-32b"}
+{"id": "st_014", "domain": "structured", "prompt": "give me a config file in json for a database connection with host localhost port 5432 dbname testdb", "source": "ollama-32b"}
+{"id": "st_015", "domain": "structured", "prompt": "generate json for a person name alice age 30 city new york", "source": "ollama-32b"}
+{"id": "st_016", "domain": "structured", "prompt": "create a yaml file listing three books title author isbn", "source": "ollama-32b"}
+{"id": "st_017", "domain": "structured", "prompt": "output toml for a database config host localhost port 5432 user admin", "source": "ollama-32b"}
+{"id": "st_018", "domain": "structured", "prompt": "convert this csv id,name 1,Alice 2,Bob to json", "source": "ollama-32b"}
+{"id": "st_019", "domain": "structured", "prompt": "provide sql ddl for a table employees id int name varchar salary float", "source": "ollama-32b"}
+{"id": "st_020", "domain": "structured", "prompt": "write an http request body for a put request to update product id 1 name widget", "source": "ollama-32b"}
+{"id": "st_021", "domain": "structured", "prompt": "make a config file in csv format key value theme dark mode true", "source": "ollama-32b"}
+{"id": "st_022", "domain": "structured", "prompt": "formulate json response for an api call status success message operation completed", "source": "ollama-32b"}
+{"id": "st_023", "domain": "structured", "prompt": "design yaml for a simple api service port 3000 routes get post", "source": "ollama-32b"}
+{"id": "st_024", "domain": "structured", "prompt": "compose toml for a web server configuration ip 127 0 0 1 port 8080", "source": "ollama-32b"}
+{"id": "st_025", "domain": "structured", "prompt": "prepare csv for a survey question response 1 yes 2 no 3 maybe", "source": "ollama-32b"}
+{"id": "st_026", "domain": "structured", "prompt": "draft json for a product id 101 name coffee price 9 99 category beverages", "source": "ollama-32b"}
+{"id": "st_027", "domain": "structured", "prompt": "PLEASE FORMAT THE FOLLOWING DATA AS CSV NAME AGE EMAIL alice 30 alice@example.com bob 25 bob@example.com", "source": "ollama-32b"}
+{"id": "st_028", "domain": "structured", "prompt": "generate json object with user id 123 and name john doe", "source": "ollama-32b"}
+{"id": "st_029", "domain": "structured", "prompt": "convert yaml file with key value pair name alice to json", "source": "ollama-32b"}
+{"id": "st_030", "domain": "structured", "prompt": "create toml config for database with host localhost port 5432", "source": "ollama-32b"}
+{"id": "st_031", "domain": "structured", "prompt": "output csv with columns id name email for users 1 john johnexamplecom", "source": "ollama-32b"}
+{"id": "st_032", "domain": "structured", "prompt": "sql ddl statement to create table orders with id product_id quantity", "source": "ollama-32b"}
+{"id": "st_033", "domain": "structured", "prompt": "http request body to post new user with name bob password 12345", "source": "ollama-32b"}
+{"id": "st_034", "domain": "structured", "prompt": "toml configuration for logging with level debug file logtxt", "source": "ollama-32b"}
+{"id": "st_035", "domain": "structured", "prompt": "write csv with two rows apple 1 orange 2", "source": "ollama-32b"}
+{"id": "cd_001", "domain": "code", "prompt": "Write a Python function that reverses a list in place.", "source": "handwritten"}
+{"id": "cd_002", "domain": "code", "prompt": "In Python, read a CSV file and return the mean of its 'amount' column. Handle a missing file.", "source": "handwritten"}
+{"id": "cd_003", "domain": "code", "prompt": "why does this leak? def f(): return [x for x in open('a.txt')]", "source": "handwritten"}
+{"id": "cd_004", "domain": "code", "prompt": "modify the function calculate_total in main.py to include a 5% tax on all transactions over $100", "source": "ollama-32b"}
+{"id": "cd_005", "domain": "code", "prompt": "debug the sql query in user_data.sql failing with error \"Unknown column 'age' in 'where clause", "source": "ollama-32b"}
+{"id": "cd_006", "domain": "code", "prompt": "write a python script to parse json data from file data.json and print the values of all keys named \"status", "source": "ollama-32b"}
+{"id": "cd_007", "domain": "code", "prompt": "in script.js, update the event listener for button with id \"submit\" to validate email format before form submission", "source": "ollama-32b"}
+{"id": "cd_008", "domain": "code", "prompt": "optimize the for loop in data_processing.py to improve performance by reducing time complexity", "source": "ollama-32b"}
+{"id": "cd_009", "domain": "code", "prompt": "explain the purpose and function of each parameter in the numpy array creation function in matrix_operations.py", "source": "ollama-32b"}
+{"id": "cd_010", "domain": "code", "prompt": "fix the syntax error in shell script setup.sh causing it to fail on line 23", "source": "ollama-32b"}
+{"id": "cd_011", "domain": "code", "prompt": "add a new column named \"category\" to products table in inventory.db with data type text", "source": "ollama-32b"}
+{"id": "cd_012", "domain": "code", "prompt": "modify the react component in profile.js to display the user's age if it is over 18", "source": "ollama-32b"}
+{"id": "cd_013", "domain": "code", "prompt": "update the sql stored procedure update_order in orders.sql to handle null values in the quantity column", "source": "ollama-32b"}
+{"id": "cd_014", "domain": "code", "prompt": "correct the logical error in validate_password function in auth.py to enforce minimum 8 characters rule", "source": "ollama-32b"}
+{"id": "cd_015", "domain": "code", "prompt": "in report_generator.py, ensure the list comprehension on line 45 does not include negative numbers", "source": "ollama-32b"}
+{"id": "cd_016", "domain": "code", "prompt": "Write Python code to calculate factorial of a number.", "source": "ollama-32b"}
+{"id": "cd_017", "domain": "code", "prompt": "Convert a JSON string to a Python dictionary.", "source": "ollama-32b"}
+{"id": "cd_018", "domain": "code", "prompt": "Fix the SQL query to return distinct values.", "source": "ollama-32b"}
+{"id": "cd_019", "domain": "code", "prompt": "Debug JavaScript code to handle array of objects.", "source": "ollama-32b"}
+{"id": "cd_020", "domain": "code", "prompt": "Create a shell script to list all files in a directory.", "source": "ollama-32b"}
+{"id": "cd_021", "domain": "code", "prompt": "Explain the difference between append and extend in Python.", "source": "ollama-32b"}
+{"id": "cd_022", "domain": "code", "prompt": "Generate SQL code to create a table with three columns.", "source": "ollama-32b"}
+{"id": "cd_023", "domain": "code", "prompt": "Convert Python dictionary to a JSON string.", "source": "ollama-32b"}
+{"id": "cd_024", "domain": "code", "prompt": "can you explain how the for loop in this python script works?", "source": "ollama-32b"}
+{"id": "cd_025", "domain": "code", "prompt": "how do i modify this javascript function to handle null inputs gracefully?", "source": "ollama-32b"}
+{"id": "cd_026", "domain": "code", "prompt": "could you help fix this sql query so it joins the tables correctly?", "source": "ollama-32b"}
+{"id": "cd_027", "domain": "code", "prompt": "please write a shell script to find and delete all empty files in a directory.", "source": "ollama-32b"}
+{"id": "cd_028", "domain": "code", "prompt": "what changes need to be made to this python class to ensure thread safety?", "source": "ollama-32b"}
+{"id": "cd_029", "domain": "code", "prompt": "can you provide a detailed explanation of what this sql view does?", "source": "ollama-32b"}
+{"id": "cd_030", "domain": "code", "prompt": "how can i update this javascript code to work with the latest version of react?", "source": "ollama-32b"}
+{"id": "cd_031", "domain": "code", "prompt": "would it be possible to write a python function that generates a random password?", "source": "ollama-32b"}
+{"id": "cd_032", "domain": "code", "prompt": "could you help fix the indentation issues in this shell script?", "source": "ollama-32b"}
+{"id": "cd_033", "domain": "code", "prompt": "what modifications are needed to make this python function return a list of unique items?", "source": "ollama-32b"}
+{"id": "cd_034", "domain": "code", "prompt": "can you explain the purpose of each line in this sql stored procedure?", "source": "ollama-32b"}
+{"id": "cd_035", "domain": "code", "prompt": "how do i modify this javascript code to handle asynchronous data fetching?", "source": "ollama-32b"}
+{"id": "rs_001", "domain": "reasoning", "prompt": "A train leaves at 14:05 and the journey takes 2 hours 50 minutes. There is a 25 minute delay halfway. When does it arrive? Think it through.", "source": "handwritten"}
+{"id": "rs_002", "domain": "reasoning", "prompt": "Three switches outside a room control three bulbs inside. You may enter the room once. How do you work out which switch controls which bulb, and why does it work?", "source": "handwritten"}
+{"id": "rs_003", "domain": "reasoning", "prompt": "given a dataset salesdata2023.csv, determine the optimal inventory levels for each product based on past sales and demand patterns.", "source": "ollama-32b"}
+{"id": "rs_004", "domain": "reasoning", "prompt": "analyze the error logs in serverlog2023.txt to identify the most frequent errors and suggest fixes.", "source": "ollama-32b"}
+{"id": "rs_005", "domain": "reasoning", "prompt": "create a SQL query to find the top 5 employees with the highest bonus in the employees2023.db database.", "source": "ollama-32b"}
+{"id": "rs_006", "domain": "reasoning", "prompt": "evaluate the trade-offs between using AWS Lambda and Google Cloud Functions for a serverless application project.", "source": "ollama-32b"}
+{"id": "rs_007", "domain": "reasoning", "prompt": "determine the best route for a delivery truck to visit all 20 addresses listed in deliveryroutes.csv in the shortest distance.", "source": "ollama-32b"}
+{"id": "rs_008", "domain": "reasoning", "prompt": "design a scheduling algorithm to allocate 150 meeting rooms across 5 buildings for 1000 employees based on availability.", "source": "ollama-32b"}
+{"id": "rs_009", "domain": "reasoning", "prompt": "calculate the expected profit for launching a new product based on market research data stored in marketdata2023.xlsx.", "source": "ollama-32b"}
+{"id": "rs_010", "domain": "reasoning", "prompt": "develop a reasoning algorithm to predict user churn from the useractivitylog2023.json file.", "source": "ollama-32b"}
+{"id": "rs_011", "domain": "reasoning", "prompt": "optimize the budget allocation for three marketing channels described in budgetallocation2023.txt.", "source": "ollama-32b"}
+{"id": "rs_012", "domain": "reasoning", "prompt": "solve the logic puzzle in puzzlefile2023.txt to determine the correct sequence of operations.", "source": "ollama-32b"}
+{"id": "rs_013", "domain": "reasoning", "prompt": "analyze the impact of different tax rates on the overall revenue of a business as detailed in taxrates2023.csv.", "source": "ollama-32b"}
+{"id": "rs_014", "domain": "reasoning", "prompt": "devise a strategy to minimize wait times in a hospital by analyzing patient wait times in hospitaldata2023.csv.", "source": "ollama-32b"}
+{"id": "rs_015", "domain": "reasoning", "prompt": "Determine the optimal schedule for four tasks with given deadlines.", "source": "ollama-32b"}
+{"id": "rs_016", "domain": "reasoning", "prompt": "whats the best way to schedule 5 meetings across 3 days with 2 people in each meeting", "source": "ollama-32b"}
+{"id": "rs_017", "domain": "reasoning", "prompt": "how do i decide between a new laptop and upgrading my current one", "source": "ollama-32b"}
+{"id": "rs_018", "domain": "reasoning", "prompt": "if i have 10 tasks with diff priorities how should i order them", "source": "ollama-32b"}
+{"id": "rs_019", "domain": "reasoning", "prompt": "im trying to figure out the logic in this number sequence 2 4 6 8", "source": "ollama-32b"}
+{"id": "rs_020", "domain": "reasoning", "prompt": "what if i need to allocate budget between marketing and dev for next quarter", "source": "ollama-32b"}
+{"id": "rs_021", "domain": "reasoning", "prompt": "how can i optimize my daily commute to save time", "source": "ollama-32b"}
+{"id": "rs_022", "domain": "reasoning", "prompt": "i need to choose between a car and a bike for commuting what factors should i consider", "source": "ollama-32b"}
+{"id": "rs_023", "domain": "reasoning", "prompt": "if i have 3 servers and 5 VMs how do i distribute them", "source": "ollama-32b"}
+{"id": "rs_024", "domain": "reasoning", "prompt": "whats the best way to prioritize tasks for a project deadline", "source": "ollama-32b"}
+{"id": "rs_025", "domain": "reasoning", "prompt": "Analyze the dataset in sales2022.csv to determine the best-performing product category by revenue, considering discount rates in the discount column.", "source": "ollama-32b"}
+{"id": "rs_026", "domain": "reasoning", "prompt": "Given the project schedule in timeline.xlsx, calculate the latest possible start date for task D without delaying the project, given that tasks A and B are prerequisites.", "source": "ollama-32b"}
+{"id": "rs_027", "domain": "reasoning", "prompt": "Evaluate the trade-offs between using TensorFlow and PyTorch for training a deep learning model, considering model accuracy and deployment speed.", "source": "ollama-32b"}
+{"id": "rs_028", "domain": "reasoning", "prompt": "In database design.sql, revise the schema to ensure referential integrity without creating circular dependencies, ensuring all foreign keys are properly indexed.", "source": "ollama-32b"}
+{"id": "rs_029", "domain": "reasoning", "prompt": "Create a decision matrix in excel for choosing between on-premise servers and cloud services, considering factors like scalability, security, and initial costs.", "source": "ollama-32b"}
+{"id": "rs_030", "domain": "reasoning", "prompt": "Given the log file server_errors.log, identify the most frequent error messages and suggest solutions for the top three most common issues.", "source": "ollama-32b"}
+{"id": "rs_031", "domain": "reasoning", "prompt": "Design an algorithm to optimize the route for a delivery van, using coordinates in locations.txt, to minimize travel distance and maximize delivery capacity.", "source": "ollama-32b"}
+{"id": "rs_032", "domain": "reasoning", "prompt": "Assess the impact of using different data compression techniques on the performance of a machine learning model, given datasets in compressed_data.zip.", "source": "ollama-32b"}
+{"id": "rs_033", "domain": "reasoning", "prompt": "In the budget proposal.xlsx, perform a sensitivity analysis on the marketing budget to understand its impact on ROI across various product launches.", "source": "ollama-32b"}
+{"id": "rs_034", "domain": "reasoning", "prompt": "Determine the optimal number of servers required to handle peak traffic for a web application, given historical data in traffic_stats.csv.", "source": "ollama-32b"}
+{"id": "rs_035", "domain": "reasoning", "prompt": "Optimize the SQL query in performance_test.sql to reduce execution time by at least 50%, ensuring all columns in the result are indexed properly.", "source": "ollama-32b"}
+{"id": "pr_001", "domain": "prose", "prompt": "Explain what a hash map is and when you would use one.", "source": "handwritten"}
+{"id": "pr_002", "domain": "prose", "prompt": "Write a short, plain-English changelog entry for a release that fixed a caching bug and added dark mode.", "source": "handwritten"}
+{"id": "pr_003", "domain": "prose", "prompt": "Explain how the new update in ver 2.3.1 improves user experience", "source": "ollama-32b"}
+{"id": "pr_004", "domain": "prose", "prompt": "Summarize the key points of our last project meeting", "source": "ollama-32b"}
+{"id": "pr_005", "domain": "prose", "prompt": "Write a changelog entry for the latest version of our software", "source": "ollama-32b"}
+{"id": "pr_006", "domain": "prose", "prompt": "Hey team, here’s a quick overview of the new features added", "source": "ollama-32b"}
+{"id": "pr_007", "domain": "prose", "prompt": "Could you draft a response email to our client about the project timeline", "source": "ollama-32b"}
+{"id": "pr_008", "domain": "prose", "prompt": "Provide a detailed explanation of the algorithm used in our recommendation system", "source": "ollama-32b"}
+{"id": "pr_009", "domain": "prose", "prompt": "Document the steps to install and configure the new software on Windows", "source": "ollama-32b"}
+{"id": "pr_010", "domain": "prose", "prompt": "Briefly describe the changes made to the UI in the recent release", "source": "ollama-32b"}
+{"id": "pr_011", "domain": "prose", "prompt": "Write a plain-English answer to why we switched from MySQL to PostgreSQL", "source": "ollama-32b"}
+{"id": "pr_012", "domain": "prose", "prompt": "Summarize the feedback received from beta testers for our new app", "source": "ollama-32b"}
+{"id": "pr_013", "domain": "prose", "prompt": "Explain the benefits of using our service over competitors", "source": "ollama-32b"}
+{"id": "pr_014", "domain": "prose", "prompt": "Hey, can you provide a summary of the research paper we discussed earlier", "source": "ollama-32b"}
+{"id": "pr_015", "domain": "prose", "prompt": "The new library version includes several bug fixes, please provide a changelog entry detailing these improvements.", "source": "ollama-32b"}
+{"id": "pr_016", "domain": "prose", "prompt": "John recently joined the team, write an introduction email to the rest of the team.", "source": "ollama-32b"}
+{"id": "pr_017", "domain": "prose", "prompt": "We have updated the user interface, provide a summary of the key changes for the documentation.", "source": "ollama-32b"}
+{"id": "pr_018", "domain": "prose", "prompt": "The project timeline has been extended by two weeks, compose an email to inform the stakeholders.", "source": "ollama-32b"}
+{"id": "pr_019", "domain": "prose", "prompt": "Explain the benefits of using serverless architecture in cloud computing, suitable for a beginner audience.", "source": "ollama-32b"}
+{"id": "pr_020", "domain": "prose", "prompt": "The database migration was successful, write a documentation paragraph highlighting important notes.", "source": "ollama-32b"}
+{"id": "pr_021", "domain": "prose", "prompt": "The latest update includes a new feature, create an email notification for the subscribers.", "source": "ollama-32b"}
+{"id": "pr_022", "domain": "prose", "prompt": "The API documentation needs a section on authentication, provide a detailed paragraph.", "source": "ollama-32b"}
+{"id": "pr_023", "domain": "prose", "prompt": "The software is now compatible with the latest OS version, draft a changelog entry for this.", "source": "ollama-32b"}
+{"id": "pr_024", "domain": "prose", "prompt": "write a summary of the project goals and timeline", "source": "ollama-32b"}
+{"id": "pr_025", "domain": "prose", "prompt": "describe the changes made in the latest software update", "source": "ollama-32b"}
+{"id": "pr_026", "domain": "prose", "prompt": "create a documentation paragraph for a new feature", "source": "ollama-32b"}
+{"id": "pr_027", "domain": "prose", "prompt": "compose an email to thank a client for their feedback", "source": "ollama-32b"}
+{"id": "pr_028", "domain": "prose", "prompt": "explain the process of setting up a virtual environment for development", "source": "ollama-32b"}
+{"id": "pr_029", "domain": "prose", "prompt": "generate a plain-english answer to what api stands for", "source": "ollama-32b"}
+{"id": "pr_030", "domain": "prose", "prompt": "write a summary of the key findings from the recent study", "source": "ollama-32b"}
+{"id": "pr_031", "domain": "prose", "prompt": "describe the steps to resolve a common software bug", "source": "ollama-32b"}
+{"id": "pr_032", "domain": "prose", "prompt": "create a documentation page for a new module", "source": "ollama-32b"}
+{"id": "pr_033", "domain": "prose", "prompt": "compose an email informing team members about the upcoming meeting", "source": "ollama-32b"}
+{"id": "pr_034", "domain": "prose", "prompt": "explain the concept of continuous integration and continuous deployment", "source": "ollama-32b"}
+{"id": "pr_035", "domain": "prose", "prompt": "generate a plain-english explanation of machine learning models", "source": "ollama-32b"}
+{"id": "mt_001", "domain": "math", "prompt": "Compute 17 * 24 and show the working.", "source": "handwritten"}
+{"id": "mt_002", "domain": "math", "prompt": "What is the derivative of x^3 * sin(x)? Show each step.", "source": "handwritten"}
+{"id": "mt_003", "domain": "math", "prompt": "solve this eqation 2x + 3 = 7 plz show your work", "source": "ollama-32b"}
+{"id": "mt_004", "domain": "math", "prompt": "calculate the derivative of f(x) = x^3 - 4x + 2 and show ur steps", "source": "ollama-32b"}
+{"id": "mt_005", "domain": "math", "prompt": "what is the probablity of rolling a sum of 7 with two dice show work", "source": "ollama-32b"}
+{"id": "mt_006", "domain": "math", "prompt": "find the integral of 5x^2 + 3x - 2 from 0 to 4 show ur work", "source": "ollama-32b"}
+{"id": "mt_007", "domain": "math", "prompt": "solve for y in the equation 4y - 3 = 2y + 5 show ur steps", "source": "ollama-32b"}
+{"id": "mt_008", "domain": "math", "prompt": "evaluate the limit of (3x - 2) / (x - 1) as x approaches 1 show ur work", "source": "ollama-32b"}
+{"id": "mt_009", "domain": "math", "prompt": "what is the expected value if u roll a fair six sided die show ur work", "source": "ollama-32b"}
+{"id": "mt_010", "domain": "math", "prompt": "simplify the expression (x^2 - 4) / (x - 2) and show ur steps", "source": "ollama-32b"}
+{"id": "mt_011", "domain": "math", "prompt": "calculate the area under the curve y = x^2 from x = 0 to x = 3 show ur work", "source": "ollama-32b"}
+{"id": "mt_012", "domain": "math", "prompt": "solve the inequality 2x + 1 < 5 and show ur work", "source": "ollama-32b"}
+{"id": "mt_013", "domain": "math", "prompt": "find the probability of getting at least one head in three coin flips show ur work", "source": "ollama-32b"}
+{"id": "mt_014", "domain": "math", "prompt": "determine the slope of the line passing through (2, 3) and (4, 7) show ur work", "source": "ollama-32b"}
+{"id": "mt_015", "domain": "math", "prompt": "Evaluate the expression 3(4 - 2) + 5, show your work.", "source": "ollama-32b"}
+{"id": "mt_016", "domain": "math", "prompt": "Find the roots of the equation x^2 - 5x + 6 = 0, demonstrate your solution.", "source": "ollama-32b"}
+{"id": "mt_017", "domain": "math", "prompt": "Calculate the integral of 3x^2 + 2x + 1 from 0 to 2, show all steps.", "source": "ollama-32b"}
+{"id": "mt_018", "domain": "math", "prompt": "Determine the probability of rolling a sum of 7 with two dice, show your calculation.", "source": "ollama-32b"}
+{"id": "mt_019", "domain": "math", "prompt": "Solve the system of equations 2x + 3y = 6 and 4x - y = 8, show your work.", "source": "ollama-32b"}
+{"id": "mt_020", "domain": "math", "prompt": "Evaluate the limit of (x^2 - 1) / (x - 1) as x approaches 1, show all steps.", "source": "ollama-32b"}
+{"id": "mt_021", "domain": "math", "prompt": "Find the slope of the line passing through points (2, 3) and (4, 7), show your calculation.", "source": "ollama-32b"}
+{"id": "mt_022", "domain": "math", "prompt": "Solve the inequality 3x + 2 < 11, demonstrate your solution.", "source": "ollama-32b"}
+{"id": "mt_023", "domain": "math", "prompt": "Compute the derivative of f(x) = e^x * sin(x), show your work.", "source": "ollama-32b"}
+{"id": "mt_024", "domain": "math", "prompt": "Calculate the expected value of a fair six-sided die, show your calculation.", "source": "ollama-32b"}
+{"id": "mt_025", "domain": "math", "prompt": "Find the area under the curve y = x^3 from x = 0 to x = 3, show all steps.", "source": "ollama-32b"}
+{"id": "mt_026", "domain": "math", "prompt": "Solve for x in the equation log(x) + log(x - 2) = 1, demonstrate your solution.", "source": "ollama-32b"}
+{"id": "mt_027", "domain": "math", "prompt": "solve for x in the equation 3x 5 14 show your work", "source": "ollama-32b"}
+{"id": "mt_028", "domain": "math", "prompt": "find the area under the curve y x2 from 0 to 3 show your steps", "source": "ollama-32b"}
+{"id": "mt_029", "domain": "math", "prompt": "calculate the probability of rolling a sum of 7 with two dice show your work", "source": "ollama-32b"}
+{"id": "mt_030", "domain": "math", "prompt": "differentiate the function f x e2x sinx show ur steps", "source": "ollama-32b"}
+{"id": "mt_031", "domain": "math", "prompt": "integrate the function 6x2 5x 2 from 1 to 3 show ur steps", "source": "ollama-32b"}
+{"id": "mt_032", "domain": "math", "prompt": "find the roots of the quadratic equation x2 3x 2 0 show ur work", "source": "ollama-32b"}
+{"id": "mt_033", "domain": "math", "prompt": "evaluate the limit of sinx x as x approaches 0 show ur steps", "source": "ollama-32b"}
+{"id": "mt_034", "domain": "math", "prompt": "simplify the expression 8a3b2 4a2b3 show ur steps", "source": "ollama-32b"}
+{"id": "mt_035", "domain": "math", "prompt": "calculate the median of the dataset 12 15 14 10 18 13 show ur steps", "source": "ollama-32b"}
+{"id": "tr_001", "domain": "translation", "prompt": "Translate into Urdu: 'The library closes at eight on weekdays.'", "source": "handwritten"}
+{"id": "tr_002", "domain": "translation", "prompt": "Translate the phrase \"I love coding\" into Urdu.", "source": "ollama-32b"}
+{"id": "tr_003", "domain": "translation", "prompt": "Convert the sentence \"آپ کو کیسے مدد چاہئی گی؟\" to English.", "source": "ollama-32b"}
+{"id": "tr_004", "domain": "translation", "prompt": "Translate \"Bonjour, comment ça va?\" into Arabic.", "source": "ollama-32b"}
+{"id": "tr_005", "domain": "translation", "prompt": "Convert the phrase \"صباح الخير\" into English.", "source": "ollama-32b"}
+{"id": "tr_006", "domain": "translation", "prompt": "Translate \"我喜欢编程\" into English.", "source": "ollama-32b"}
+{"id": "tr_007", "domain": "translation", "prompt": "Convert the sentence \"Je veux apprendre plus de choses\" into Chinese.", "source": "ollama-32b"}
+{"id": "tr_008", "domain": "translation", "prompt": "Translate \"مرحبا بكم جميعاً\" into English.", "source": "ollama-32b"}
+{"id": "tr_009", "domain": "translation", "prompt": "Convert the phrase \"I am learning French\" into Arabic.", "source": "ollama-32b"}
+{"id": "tr_010", "domain": "translation", "prompt": "Convert the sentence \"Je parle couramment le français\" into Chinese.", "source": "ollama-32b"}
+{"id": "tr_011", "domain": "translation", "prompt": "Translate \"من فضلك اخبرني كيف يمكنني مساعدتك\" into English.", "source": "ollama-32b"}
+{"id": "tr_012", "domain": "translation", "prompt": "Convert the phrase \"I want to learn more about Chinese\" into Arabic.", "source": "ollama-32b"}
+{"id": "tr_013", "domain": "translation", "prompt": "translate this sentence into urdu please", "source": "ollama-32b"}
+{"id": "tr_014", "domain": "translation", "prompt": "convert this text to french quickly", "source": "ollama-32b"}
+{"id": "tr_015", "domain": "translation", "prompt": "what is the arabic translation of happy birthday", "source": "ollama-32b"}
+{"id": "tr_016", "domain": "translation", "prompt": "english to chinese translation for this phrase", "source": "ollama-32b"}
+{"id": "tr_017", "domain": "translation", "prompt": "please translate the following into urdu", "source": "ollama-32b"}
+{"id": "tr_018", "domain": "translation", "prompt": "arabic to english translation needed for this", "source": "ollama-32b"}
+{"id": "tr_019", "domain": "translation", "prompt": "how would you say this in chinese", "source": "ollama-32b"}
+{"id": "tr_020", "domain": "translation", "prompt": "french to english translation for the given sentence", "source": "ollama-32b"}
+{"id": "tr_021", "domain": "translation", "prompt": "english to arabic translation required", "source": "ollama-32b"}
+{"id": "tr_022", "domain": "translation", "prompt": "translate the sentence into chinese please", "source": "ollama-32b"}
+{"id": "tr_023", "domain": "translation", "prompt": "please convert this to urdu", "source": "ollama-32b"}
+{"id": "tr_024", "domain": "translation", "prompt": "arabic translation of this text is needed", "source": "ollama-32b"}
+{"id": "tr_025", "domain": "translation", "prompt": "KINDLY CONVERT THIS FRENCH SENTENCE TO ENGLISH: \"Bonjour, comment allez-vous aujourd'hui?", "source": "ollama-32b"}
+{"id": "tr_026", "domain": "translation", "prompt": "Translate the sentence \"I love programming\" into Urdu.", "source": "ollama-32b"}
+{"id": "tr_027", "domain": "translation", "prompt": "Please convert the following Arabic text to English - كيف حالك اليوم؟", "source": "ollama-32b"}
+{"id": "tr_028", "domain": "translation", "prompt": "Could you translate \"Bonjour, comment ça va?\" into Chinese?", "source": "ollama-32b"}
+{"id": "tr_029", "domain": "translation", "prompt": "Translate the given Chinese sentence into English - 我喜欢阅读。", "source": "ollama-32b"}
+{"id": "tr_030", "domain": "translation", "prompt": "Convert \"Je m'appelle Ali\" into English for me.", "source": "ollama-32b"}
+{"id": "tr_031", "domain": "translation", "prompt": "Please translate \"مرحبا بك في البرنامج\" to English.", "source": "ollama-32b"}
+{"id": "tr_032", "domain": "translation", "prompt": "Could you translate the sentence \"J'aime les chiens\" into Urdu?", "source": "ollama-32b"}
+{"id": "tr_033", "domain": "translation", "prompt": "Translate the following English sentence into Arabic - She is a good teacher.", "source": "ollama-32b"}
+{"id": "tr_034", "domain": "translation", "prompt": "Please convert \"أنا في الجامعة\" into Chinese.", "source": "ollama-32b"}
+{"id": "tr_035", "domain": "translation", "prompt": "Translate \"I enjoy traveling\" into French.", "source": "ollama-32b"}
