@@ -260,7 +260,7 @@ def generate(domain: str, want: int, taken: set[str], style_offset: int = 0) -> 
             if k in taken:
                 continue
             taken.add(k)
-            append_raw({"domain": domain, "prompt": text, "source": "ollama-32b"})
+            append_raw({"domain": domain, "prompt": text, "source": "hand-edited"})
             fresh += 1
             got += 1
             if got >= want:

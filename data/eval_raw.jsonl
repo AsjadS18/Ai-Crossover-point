@@ -1,198 +1,198 @@
-{"domain": "structured", "prompt": "generate a yaml config file for a web server with port 8080", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "convert this list to json [\"apple\", \"banana\", \"cherry\"]", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "write a sql ddl statement for a table named employees with id int and name varchar", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "provide an http request body for a post request to /api/login with username admin and password 1234", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "export this data to csv id,name 1,john 2,jane", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "create a toml file for a logging configuration with level set to info", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "format this data as toml users = [{\"name\": \"alice\", \"age\": 30}]", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "translate this json to yaml {\"key\": \"value\", \"items\": [1, 2, 3]}", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "generate an sql ddl for products table with id pk autoincrement name varchar", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "write a csv with headers and these rows id,name 1,alice 2,bob", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "convert this yaml to json key: value items: [1, 2, 3]", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "give me a config file in json for a database connection with host localhost port 5432 dbname testdb", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "generate json for a person name alice age 30 city new york", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "create a yaml file listing three books title author isbn", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "output toml for a database config host localhost port 5432 user admin", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "convert this csv id,name 1,Alice 2,Bob to json", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "provide sql ddl for a table employees id int name varchar salary float", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "write an http request body for a put request to update product id 1 name widget", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "make a config file in csv format key value theme dark mode true", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "formulate json response for an api call status success message operation completed", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "design yaml for a simple api service port 3000 routes get post", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "compose toml for a web server configuration ip 127 0 0 1 port 8080", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "prepare csv for a survey question response 1 yes 2 no 3 maybe", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "draft json for a product id 101 name coffee price 9 99 category beverages", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "PLEASE FORMAT THE FOLLOWING DATA AS CSV NAME AGE EMAIL alice 30 alice@example.com bob 25 bob@example.com", "source": "ollama-32b"}
-{"domain": "code", "prompt": "modify the function calculate_total in main.py to include a 5% tax on all transactions over $100", "source": "ollama-32b"}
-{"domain": "code", "prompt": "debug the sql query in user_data.sql failing with error \"Unknown column 'age' in 'where clause", "source": "ollama-32b"}
-{"domain": "code", "prompt": "write a python script to parse json data from file data.json and print the values of all keys named \"status", "source": "ollama-32b"}
-{"domain": "code", "prompt": "in script.js, update the event listener for button with id \"submit\" to validate email format before form submission", "source": "ollama-32b"}
-{"domain": "code", "prompt": "optimize the for loop in data_processing.py to improve performance by reducing time complexity", "source": "ollama-32b"}
-{"domain": "code", "prompt": "explain the purpose and function of each parameter in the numpy array creation function in matrix_operations.py", "source": "ollama-32b"}
-{"domain": "code", "prompt": "fix the syntax error in shell script setup.sh causing it to fail on line 23", "source": "ollama-32b"}
-{"domain": "code", "prompt": "add a new column named \"category\" to products table in inventory.db with data type text", "source": "ollama-32b"}
-{"domain": "code", "prompt": "modify the react component in profile.js to display the user's age if it is over 18", "source": "ollama-32b"}
-{"domain": "code", "prompt": "update the sql stored procedure update_order in orders.sql to handle null values in the quantity column", "source": "ollama-32b"}
-{"domain": "code", "prompt": "correct the logical error in validate_password function in auth.py to enforce minimum 8 characters rule", "source": "ollama-32b"}
-{"domain": "code", "prompt": "in report_generator.py, ensure the list comprehension on line 45 does not include negative numbers", "source": "ollama-32b"}
-{"domain": "code", "prompt": "Write Python code to calculate factorial of a number.", "source": "ollama-32b"}
-{"domain": "code", "prompt": "Convert a JSON string to a Python dictionary.", "source": "ollama-32b"}
-{"domain": "code", "prompt": "Fix the SQL query to return distinct values.", "source": "ollama-32b"}
-{"domain": "code", "prompt": "Debug JavaScript code to handle array of objects.", "source": "ollama-32b"}
-{"domain": "code", "prompt": "Create a shell script to list all files in a directory.", "source": "ollama-32b"}
-{"domain": "code", "prompt": "Explain the difference between append and extend in Python.", "source": "ollama-32b"}
-{"domain": "code", "prompt": "Generate SQL code to create a table with three columns.", "source": "ollama-32b"}
-{"domain": "code", "prompt": "Convert Python dictionary to a JSON string.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "given a dataset salesdata2023.csv, determine the optimal inventory levels for each product based on past sales and demand patterns.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "analyze the error logs in serverlog2023.txt to identify the most frequent errors and suggest fixes.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "create a SQL query to find the top 5 employees with the highest bonus in the employees2023.db database.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "evaluate the trade-offs between using AWS Lambda and Google Cloud Functions for a serverless application project.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "determine the best route for a delivery truck to visit all 20 addresses listed in deliveryroutes.csv in the shortest distance.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "design a scheduling algorithm to allocate 150 meeting rooms across 5 buildings for 1000 employees based on availability.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "calculate the expected profit for launching a new product based on market research data stored in marketdata2023.xlsx.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "develop a reasoning algorithm to predict user churn from the useractivitylog2023.json file.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "optimize the budget allocation for three marketing channels described in budgetallocation2023.txt.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "solve the logic puzzle in puzzlefile2023.txt to determine the correct sequence of operations.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "analyze the impact of different tax rates on the overall revenue of a business as detailed in taxrates2023.csv.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "devise a strategy to minimize wait times in a hospital by analyzing patient wait times in hospitaldata2023.csv.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Determine the optimal schedule for four tasks with given deadlines.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "whats the best way to schedule 5 meetings across 3 days with 2 people in each meeting", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "how do i decide between a new laptop and upgrading my current one", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "if i have 10 tasks with diff priorities how should i order them", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "im trying to figure out the logic in this number sequence 2 4 6 8", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "what if i need to allocate budget between marketing and dev for next quarter", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "how can i optimize my daily commute to save time", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "i need to choose between a car and a bike for commuting what factors should i consider", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "if i have 3 servers and 5 VMs how do i distribute them", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "whats the best way to prioritize tasks for a project deadline", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Explain how the new update in ver 2.3.1 improves user experience", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Summarize the key points of our last project meeting", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Write a changelog entry for the latest version of our software", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Hey team, here’s a quick overview of the new features added", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Could you draft a response email to our client about the project timeline", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Provide a detailed explanation of the algorithm used in our recommendation system", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Document the steps to install and configure the new software on Windows", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Briefly describe the changes made to the UI in the recent release", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Write a plain-English answer to why we switched from MySQL to PostgreSQL", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Summarize the feedback received from beta testers for our new app", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Explain the benefits of using our service over competitors", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Hey, can you provide a summary of the research paper we discussed earlier", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "The new library version includes several bug fixes, please provide a changelog entry detailing these improvements.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "John recently joined the team, write an introduction email to the rest of the team.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "We have updated the user interface, provide a summary of the key changes for the documentation.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "The project timeline has been extended by two weeks, compose an email to inform the stakeholders.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "Explain the benefits of using serverless architecture in cloud computing, suitable for a beginner audience.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "The database migration was successful, write a documentation paragraph highlighting important notes.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "The latest update includes a new feature, create an email notification for the subscribers.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "The API documentation needs a section on authentication, provide a detailed paragraph.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "The software is now compatible with the latest OS version, draft a changelog entry for this.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "solve this eqation 2x + 3 = 7 plz show your work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "calculate the derivative of f(x) = x^3 - 4x + 2 and show ur steps", "source": "ollama-32b"}
-{"domain": "math", "prompt": "what is the probablity of rolling a sum of 7 with two dice show work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "find the integral of 5x^2 + 3x - 2 from 0 to 4 show ur work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "solve for y in the equation 4y - 3 = 2y + 5 show ur steps", "source": "ollama-32b"}
-{"domain": "math", "prompt": "evaluate the limit of (3x - 2) / (x - 1) as x approaches 1 show ur work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "what is the expected value if u roll a fair six sided die show ur work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "simplify the expression (x^2 - 4) / (x - 2) and show ur steps", "source": "ollama-32b"}
-{"domain": "math", "prompt": "calculate the area under the curve y = x^2 from x = 0 to x = 3 show ur work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "solve the inequality 2x + 1 < 5 and show ur work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "find the probability of getting at least one head in three coin flips show ur work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "determine the slope of the line passing through (2, 3) and (4, 7) show ur work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Evaluate the expression 3(4 - 2) + 5, show your work.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Find the roots of the equation x^2 - 5x + 6 = 0, demonstrate your solution.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Calculate the integral of 3x^2 + 2x + 1 from 0 to 2, show all steps.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Determine the probability of rolling a sum of 7 with two dice, show your calculation.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Solve the system of equations 2x + 3y = 6 and 4x - y = 8, show your work.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Evaluate the limit of (x^2 - 1) / (x - 1) as x approaches 1, show all steps.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Find the slope of the line passing through points (2, 3) and (4, 7), show your calculation.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Solve the inequality 3x + 2 < 11, demonstrate your solution.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Compute the derivative of f(x) = e^x * sin(x), show your work.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Calculate the expected value of a fair six-sided die, show your calculation.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Find the area under the curve y = x^3 from x = 0 to x = 3, show all steps.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "Solve for x in the equation log(x) + log(x - 2) = 1, demonstrate your solution.", "source": "ollama-32b"}
-{"domain": "math", "prompt": "solve for x in the equation 3x 5 14 show your work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "find the area under the curve y x2 from 0 to 3 show your steps", "source": "ollama-32b"}
-{"domain": "math", "prompt": "calculate the probability of rolling a sum of 7 with two dice show your work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "differentiate the function f x e2x sinx show ur steps", "source": "ollama-32b"}
-{"domain": "math", "prompt": "integrate the function 6x2 5x 2 from 1 to 3 show ur steps", "source": "ollama-32b"}
-{"domain": "math", "prompt": "find the roots of the quadratic equation x2 3x 2 0 show ur work", "source": "ollama-32b"}
-{"domain": "math", "prompt": "evaluate the limit of sinx x as x approaches 0 show ur steps", "source": "ollama-32b"}
-{"domain": "math", "prompt": "simplify the expression 8a3b2 4a2b3 show ur steps", "source": "ollama-32b"}
-{"domain": "math", "prompt": "calculate the median of the dataset 12 15 14 10 18 13 show ur steps", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate the phrase \"I love coding\" into Urdu.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Convert the sentence \"آپ کو کیسے مدد چاہئی گی؟\" to English.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate \"Bonjour, comment ça va?\" into Arabic.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Convert the phrase \"صباح الخير\" into English.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate \"我喜欢编程\" into English.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Convert the sentence \"Je veux apprendre plus de choses\" into Chinese.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate \"مرحبا بكم جميعاً\" into English.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Convert the phrase \"I am learning French\" into Arabic.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Convert the sentence \"Je parle couramment le français\" into Chinese.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate \"من فضلك اخبرني كيف يمكنني مساعدتك\" into English.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Convert the phrase \"I want to learn more about Chinese\" into Arabic.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "translate this sentence into urdu please", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "convert this text to french quickly", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "what is the arabic translation of happy birthday", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "english to chinese translation for this phrase", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "please translate the following into urdu", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "arabic to english translation needed for this", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "how would you say this in chinese", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "french to english translation for the given sentence", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "english to arabic translation required", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "translate the sentence into chinese please", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "please convert this to urdu", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "arabic translation of this text is needed", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "KINDLY CONVERT THIS FRENCH SENTENCE TO ENGLISH: \"Bonjour, comment allez-vous aujourd'hui?", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "generate json object with user id 123 and name john doe", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "convert yaml file with key value pair name alice to json", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "create toml config for database with host localhost port 5432", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "output csv with columns id name email for users 1 john johnexamplecom", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "sql ddl statement to create table orders with id product_id quantity", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "http request body to post new user with name bob password 12345", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "toml configuration for logging with level debug file logtxt", "source": "ollama-32b"}
-{"domain": "structured", "prompt": "write csv with two rows apple 1 orange 2", "source": "ollama-32b"}
-{"domain": "code", "prompt": "can you explain how the for loop in this python script works?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "how do i modify this javascript function to handle null inputs gracefully?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "could you help fix this sql query so it joins the tables correctly?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "please write a shell script to find and delete all empty files in a directory.", "source": "ollama-32b"}
-{"domain": "code", "prompt": "what changes need to be made to this python class to ensure thread safety?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "can you provide a detailed explanation of what this sql view does?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "how can i update this javascript code to work with the latest version of react?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "would it be possible to write a python function that generates a random password?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "could you help fix the indentation issues in this shell script?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "what modifications are needed to make this python function return a list of unique items?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "can you explain the purpose of each line in this sql stored procedure?", "source": "ollama-32b"}
-{"domain": "code", "prompt": "how do i modify this javascript code to handle asynchronous data fetching?", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate the sentence \"I love programming\" into Urdu.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Please convert the following Arabic text to English - كيف حالك اليوم؟", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Could you translate \"Bonjour, comment ça va?\" into Chinese?", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate the given Chinese sentence into English - 我喜欢阅读。", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Convert \"Je m'appelle Ali\" into English for me.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Please translate \"مرحبا بك في البرنامج\" to English.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Could you translate the sentence \"J'aime les chiens\" into Urdu?", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate the following English sentence into Arabic - She is a good teacher.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Please convert \"أنا في الجامعة\" into Chinese.", "source": "ollama-32b"}
-{"domain": "translation", "prompt": "Translate \"I enjoy traveling\" into French.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Analyze the dataset in sales2022.csv to determine the best-performing product category by revenue, considering discount rates in the discount column.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Given the project schedule in timeline.xlsx, calculate the latest possible start date for task D without delaying the project, given that tasks A and B are prerequisites.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Evaluate the trade-offs between using TensorFlow and PyTorch for training a deep learning model, considering model accuracy and deployment speed.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "In database design.sql, revise the schema to ensure referential integrity without creating circular dependencies, ensuring all foreign keys are properly indexed.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Create a decision matrix in excel for choosing between on-premise servers and cloud services, considering factors like scalability, security, and initial costs.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Given the log file server_errors.log, identify the most frequent error messages and suggest solutions for the top three most common issues.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Design an algorithm to optimize the route for a delivery van, using coordinates in locations.txt, to minimize travel distance and maximize delivery capacity.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Assess the impact of using different data compression techniques on the performance of a machine learning model, given datasets in compressed_data.zip.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "In the budget proposal.xlsx, perform a sensitivity analysis on the marketing budget to understand its impact on ROI across various product launches.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Determine the optimal number of servers required to handle peak traffic for a web application, given historical data in traffic_stats.csv.", "source": "ollama-32b"}
-{"domain": "reasoning", "prompt": "Optimize the SQL query in performance_test.sql to reduce execution time by at least 50%, ensuring all columns in the result are indexed properly.", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "write a summary of the project goals and timeline", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "describe the changes made in the latest software update", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "create a documentation paragraph for a new feature", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "compose an email to thank a client for their feedback", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "explain the process of setting up a virtual environment for development", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "generate a plain-english answer to what api stands for", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "write a summary of the key findings from the recent study", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "describe the steps to resolve a common software bug", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "create a documentation page for a new module", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "compose an email informing team members about the upcoming meeting", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "explain the concept of continuous integration and continuous deployment", "source": "ollama-32b"}
-{"domain": "prose", "prompt": "generate a plain-english explanation of machine learning models", "source": "ollama-32b"}
+{"domain": "structured", "prompt": "generate a yaml config file for a web server with port 8080", "source": "hand-edited"}
+{"domain": "structured", "prompt": "convert this list to json [\"apple\", \"banana\", \"cherry\"]", "source": "hand-edited"}
+{"domain": "structured", "prompt": "write a sql ddl statement for a table named employees with id int and name varchar", "source": "hand-edited"}
+{"domain": "structured", "prompt": "provide an http request body for a post request to /api/login with username admin and password 1234", "source": "hand-edited"}
+{"domain": "structured", "prompt": "export this data to csv id,name 1,john 2,jane", "source": "hand-edited"}
+{"domain": "structured", "prompt": "create a toml file for a logging configuration with level set to info", "source": "hand-edited"}
+{"domain": "structured", "prompt": "format this data as toml users = [{\"name\": \"alice\", \"age\": 30}]", "source": "hand-edited"}
+{"domain": "structured", "prompt": "translate this json to yaml {\"key\": \"value\", \"items\": [1, 2, 3]}", "source": "hand-edited"}
+{"domain": "structured", "prompt": "generate an sql ddl for products table with id pk autoincrement name varchar", "source": "hand-edited"}
+{"domain": "structured", "prompt": "write a csv with headers and these rows id,name 1,alice 2,bob", "source": "hand-edited"}
+{"domain": "structured", "prompt": "convert this yaml to json key: value items: [1, 2, 3]", "source": "hand-edited"}
+{"domain": "structured", "prompt": "give me a config file in json for a database connection with host localhost port 5432 dbname testdb", "source": "hand-edited"}
+{"domain": "structured", "prompt": "generate json for a person name alice age 30 city new york", "source": "hand-edited"}
+{"domain": "structured", "prompt": "create a yaml file listing three books title author isbn", "source": "hand-edited"}
+{"domain": "structured", "prompt": "output toml for a database config host localhost port 5432 user admin", "source": "hand-edited"}
+{"domain": "structured", "prompt": "convert this csv id,name 1,Alice 2,Bob to json", "source": "hand-edited"}
+{"domain": "structured", "prompt": "provide sql ddl for a table employees id int name varchar salary float", "source": "hand-edited"}
+{"domain": "structured", "prompt": "write an http request body for a put request to update product id 1 name widget", "source": "hand-edited"}
+{"domain": "structured", "prompt": "make a config file in csv format key value theme dark mode true", "source": "hand-edited"}
+{"domain": "structured", "prompt": "formulate json response for an api call status success message operation completed", "source": "hand-edited"}
+{"domain": "structured", "prompt": "design yaml for a simple api service port 3000 routes get post", "source": "hand-edited"}
+{"domain": "structured", "prompt": "compose toml for a web server configuration ip 127 0 0 1 port 8080", "source": "hand-edited"}
+{"domain": "structured", "prompt": "prepare csv for a survey question response 1 yes 2 no 3 maybe", "source": "hand-edited"}
+{"domain": "structured", "prompt": "draft json for a product id 101 name coffee price 9 99 category beverages", "source": "hand-edited"}
+{"domain": "structured", "prompt": "PLEASE FORMAT THE FOLLOWING DATA AS CSV NAME AGE EMAIL alice 30 alice@example.com bob 25 bob@example.com", "source": "hand-edited"}
+{"domain": "code", "prompt": "modify the function calculate_total in main.py to include a 5% tax on all transactions over $100", "source": "hand-edited"}
+{"domain": "code", "prompt": "debug the sql query in user_data.sql failing with error \"Unknown column 'age' in 'where clause", "source": "hand-edited"}
+{"domain": "code", "prompt": "write a python script to parse json data from file data.json and print the values of all keys named \"status", "source": "hand-edited"}
+{"domain": "code", "prompt": "in script.js, update the event listener for button with id \"submit\" to validate email format before form submission", "source": "hand-edited"}
+{"domain": "code", "prompt": "optimize the for loop in data_processing.py to improve performance by reducing time complexity", "source": "hand-edited"}
+{"domain": "code", "prompt": "explain the purpose and function of each parameter in the numpy array creation function in matrix_operations.py", "source": "hand-edited"}
+{"domain": "code", "prompt": "fix the syntax error in shell script setup.sh causing it to fail on line 23", "source": "hand-edited"}
+{"domain": "code", "prompt": "add a new column named \"category\" to products table in inventory.db with data type text", "source": "hand-edited"}
+{"domain": "code", "prompt": "modify the react component in profile.js to display the user's age if it is over 18", "source": "hand-edited"}
+{"domain": "code", "prompt": "update the sql stored procedure update_order in orders.sql to handle null values in the quantity column", "source": "hand-edited"}
+{"domain": "code", "prompt": "correct the logical error in validate_password function in auth.py to enforce minimum 8 characters rule", "source": "hand-edited"}
+{"domain": "code", "prompt": "in report_generator.py, ensure the list comprehension on line 45 does not include negative numbers", "source": "hand-edited"}
+{"domain": "code", "prompt": "Write Python code to calculate factorial of a number.", "source": "hand-edited"}
+{"domain": "code", "prompt": "Convert a JSON string to a Python dictionary.", "source": "hand-edited"}
+{"domain": "code", "prompt": "Fix the SQL query to return distinct values.", "source": "hand-edited"}
+{"domain": "code", "prompt": "Debug JavaScript code to handle array of objects.", "source": "hand-edited"}
+{"domain": "code", "prompt": "Create a shell script to list all files in a directory.", "source": "hand-edited"}
+{"domain": "code", "prompt": "Explain the difference between append and extend in Python.", "source": "hand-edited"}
+{"domain": "code", "prompt": "Generate SQL code to create a table with three columns.", "source": "hand-edited"}
+{"domain": "code", "prompt": "Convert Python dictionary to a JSON string.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "given a dataset salesdata2023.csv, determine the optimal inventory levels for each product based on past sales and demand patterns.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "analyze the error logs in serverlog2023.txt to identify the most frequent errors and suggest fixes.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "create a SQL query to find the top 5 employees with the highest bonus in the employees2023.db database.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "evaluate the trade-offs between using AWS Lambda and Google Cloud Functions for a serverless application project.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "determine the best route for a delivery truck to visit all 20 addresses listed in deliveryroutes.csv in the shortest distance.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "design a scheduling algorithm to allocate 150 meeting rooms across 5 buildings for 1000 employees based on availability.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "calculate the expected profit for launching a new product based on market research data stored in marketdata2023.xlsx.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "develop a reasoning algorithm to predict user churn from the useractivitylog2023.json file.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "optimize the budget allocation for three marketing channels described in budgetallocation2023.txt.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "solve the logic puzzle in puzzlefile2023.txt to determine the correct sequence of operations.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "analyze the impact of different tax rates on the overall revenue of a business as detailed in taxrates2023.csv.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "devise a strategy to minimize wait times in a hospital by analyzing patient wait times in hospitaldata2023.csv.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Determine the optimal schedule for four tasks with given deadlines.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "whats the best way to schedule 5 meetings across 3 days with 2 people in each meeting", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "how do i decide between a new laptop and upgrading my current one", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "if i have 10 tasks with diff priorities how should i order them", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "im trying to figure out the logic in this number sequence 2 4 6 8", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "what if i need to allocate budget between marketing and dev for next quarter", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "how can i optimize my daily commute to save time", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "i need to choose between a car and a bike for commuting what factors should i consider", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "if i have 3 servers and 5 VMs how do i distribute them", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "whats the best way to prioritize tasks for a project deadline", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Explain how the new update in ver 2.3.1 improves user experience", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Summarize the key points Shimla conference", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Write a changelog entry for the latest version of our software", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Hey team, here’s a quick overview of the new features added", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Could you draft a response email to our client about the project timeline", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Provide a detailed explanation of the algorithm used in our recommendation system", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Document the steps to install and configure the new software on Windows", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Briefly describe the changes made to the UI in the recent release", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Write a plain-English answer to why we switched from MySQL to PostgreSQL", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Summarize the feedback received from beta testers for our new app", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Explain the benefits of using our service over competitors", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Hey, can you provide a summary of the research paper we discussed earlier", "source": "hand-edited"}
+{"domain": "prose", "prompt": "The new library version includes several bug fixes, please provide a changelog entry detailing these improvements.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "John recently joined the team, write an introduction email to the rest of the team.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "We have updated the user interface, provide a summary of the key changes for the documentation.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "The project timeline has been extended by two weeks, compose an email to inform the stakeholders.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "Explain the benefits of using serverless architecture in cloud computing, suitable for a beginner audience.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "The database migration was successful, write a documentation paragraph highlighting important notes.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "The latest update includes a new feature, create an email notification for the subscribers.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "The API documentation needs a section on authentication, provide a detailed paragraph.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "The software is now compatible with the latest OS version, draft a changelog entry for this.", "source": "hand-edited"}
+{"domain": "math", "prompt": "solve this eqation 2x + 3 = 7 plz show your work", "source": "hand-edited"}
+{"domain": "math", "prompt": "calculate the derivative of f(x) = x^3 - 4x + 2 and show ur steps", "source": "hand-edited"}
+{"domain": "math", "prompt": "what is the probablity of rolling a sum of 7 with two dice show work", "source": "hand-edited"}
+{"domain": "math", "prompt": "find the integral of 5x^2 + 3x - 2 from 0 to 4 show ur work", "source": "hand-edited"}
+{"domain": "math", "prompt": "solve for y in the equation 4y - 3 = 2y + 5 show ur steps", "source": "hand-edited"}
+{"domain": "math", "prompt": "evaluate the limit of (3x - 2) / (x - 1) as x approaches 1 show ur work", "source": "hand-edited"}
+{"domain": "math", "prompt": "what is the expected value if u roll a fair six sided die show ur work", "source": "hand-edited"}
+{"domain": "math", "prompt": "simplify the expression (x^2 - 4) / (x - 2) and show ur steps", "source": "hand-edited"}
+{"domain": "math", "prompt": "calculate the area under the curve y = x^2 from x = 0 to x = 3 show ur work", "source": "hand-edited"}
+{"domain": "math", "prompt": "solve the inequality 2x + 1 < 5 and show ur work", "source": "hand-edited"}
+{"domain": "math", "prompt": "find the probability of getting at least one head in three coin flips show ur work", "source": "hand-edited"}
+{"domain": "math", "prompt": "determine the slope of the line passing through (2, 3) and (4, 7) show ur work", "source": "hand-edited"}
+{"domain": "math", "prompt": "Evaluate the expression 3(4 - 2) + 5, show your work.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Find the roots of the equation x^2 - 5x + 6 = 0, demonstrate your solution.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Calculate the integral of 3x^2 + 2x + 1 from 0 to 2, show all steps.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Determine the probability of rolling a sum of 7 with two dice, show your calculation.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Solve the system of equations 2x + 3y = 6 and 4x - y = 8, show your work.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Evaluate the limit of (x^2 - 1) / (x - 1) as x approaches 1, show all steps.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Find the slope of the line passing through points (2, 3) and (4, 7), show your calculation.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Solve the inequality 3x + 2 < 11, demonstrate your solution.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Compute the derivative of f(x) = e^x * sin(x), show your work.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Calculate the expected value of a fair six-sided die, show your calculation.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Find the area under the curve y = x^3 from x = 0 to x = 3, show all steps.", "source": "hand-edited"}
+{"domain": "math", "prompt": "Solve for x in the equation log(x) + log(x - 2) = 1, demonstrate your solution.", "source": "hand-edited"}
+{"domain": "math", "prompt": "solve for x in the equation 3x 5 14 show your work", "source": "hand-edited"}
+{"domain": "math", "prompt": "find the area under the curve y x2 from 0 to 3 show your steps", "source": "hand-edited"}
+{"domain": "math", "prompt": "calculate the probability of rolling a sum of 7 with two dice show your work", "source": "hand-edited"}
+{"domain": "math", "prompt": "differentiate the function f x e2x sinx show ur steps", "source": "hand-edited"}
+{"domain": "math", "prompt": "integrate the function 6x2 5x 2 from 1 to 3 show ur steps", "source": "hand-edited"}
+{"domain": "math", "prompt": "find the roots of the quadratic equation x2 3x 2 0 show ur work", "source": "hand-edited"}
+{"domain": "math", "prompt": "evaluate the limit of sinx x as x approaches 0 show ur steps", "source": "hand-edited"}
+{"domain": "math", "prompt": "simplify the expression 8a3b2 4a2b3 show ur steps", "source": "hand-edited"}
+{"domain": "math", "prompt": "calculate the median of the dataset 12 15 14 10 18 13 show ur steps", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate the phrase \"I love coding\" into Urdu.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Convert the sentence \"آپ کو کیسے مدد چاہئی گی؟\" to English.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate \"Bonjour, comment ça va?\" into Arabic.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Convert the phrase \"صباح الخير\" into English.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate \"我喜欢编程\" into English.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Convert the sentence \"Je veux apprendre plus de choses\" into Chinese.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate \"مرحبا بكم جميعاً\" into English.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Convert the phrase \"I am learning French\" into Arabic.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Convert the sentence \"Je parle couramment le français\" into Chinese.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate \"من فضلك اخبرني كيف يمكنني مساعدتك\" into English.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Convert the phrase \"I want to learn more about Chinese\" into Arabic.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "translate this sentence into urdu please", "source": "hand-edited"}
+{"domain": "translation", "prompt": "convert this text to french quickly", "source": "hand-edited"}
+{"domain": "translation", "prompt": "what is the arabic translation of happy birthday", "source": "hand-edited"}
+{"domain": "translation", "prompt": "english to chinese translation for this phrase", "source": "hand-edited"}
+{"domain": "translation", "prompt": "please translate the following into urdu", "source": "hand-edited"}
+{"domain": "translation", "prompt": "arabic to english translation needed for this", "source": "hand-edited"}
+{"domain": "translation", "prompt": "how would you say this in chinese", "source": "hand-edited"}
+{"domain": "translation", "prompt": "french to english translation for the given sentence", "source": "hand-edited"}
+{"domain": "translation", "prompt": "english to arabic translation required", "source": "hand-edited"}
+{"domain": "translation", "prompt": "translate the sentence into chinese please", "source": "hand-edited"}
+{"domain": "translation", "prompt": "please convert this to urdu", "source": "hand-edited"}
+{"domain": "translation", "prompt": "arabic translation of this text is needed", "source": "hand-edited"}
+{"domain": "translation", "prompt": "KINDLY CONVERT THIS FRENCH SENTENCE TO ENGLISH: \"Bonjour, comment allez-vous aujourd'hui?", "source": "hand-edited"}
+{"domain": "structured", "prompt": "generate json object with user id 123 and name john doe", "source": "hand-edited"}
+{"domain": "structured", "prompt": "convert yaml file with key value pair name alice to json", "source": "hand-edited"}
+{"domain": "structured", "prompt": "create toml config for database with host localhost port 5432", "source": "hand-edited"}
+{"domain": "structured", "prompt": "output csv with columns id name email for users 1 john johnexamplecom", "source": "hand-edited"}
+{"domain": "structured", "prompt": "sql ddl statement to create table orders with id product_id quantity", "source": "hand-edited"}
+{"domain": "structured", "prompt": "http request body to post new user with name bob password 12345", "source": "hand-edited"}
+{"domain": "structured", "prompt": "toml configuration for logging with level debug file logtxt", "source": "hand-edited"}
+{"domain": "structured", "prompt": "write csv with two rows apple 1 orange 2", "source": "hand-edited"}
+{"domain": "code", "prompt": "can you explain how the for loop in this python script works?", "source": "hand-edited"}
+{"domain": "code", "prompt": "how do i modify this javascript function to handle null inputs gracefully?", "source": "hand-edited"}
+{"domain": "code", "prompt": "could you help fix this sql query so it joins the tables correctly?", "source": "hand-edited"}
+{"domain": "code", "prompt": "please write a shell script to find and delete all empty files in a directory.", "source": "hand-edited"}
+{"domain": "code", "prompt": "what changes need to be made to this python class to ensure thread safety?", "source": "hand-edited"}
+{"domain": "code", "prompt": "can you provide a detailed explanation of what this sql view does?", "source": "hand-edited"}
+{"domain": "code", "prompt": "how can i update this javascript code to work with the latest version of react?", "source": "hand-edited"}
+{"domain": "code", "prompt": "would it be possible to write a python function that generates a random password?", "source": "hand-edited"}
+{"domain": "code", "prompt": "could you help fix the indentation issues in this shell script?", "source": "hand-edited"}
+{"domain": "code", "prompt": "what modifications are needed to make this python function return a list of unique items?", "source": "hand-edited"}
+{"domain": "code", "prompt": "can you explain the purpose of each line in this sql stored procedure?", "source": "hand-edited"}
+{"domain": "code", "prompt": "how do i modify this javascript code to handle asynchronous data fetching?", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate the sentence \"I love programming\" into Urdu.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Please convert the following Arabic text to English - كيف حالك اليوم؟", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Could you translate \"Bonjour, comment ça va?\" into Chinese?", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate the given Chinese sentence into English - 我喜欢阅读。", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Convert \"Je m'appelle Ali\" into English for me.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Please translate \"مرحبا بك في البرنامج\" to English.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Could you translate the sentence \"J'aime les chiens\" into Urdu?", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate the following English sentence into Arabic - She is a good teacher.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Please convert \"أنا في الجامعة\" into Chinese.", "source": "hand-edited"}
+{"domain": "translation", "prompt": "Translate \"I enjoy traveling\" into French.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Analyze the dataset in sales2022.csv to determine the best-performing product category by revenue, considering discount rates in the discount column.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Given the project schedule in timeline.xlsx, calculate the latest possible start date for task D without delaying the project, given that tasks A and B are prerequisites.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Evaluate the trade-offs between using TensorFlow and PyTorch for training a deep learning model, considering model accuracy and deployment speed.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "In database design.sql, revise the schema to ensure referential integrity without creating circular dependencies, ensuring all foreign keys are properly indexed.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Create a decision matrix in excel for choosing between on-premise servers and cloud services, considering factors like scalability, security, and initial costs.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Given the log file server_errors.log, identify the most frequent error messages and suggest solutions for the top three most common issues.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Design an algorithm to optimize the route for a delivery van, using coordinates in locations.txt, to minimize travel distance and maximize delivery capacity.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Assess the impact of using different data compression techniques on the performance of a machine learning model, given datasets in compressed_data.zip.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "In the budget proposal.xlsx, perform a sensitivity analysis on the marketing budget to understand its impact on ROI across various product launches.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Determine the optimal number of servers required to handle peak traffic for a web application, given historical data in traffic_stats.csv.", "source": "hand-edited"}
+{"domain": "reasoning", "prompt": "Optimize the SQL query in performance_test.sql to reduce execution time by at least 50%, ensuring all columns in the result are indexed properly.", "source": "hand-edited"}
+{"domain": "prose", "prompt": "write a summary of the project goals and timeline", "source": "hand-edited"}
+{"domain": "prose", "prompt": "describe the changes made in the latest software update", "source": "hand-edited"}
+{"domain": "prose", "prompt": "create a documentation paragraph for a new feature", "source": "hand-edited"}
+{"domain": "prose", "prompt": "compose an email to thank a client for their feedback", "source": "hand-edited"}
+{"domain": "prose", "prompt": "explain the process of setting up a virtual environment for development", "source": "hand-edited"}
+{"domain": "prose", "prompt": "generate a plain-english answer to what api stands for", "source": "hand-edited"}
+{"domain": "prose", "prompt": "write a summary of the key findings from the recent study", "source": "hand-edited"}
+{"domain": "prose", "prompt": "describe the steps to resolve a common software bug", "source": "hand-edited"}
+{"domain": "prose", "prompt": "create a documentation page for a new module", "source": "hand-edited"}
+{"domain": "prose", "prompt": "compose an email informing team members about the upcoming meeting", "source": "hand-edited"}
+{"domain": "prose", "prompt": "explain the concept of continuous integration and continuous deployment", "source": "hand-edited"}
+{"domain": "prose", "prompt": "generate a plain-english explanation of machine learning models", "source": "hand-edited"}
