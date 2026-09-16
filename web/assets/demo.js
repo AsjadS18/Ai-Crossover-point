@@ -63,6 +63,7 @@ function modeHint() {
 function setBusy(busy, label) {
   state.busy = busy;
   ["go", "race", "replay"].forEach((id) => { el(id).disabled = busy; });
+  if (state.demoMode) ["go", "race"].forEach((id) => { el(id).disabled = true; });
   el("stop").style.display = busy ? "" : "none";
   el("live").classList.toggle("on", busy);
   el("live-text").textContent = busy ? (label || "streaming") : "idle";
@@ -403,6 +404,13 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", drawCharts);
 
   fetchJSON("/health").then((h) => {
+    if (h.demo_mode) {
+      state.demoMode = true;
+      ["go", "race"].forEach((id) => { el(id).disabled = true; el(id).title = "Needs a local NVIDIA GPU"; });
+      addStatus(`<span class="tag warn">hosted demo 00b7 no GPU</span> <span class="faint">Run and Race need a local GPU 2014 press 23ef Replay to watch a real recorded run</span>`);
+      el("stream").innerHTML = `<div class="empty"><div>This hosted copy has no GPU, so live generation is off.<br><br><b>Press 23ef Replay</b> to watch a real recorded generation (1.4000d7, output identical).<br><span class="faint">Clone the repo to run it live on your own NVIDIA GPU.</span></div></div>`;
+      return;
+    }
     if (!h.models_loaded) addStatus(`<span class="tag warn">models not loaded yet</span> <span class="faint">first Run will load them · Replay works now</span>`);
     else addStatus(`<span class="tag good">models ready</span>`);
   }).catch(() => addStatus(`<span class="tag bad">server unreachable</span>`));

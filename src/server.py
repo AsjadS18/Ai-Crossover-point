@@ -37,17 +37,26 @@ import threading
 from contextlib import asynccontextmanager
 from typing import Any
 
-import torch
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sse_starlette.sse import EventSourceResponse
 
-from src import compat
-from src.adaptive import AdaptiveGamma
-from src.baseline import GraphedGreedyDecoder, baseline_generate
-from src.models import DRAFT_PATH, TARGET_PATH, chat_ids, load_pair
-from src.specdec import GraphedSpecDecoder, spec_generate
+# CROSSOVER_DEMO_MODE=1 serves the website, the result APIs and /replay with
+# no GPU and no ML stack installed (for free CPU hosting). Live generation is
+# refused, so none of the model code below is imported.
+DEMO_MODE = os.environ.get("CROSSOVER_DEMO_MODE") == "1"
+
+if DEMO_MODE:
+    TARGET_PATH, DRAFT_PATH = "models/target-7b", "models/draft-0.5b"
+else:
+    import torch
+
+    from src import compat
+    from src.adaptive import AdaptiveGamma
+    from src.baseline import GraphedGreedyDecoder, baseline_generate
+    from src.models import DRAFT_PATH, TARGET_PATH, chat_ids, load_pair
+    from src.specdec import GraphedSpecDecoder, spec_generate
 
 WEB_INDEX = "web/index.html"
 DEFAULT_MAX_NEW_TOKENS = 128
@@ -84,7 +93,7 @@ async def lifespan(_: FastAPI) -> Any:
     Set CROSSOVER_LAZY_LOAD=1 to skip the load, which makes /health and /config
     testable without occupying ~6 GB of VRAM.
     """
-    if os.environ.get("CROSSOVER_LAZY_LOAD") != "1":
+    if os.environ.get("CROSSOVER_LAZY_LOAD") != "1" and not DEMO_MODE:
         _load_once()
     yield
     _models.clear()
@@ -99,6 +108,7 @@ def health() -> JSONResponse:
     return JSONResponse({
         "status": "ok",
         "models_loaded": "pair" in _models,
+        "demo_mode": DEMO_MODE,
         "target_path": TARGET_PATH,
         "draft_path": DRAFT_PATH,
     })
@@ -108,7 +118,7 @@ def health() -> JSONResponse:
 def config() -> JSONResponse:
     """Environment provenance, the same dict embedded in every results file."""
     return JSONResponse({
-        "compat": compat.describe(),
+        "compat": None if DEMO_MODE else compat.describe(),
         "default_max_new_tokens": DEFAULT_MAX_NEW_TOKENS,
         "default_regime": "graphed",
         "default_gamma": 2,
@@ -412,6 +422,11 @@ async def stream(
     Defaults are the measured best single configuration: graphed regime,
     fixed gamma=2 (1.1168x over the graphed baseline across 210 prompts).
     """
+    if DEMO_MODE:
+        raise HTTPException(
+            status_code=503,
+            detail="Live generation is disabled on this hosted demo (no GPU). "
+                   "Use Replay, or run the project locally.")
     trace: list = []
     result: dict[str, Any] = {}
 
