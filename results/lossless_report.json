@@ -1,0 +1,48 @@
+{
+  "checked": 96,
+  "identical": 93,
+  "mismatches": 3,
+  "prompts": 24,
+  "gammas": [
+    1,
+    3,
+    5,
+    8
+  ],
+  "max_new_tokens": 96,
+  "eval_path": "data/eval.jsonl",
+  "per_gamma": {
+    "1": {
+      "checked": 24,
+      "identical": 24,
+      "mean_acceptance": 0.813314845126761
+    },
+    "3": {
+      "checked": 24,
+      "identical": 23,
+      "mean_acceptance": 0.661642074100009
+    },
+    "5": {
+      "checked": 24,
+      "identical": 23,
+      "mean_acceptance": 0.5657616733935751
+    },
+    "8": {
+      "checked": 24,
+      "identical": 23,
+      "mean_acceptance": 0.44115657899243593
+    }
+  },
+  "target_path": "models/target-7b",
+  "draft_path": "models/draft-0.5b",
+  "compat": {
+    "transformers": "5.17.0",
+    "torch": "2.14.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "cache_ctor_path": "DynamicCache(config=model.config)",
+    "dtype_kwarg_path": "dtype=",
+    "rollback_path": "DynamicCache.crop(negative)"
+  },
+  "utc": "2026-09-16T14:35:12.239290+00:00"
+}

@@ -1,0 +1,23 @@
+{
+  "draft_ms": 29.139365999997153,
+  "target_ms": 45.40862600001219,
+  "r": 0.641714329783714,
+  "warmup_runs": 10,
+  "timed_runs": 50,
+  "primed_tokens": 41,
+  "baseline_tok_per_s": 21.09749985396546,
+  "baseline_tokens": 128,
+  "baseline_seconds": 6.067069600000082,
+  "baseline_max_new_tokens": 128,
+  "target_path": "models/target-7b",
+  "draft_path": "models/draft-0.5b",
+  "compat": {
+    "transformers": "5.17.0",
+    "torch": "2.14.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "cache_ctor_path": "DynamicCache(config=model.config)",
+    "dtype_kwarg_path": "dtype="
+  },
+  "utc": "2026-09-14T19:26:45.633209+00:00"
+}

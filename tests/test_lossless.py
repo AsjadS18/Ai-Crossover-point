@@ -53,8 +53,18 @@ def run_sweep(verbose: bool = True) -> dict[str, Any]:
 
     Returns a report dict and writes results/lossless_report.json, plus
     results/lossless_failures.json if anything mismatched.
+
+    Set CROSSOVER_LOSSLESS_LIMIT=N to check only every (210 // N)-th prompt,
+    which keeps all six domains represented. The full 210-prompt run takes
+    about an hour; N=24 takes a few minutes.
     """
     prompts = load_eval()
+    limit = int(os.environ.get("CROSSOVER_LOSSLESS_LIMIT", "0") or 0)
+    if 0 < limit < len(prompts):
+        step = max(1, len(prompts) // limit)
+        prompts = prompts[::step][:limit]
+        print(f"CROSSOVER_LOSSLESS_LIMIT={limit}: checking {len(prompts)} "
+              f"prompts spread across all domains", flush=True)
     tokenizer, target, draft = load_pair()
 
     checked = 0

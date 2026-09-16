@@ -168,3 +168,71 @@ if __name__ == "__main__":
     for alpha in (0.1, 0.3, 0.5, 0.7, 0.85, 0.95):
         print(f"  alpha={alpha:.2f} -> gamma={ctrl.best_gamma(alpha)} "
               f"(speedup {ctrl.expected_speedup(alpha, ctrl.best_gamma(alpha)):.3f})")
+
+
+def test_gamma_zero_is_not_an_absorbing_state():
+    """A controller at gamma=0 must probe, or it can never recover.
+
+    A gamma=0 round drafts nothing, so it yields no acceptance evidence and
+    alpha cannot move. Without a probe the controller stays at 0 forever.
+    Measured before the fix: a run sat at gamma=0 for all 1045 rounds and
+    scored 0.44x, because alpha_init=0.5 happens to select gamma=0 under the
+    measured cost model.
+    """
+    verify = {1: 1.0, 2: 1.34, 3: 1.66, 4: 2.14, 5: 2.15, 6: 2.16, 7: 2.17,
+              8: 2.18}
+    ctrl = AdaptiveGamma(r=0.248, gmax=8, alpha_init=0.5, cooldown=0,
+                         verify_cost=verify, probe_every=10)
+    assert ctrl.gamma == 0, "this alpha/cost combination should start at 0"
+
+    # Feed gamma=0 rounds: without probing these carry no information.
+    for _ in range(25):
+        ctrl.update(accepted=0, gamma_used=ctrl.gamma)
+    print(f"  after 25 rounds from gamma=0: probes={ctrl.probes} "
+          f"gamma={ctrl.gamma}")
+    assert ctrl.probes >= 2, "controller never probed out of gamma=0"
+
+
+def test_probe_lets_the_controller_recover():
+    """Once probing reveals high acceptance, gamma must climb back up."""
+    verify = {1: 1.0, 2: 1.34, 3: 1.66, 4: 2.14, 5: 2.15, 6: 2.16, 7: 2.17,
+              8: 2.18}
+    ctrl = AdaptiveGamma(r=0.248, gmax=8, alpha_init=0.5, cooldown=0,
+                         verify_cost=verify, probe_every=5)
+    seen = []
+    for _ in range(80):
+        g = ctrl.gamma
+        # Whenever it drafts, everything is accepted: acceptance is truly high.
+        ctrl.update(accepted=g, gamma_used=g)
+        seen.append(ctrl.gamma)
+    print(f"  alpha={ctrl.alpha:.3f} final gamma={ctrl.gamma} "
+          f"probes={ctrl.probes} path={seen[:20]}")
+    assert ctrl.gamma > 0, "controller failed to recover from gamma=0"
+    assert ctrl.alpha > 0.8, "probing should have revealed high acceptance"
+
+
+def test_probing_can_be_disabled():
+    ctrl = AdaptiveGamma(r=0.64, gmax=8, alpha_init=0.0, cooldown=0,
+                         probe_every=0)
+    for _ in range(50):
+        ctrl.update(accepted=0, gamma_used=ctrl.gamma)
+    assert ctrl.gamma == 0
+    assert ctrl.probes == 0
+    print("  probe_every=0 keeps gamma=0 permanently, as documented")
+
+
+def test_measured_cost_model_avoids_the_pessimal_middle():
+    """The measured step function should make gamma 3-4 unattractive.
+
+    Verify cost jumps from 1.66 to 2.14 single-token-forwards between widths 3
+    and 4 and is flat after, so gamma=3 pays the step without amortising it.
+    A controller given the real curve should skip that region.
+    """
+    verify = {1: 1.0, 2: 1.34, 3: 1.66, 4: 2.14, 5: 2.15, 6: 2.16, 7: 2.17,
+              8: 2.18, 9: 2.20}
+    ctrl = AdaptiveGamma(r=0.248, gmax=8, verify_cost=verify)
+    picks = {a: ctrl.best_gamma(a) for a in
+             (0.3, 0.5, 0.6, 0.7, 0.77, 0.83, 0.85, 0.91)}
+    print(f"  picks by alpha: {picks}")
+    assert 3 not in picks.values(), "gamma=3 is the measured pessimal point"
+    assert 4 not in picks.values(), "gamma=4 also pays the step unamortised"

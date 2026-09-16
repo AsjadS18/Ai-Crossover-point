@@ -1,0 +1,354 @@
+{
+  "verdict": "every controller LOSES to fixed_gamma_2 at 1.1168x (best controller adaptive_linear_cost 1.1020x)",
+  "adaptive_mean_speedup": 1.1019884705313467,
+  "best_fixed": {
+    "config": "fixed_gamma_2",
+    "mean_speedup": 1.1168310968856325
+  },
+  "best_adaptive": {
+    "config": "adaptive_linear_cost",
+    "mean_speedup": 1.1019884705313467
+  },
+  "configs": {
+    "fixed_gamma_1": {
+      "mean_speedup": 1.0997705963280533,
+      "mean_tok_per_s": 44.00159713507992,
+      "identical": 204,
+      "runs": 210,
+      "by_domain": {
+        "structured": 1.1326073658797002,
+        "code": 1.1350145884255856,
+        "reasoning": 1.1035529039801115,
+        "prose": 1.0475674428662043,
+        "math": 1.1918437530352015,
+        "translation": 0.9880375237815162
+      }
+    },
+    "fixed_gamma_2": {
+      "mean_speedup": 1.1168310968856325,
+      "mean_tok_per_s": 44.698882064375574,
+      "identical": 203,
+      "runs": 210,
+      "by_domain": {
+        "structured": 1.200245385930583,
+        "code": 1.1790343439504085,
+        "reasoning": 1.1098845724821313,
+        "prose": 1.0014466723570066,
+        "math": 1.2630632129171933,
+        "translation": 0.947312393676472
+      }
+    },
+    "fixed_gamma_3": {
+      "mean_speedup": 1.0149596204306814,
+      "mean_tok_per_s": 40.64446734181059,
+      "identical": 200,
+      "runs": 210,
+      "by_domain": {
+        "structured": 1.101346417698654,
+        "code": 1.0914401115983043,
+        "reasoning": 0.9978405735100697,
+        "prose": 0.8786140629151973,
+        "math": 1.19482528661915,
+        "translation": 0.8256912702427128
+      }
+    },
+    "fixed_gamma_5": {
+      "mean_speedup": 1.0887354457963476,
+      "mean_tok_per_s": 43.62635070283266,
+      "identical": 203,
+      "runs": 210,
+      "by_domain": {
+        "structured": 1.2224947715170023,
+        "code": 1.205816916628751,
+        "reasoning": 1.0345853959445854,
+        "prose": 0.8532882308172598,
+        "math": 1.383560538174174,
+        "translation": 0.8326668216963137
+      }
+    },
+    "fixed_gamma_8": {
+      "mean_speedup": 1.070666851914425,
+      "mean_tok_per_s": 42.93234374260239,
+      "identical": 204,
+      "runs": 210,
+      "by_domain": {
+        "structured": 1.2539490612080275,
+        "code": 1.204182871258183,
+        "reasoning": 0.973428812511563,
+        "prose": 0.7588787587058214,
+        "math": 1.4754160536583532,
+        "translation": 0.7581455541446017
+      }
+    },
+    "adaptive_linear_cost": {
+      "mean_speedup": 1.1019884705313467,
+      "mean_tok_per_s": 44.159158138093666,
+      "identical": 203,
+      "runs": 210,
+      "by_domain": {
+        "structured": 1.1982900123293425,
+        "code": 1.174747513447395,
+        "reasoning": 1.0885028185326355,
+        "prose": 0.987710619525961,
+        "math": 1.314881139765952,
+        "translation": 0.8477987195867952
+      },
+      "gamma_histogram": {
+        "0": 220,
+        "1": 1473,
+        "2": 2979,
+        "3": 1744,
+        "4": 741,
+        "5": 357,
+        "6": 166,
+        "7": 49,
+        "8": 75
+      },
+      "final_alpha": 0.6470352476046455,
+      "rounds": 7804
+    },
+    "adaptive_measured_cost": {
+      "mean_speedup": 0.8819195382358791,
+      "mean_tok_per_s": 35.334002564142615,
+      "identical": 204,
+      "runs": 210,
+      "by_domain": {
+        "structured": 1.015814085854158,
+        "code": 0.9488165113937701,
+        "reasoning": 0.7641826894932617,
+        "prose": 0.5876170654807995,
+        "math": 1.3255965304817736,
+        "translation": 0.6494903467115118
+      },
+      "gamma_histogram": {
+        "0": 6711,
+        "1": 3185,
+        "2": 783,
+        "6": 314,
+        "7": 621,
+        "8": 284
+      },
+      "final_alpha": 0.45457662545965544,
+      "rounds": 11898
+    }
+  },
+  "losslessness_mismatches": [
+    {
+      "config": "fixed_1",
+      "id": "st_024"
+    },
+    {
+      "config": "fixed_1",
+      "id": "rs_006"
+    },
+    {
+      "config": "fixed_1",
+      "id": "rs_014"
+    },
+    {
+      "config": "fixed_1",
+      "id": "pr_011"
+    },
+    {
+      "config": "fixed_1",
+      "id": "pr_031"
+    },
+    {
+      "config": "fixed_1",
+      "id": "tr_018"
+    },
+    {
+      "config": "fixed_2",
+      "id": "st_024"
+    },
+    {
+      "config": "fixed_2",
+      "id": "rs_006"
+    },
+    {
+      "config": "fixed_2",
+      "id": "rs_014"
+    },
+    {
+      "config": "fixed_2",
+      "id": "rs_021"
+    },
+    {
+      "config": "fixed_2",
+      "id": "pr_011"
+    },
+    {
+      "config": "fixed_2",
+      "id": "pr_031"
+    },
+    {
+      "config": "fixed_2",
+      "id": "tr_018"
+    },
+    {
+      "config": "fixed_3",
+      "id": "st_009"
+    },
+    {
+      "config": "fixed_3",
+      "id": "st_024"
+    },
+    {
+      "config": "fixed_3",
+      "id": "cd_008"
+    },
+    {
+      "config": "fixed_3",
+      "id": "cd_021"
+    },
+    {
+      "config": "fixed_3",
+      "id": "rs_014"
+    },
+    {
+      "config": "fixed_3",
+      "id": "rs_016"
+    },
+    {
+      "config": "fixed_3",
+      "id": "rs_021"
+    },
+    {
+      "config": "fixed_3",
+      "id": "rs_034"
+    },
+    {
+      "config": "fixed_3",
+      "id": "pr_011"
+    },
+    {
+      "config": "fixed_3",
+      "id": "tr_018"
+    },
+    {
+      "config": "fixed_5",
+      "id": "st_009"
+    },
+    {
+      "config": "fixed_5",
+      "id": "st_024"
+    },
+    {
+      "config": "fixed_5",
+      "id": "cd_008"
+    },
+    {
+      "config": "fixed_5",
+      "id": "cd_021"
+    },
+    {
+      "config": "fixed_5",
+      "id": "rs_014"
+    },
+    {
+      "config": "fixed_5",
+      "id": "pr_011"
+    },
+    {
+      "config": "fixed_5",
+      "id": "tr_018"
+    },
+    {
+      "config": "fixed_8",
+      "id": "st_024"
+    },
+    {
+      "config": "fixed_8",
+      "id": "rs_017"
+    },
+    {
+      "config": "fixed_8",
+      "id": "rs_019"
+    },
+    {
+      "config": "fixed_8",
+      "id": "rs_021"
+    },
+    {
+      "config": "fixed_8",
+      "id": "pr_026"
+    },
+    {
+      "config": "fixed_8",
+      "id": "tr_018"
+    },
+    {
+      "config": "adaptive_linear_cost",
+      "id": "st_024"
+    },
+    {
+      "config": "adaptive_linear_cost",
+      "id": "cd_008"
+    },
+    {
+      "config": "adaptive_linear_cost",
+      "id": "rs_006"
+    },
+    {
+      "config": "adaptive_linear_cost",
+      "id": "rs_021"
+    },
+    {
+      "config": "adaptive_linear_cost",
+      "id": "rs_034"
+    },
+    {
+      "config": "adaptive_linear_cost",
+      "id": "pr_021"
+    },
+    {
+      "config": "adaptive_linear_cost",
+      "id": "pr_031"
+    },
+    {
+      "config": "adaptive_measured_cost",
+      "id": "cd_008"
+    },
+    {
+      "config": "adaptive_measured_cost",
+      "id": "rs_006"
+    },
+    {
+      "config": "adaptive_measured_cost",
+      "id": "rs_019"
+    },
+    {
+      "config": "adaptive_measured_cost",
+      "id": "rs_021"
+    },
+    {
+      "config": "adaptive_measured_cost",
+      "id": "pr_021"
+    },
+    {
+      "config": "adaptive_measured_cost",
+      "id": "tr_018"
+    }
+  ],
+  "prompts": 210,
+  "max_new_tokens": 128,
+  "r_used_by_controller": 0.248,
+  "controller": {
+    "gmax": 8,
+    "cooldown": 2,
+    "beta": 0.85
+  },
+  "note": "The controller uses the LINEAR cost model gamma*r+1, which measure_verify_width.py showed is wrong: verify cost is a step function, flat from width 4 onward. Expect the controller to under-use large gamma.",
+  "target_path": "models/target-7b",
+  "draft_path": "models/draft-0.5b",
+  "compat": {
+    "transformers": "5.17.0",
+    "torch": "2.14.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "cache_ctor_path": "not-yet-called",
+    "dtype_kwarg_path": "dtype=",
+    "rollback_path": "StaticCache.cumulative_length rollback"
+  },
+  "utc": "2026-09-16T02:44:30.903509+00:00"
+}

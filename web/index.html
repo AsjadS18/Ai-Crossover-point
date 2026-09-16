@@ -104,6 +104,10 @@
     <option>0</option><option>1</option><option selected>2</option>
     <option>3</option><option>5</option><option>8</option><option>12</option>
   </select>
+  <select id="regime" title="execution regime">
+    <option value="graphed" selected>graphed (CUDA graphs)</option>
+    <option value="eager">eager</option>
+  </select>
   <button id="go">Run</button>
   <button id="race" class="ghost">Race vs baseline</button>
   <button id="replay" class="ghost">Replay recorded</button>
@@ -217,7 +221,7 @@ function drawSpark() {
 function onEvent(ev) {
   const d = JSON.parse(ev.data);
   if (d.type === "start") {
-    statusEl.textContent = `${d.mode} · γ=${d.gamma} · ` +
+    statusEl.textContent = `${d.regime || ""} · ${d.mode} · γ=${d.gamma} · ` +
       `${d.prompt_tokens ?? "?"} prompt tokens` +
       (d.replay_of ? ` · replay of ${d.replay_of}` : "");
   } else if (d.type === "round") {
@@ -260,6 +264,7 @@ function open(url) {
 $("go").onclick = () => {
   const q = new URLSearchParams({
     prompt: $("prompt").value, mode: $("mode").value, gamma: $("gamma").value,
+    regime: $("regime").value,
   });
   open("/stream?" + q);
 };
@@ -272,7 +277,8 @@ $("race").onclick = async () => {
   $("race-base").textContent = ""; $("race-spec").textContent = "";
   $("race-verdict").textContent = "running baseline…";
   const run = (mode, gamma) => new Promise((resolve) => {
-    const q = new URLSearchParams({ prompt: $("prompt").value, mode, gamma });
+    const q = new URLSearchParams({ prompt: $("prompt").value, mode, gamma,
+                                    regime: $("regime").value });
     const src = new EventSource("/stream?" + q);
     let text = "", tps = null;
     src.onmessage = (ev) => {

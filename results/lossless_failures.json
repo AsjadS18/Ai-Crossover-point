@@ -1,0 +1,26 @@
+[
+  {
+    "id": "st_009",
+    "domain": "structured",
+    "gamma": 3,
+    "first_diff_index": 57,
+    "baseline": "Here is the data formatted as TOML:\n\n```toml\nusers = [\n    { name = \"alice\", age = 30 }\n]\n```",
+    "speculative": "Here is the data formatted as TOML:\n\n```toml\nusers = [\n  { name = \"alice\", age = 30 }\n]\n```"
+  },
+  {
+    "id": "st_009",
+    "domain": "structured",
+    "gamma": 5,
+    "first_diff_index": 57,
+    "baseline": "Here is the data formatted as TOML:\n\n```toml\nusers = [\n    { name = \"alice\", age = 30 }\n]\n```",
+    "speculative": "Here is the data formatted as TOML:\n\n```toml\nusers = [\n  { name = \"alice\", age = 30 }\n]\n```"
+  },
+  {
+    "id": "rs_019",
+    "domain": "reasoning",
+    "gamma": 8,
+    "first_diff_index": 168,
+    "baseline": "The sequence you provided is a simple arithmetic sequence where each term increases by a constant difference. In this case, the sequence starts at 2 and increases by 2 for each subsequent term.\n\nHere's the breakdown:\n- The first term (a1) is 2.\n- The common difference (d) is 2.\n\nThe general formula for the nth term of an arithmetic sequence is:\n\\[ a_n = a_1 + (n - 1) \\times d",
+    "speculative": "The sequence you provided is a simple arithmetic sequence where each term increases by a constant difference. In this case, the sequence starts at 2 and increases by 2 each time.\n\nHere's the breakdown:\n- The first term (a1) is 2.\n- The common difference (d) is 2.\n\nThe general formula for the nth term of an arithmetic sequence is:\n\\[ a_n = a_1 + (n - 1) \\times d \\]\n\n"
+  }
+]

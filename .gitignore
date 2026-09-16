@@ -1,6 +1,7 @@
 models/
-results/
-charts/
+# results/ and charts/ ARE committed: the measurements are the deliverable.
+# Only the fabricated SSE fixture used to test /replay without a GPU is excluded.
+results/test_trace.json
 __pycache__/
 *.pyc
 .pytest_cache/

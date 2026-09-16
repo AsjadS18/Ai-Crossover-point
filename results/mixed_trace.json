@@ -1,0 +1,1943 @@
+{
+  "mode": "adaptive",
+  "gamma": "adaptive",
+  "regime": "graphed (recorded)",
+  "prompt": "In two sentences, explain what a hash map is and why lookups are fast. Then write a short Python class HashMap with put and get methods using separate chaining.",
+  "prompt_tokens": 62,
+  "text": "A hash map, also known as a dictionary, is a data structure that stores key-value pairs and allows for fast retrieval of values based on their keys. Lookups are fast because the hash map uses a hash function to compute an index into an array where the value is stored, minimizing the number of comparisons needed to find the value.\n\nHere's a short Python class `HashMap` using separate chaining to handle collisions:\n\n```python\nclass Node:\n    def __init__(self, key, value):\n        self.key = key\n        self.value = value\n        self.next = None\n\nclass HashMap:\n    def __init__(self, size=10):\n        self.size = size\n        self.table = [None] * size\n\n    def _hash(self, key):\n        return hash(key) % self.size\n\n    def put(self, key, value):\n        index = self._hash(key)\n        if self.table[index] is None:\n            self.table[index] = Node(key, value)\n        else:\n            current = self.table[index]\n            while current:\n                if current.key == key:\n                    current.value = value\n                    return\n                if current.next is None:\n                    current.next = Node(key, value)\n                    return\n                current = current",
+  "identical_to_graphed_baseline": true,
+  "baseline_tok_per_s": 40.39723102229148,
+  "speedup": 1.4022651173620746,
+  "origin_counts": {
+    "accept": 195,
+    "bonus": 46,
+    "correct": 15
+  },
+  "stats": {
+    "tokens": 256,
+    "seconds": 4.519165399993653,
+    "tok_per_s": 56.6476279005764,
+    "rounds": 62,
+    "proposed": 235,
+    "accepted": 197,
+    "acceptance_rate": 0.8382978723404255,
+    "tokens_per_round": 4.129032258064516,
+    "graphed": true
+  },
+  "trace": [
+    {
+      "round": 1,
+      "gamma": 1,
+      "accepted": 1,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "A",
+          "origin": "accept",
+          "draft_guessed": "A"
+        },
+        {
+          "text": " hash",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 2,
+      "gamma": 1,
+      "accepted": 1,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " map",
+          "origin": "accept",
+          "draft_guessed": " map"
+        },
+        {
+          "text": ",",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 3,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " also",
+          "origin": "accept",
+          "draft_guessed": " also"
+        },
+        {
+          "text": " known",
+          "origin": "accept",
+          "draft_guessed": " known"
+        },
+        {
+          "text": " as",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 4,
+      "gamma": 2,
+      "accepted": 1,
+      "rate": 0.5,
+      "tokens": [
+        {
+          "text": " a",
+          "origin": "accept",
+          "draft_guessed": " a"
+        },
+        {
+          "text": " dictionary",
+          "origin": "correct",
+          "draft_guessed": " hash"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 5,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": ",",
+          "origin": "accept",
+          "draft_guessed": ","
+        },
+        {
+          "text": " is",
+          "origin": "accept",
+          "draft_guessed": " is"
+        },
+        {
+          "text": " a",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 6,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " data",
+          "origin": "accept",
+          "draft_guessed": " data"
+        },
+        {
+          "text": " structure",
+          "origin": "accept",
+          "draft_guessed": " structure"
+        },
+        {
+          "text": " that",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 7,
+      "gamma": 3,
+      "accepted": 3,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " stores",
+          "origin": "accept",
+          "draft_guessed": " stores"
+        },
+        {
+          "text": " key",
+          "origin": "accept",
+          "draft_guessed": " key"
+        },
+        {
+          "text": "-value",
+          "origin": "accept",
+          "draft_guessed": "-value"
+        },
+        {
+          "text": " pairs",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 8,
+      "gamma": 3,
+      "accepted": 0,
+      "rate": 0.0,
+      "tokens": [
+        {
+          "text": " and",
+          "origin": "correct",
+          "draft_guessed": "."
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 9,
+      "gamma": 2,
+      "accepted": 0,
+      "rate": 0.0,
+      "tokens": [
+        {
+          "text": " allows",
+          "origin": "correct",
+          "draft_guessed": " uses"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 10,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " for",
+          "origin": "accept",
+          "draft_guessed": " for"
+        },
+        {
+          "text": " fast",
+          "origin": "accept",
+          "draft_guessed": " fast"
+        },
+        {
+          "text": " retrieval",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 11,
+      "gamma": 2,
+      "accepted": 0,
+      "rate": 0.0,
+      "tokens": [
+        {
+          "text": " of",
+          "origin": "correct",
+          "draft_guessed": " and"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 12,
+      "gamma": 1,
+      "accepted": 1,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " values",
+          "origin": "accept",
+          "draft_guessed": " values"
+        },
+        {
+          "text": " based",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 13,
+      "gamma": 1,
+      "accepted": 1,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " on",
+          "origin": "accept",
+          "draft_guessed": " on"
+        },
+        {
+          "text": " their",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 14,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " keys",
+          "origin": "accept",
+          "draft_guessed": " keys"
+        },
+        {
+          "text": ".",
+          "origin": "accept",
+          "draft_guessed": "."
+        },
+        {
+          "text": " Look",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 15,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "ups",
+          "origin": "accept",
+          "draft_guessed": "ups"
+        },
+        {
+          "text": " are",
+          "origin": "accept",
+          "draft_guessed": " are"
+        },
+        {
+          "text": " fast",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 16,
+      "gamma": 3,
+      "accepted": 1,
+      "rate": 0.3333333333333333,
+      "tokens": [
+        {
+          "text": " because",
+          "origin": "accept",
+          "draft_guessed": " because"
+        },
+        {
+          "text": " the",
+          "origin": "correct",
+          "draft_guessed": " they"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 17,
+      "gamma": 3,
+      "accepted": 3,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " hash",
+          "origin": "accept",
+          "draft_guessed": " hash"
+        },
+        {
+          "text": " map",
+          "origin": "accept",
+          "draft_guessed": " map"
+        },
+        {
+          "text": " uses",
+          "origin": "accept",
+          "draft_guessed": " uses"
+        },
+        {
+          "text": " a",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 18,
+      "gamma": 3,
+      "accepted": 3,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " hash",
+          "origin": "accept",
+          "draft_guessed": " hash"
+        },
+        {
+          "text": " function",
+          "origin": "accept",
+          "draft_guessed": " function"
+        },
+        {
+          "text": " to",
+          "origin": "accept",
+          "draft_guessed": " to"
+        },
+        {
+          "text": " compute",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 19,
+      "gamma": 3,
+      "accepted": 0,
+      "rate": 0.0,
+      "tokens": [
+        {
+          "text": " an",
+          "origin": "correct",
+          "draft_guessed": " the"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 20,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " index",
+          "origin": "accept",
+          "draft_guessed": " index"
+        },
+        {
+          "text": " into",
+          "origin": "accept",
+          "draft_guessed": " into"
+        },
+        {
+          "text": " an",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 21,
+      "gamma": 2,
+      "accepted": 1,
+      "rate": 0.5,
+      "tokens": [
+        {
+          "text": " array",
+          "origin": "accept",
+          "draft_guessed": " array"
+        },
+        {
+          "text": " where",
+          "origin": "correct",
+          "draft_guessed": " of"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 22,
+      "gamma": 2,
+      "accepted": 1,
+      "rate": 0.5,
+      "tokens": [
+        {
+          "text": " the",
+          "origin": "accept",
+          "draft_guessed": " the"
+        },
+        {
+          "text": " value",
+          "origin": "correct",
+          "draft_guessed": " values"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 23,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " is",
+          "origin": "accept",
+          "draft_guessed": " is"
+        },
+        {
+          "text": " stored",
+          "origin": "accept",
+          "draft_guessed": " stored"
+        },
+        {
+          "text": ",",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 24,
+      "gamma": 2,
+      "accepted": 0,
+      "rate": 0.0,
+      "tokens": [
+        {
+          "text": " minimizing",
+          "origin": "correct",
+          "draft_guessed": " which"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 25,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " the",
+          "origin": "accept",
+          "draft_guessed": " the"
+        },
+        {
+          "text": " number",
+          "origin": "accept",
+          "draft_guessed": " number"
+        },
+        {
+          "text": " of",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 26,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " comparisons",
+          "origin": "accept",
+          "draft_guessed": " comparisons"
+        },
+        {
+          "text": " needed",
+          "origin": "accept",
+          "draft_guessed": " needed"
+        },
+        {
+          "text": " to",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 27,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " find",
+          "origin": "accept",
+          "draft_guessed": " find"
+        },
+        {
+          "text": " the",
+          "origin": "accept",
+          "draft_guessed": " the"
+        },
+        {
+          "text": " value",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 28,
+      "gamma": 3,
+      "accepted": 3,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": ".\n\n",
+          "origin": "accept",
+          "draft_guessed": ".\n\n"
+        },
+        {
+          "text": "Here",
+          "origin": "accept",
+          "draft_guessed": "Here"
+        },
+        {
+          "text": "'s",
+          "origin": "accept",
+          "draft_guessed": "'s"
+        },
+        {
+          "text": " a",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 29,
+      "gamma": 3,
+      "accepted": 0,
+      "rate": 0.0,
+      "tokens": [
+        {
+          "text": " short",
+          "origin": "correct",
+          "draft_guessed": " Python"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 30,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " Python",
+          "origin": "accept",
+          "draft_guessed": " Python"
+        },
+        {
+          "text": " class",
+          "origin": "accept",
+          "draft_guessed": " class"
+        },
+        {
+          "text": " `",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 31,
+      "gamma": 2,
+      "accepted": 2,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "HashMap",
+          "origin": "accept",
+          "draft_guessed": "HashMap"
+        },
+        {
+          "text": "`",
+          "origin": "accept",
+          "draft_guessed": "`"
+        },
+        {
+          "text": " using",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 32,
+      "gamma": 3,
+      "accepted": 3,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " separate",
+          "origin": "accept",
+          "draft_guessed": " separate"
+        },
+        {
+          "text": " chaining",
+          "origin": "accept",
+          "draft_guessed": " chaining"
+        },
+        {
+          "text": " to",
+          "origin": "accept",
+          "draft_guessed": " to"
+        },
+        {
+          "text": " handle",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 33,
+      "gamma": 3,
+      "accepted": 3,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " collisions",
+          "origin": "accept",
+          "draft_guessed": " collisions"
+        },
+        {
+          "text": ":\n\n",
+          "origin": "accept",
+          "draft_guessed": ":\n\n"
+        },
+        {
+          "text": "```",
+          "origin": "accept",
+          "draft_guessed": "```"
+        },
+        {
+          "text": "python",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 34,
+      "gamma": 4,
+      "accepted": 2,
+      "rate": 0.5,
+      "tokens": [
+        {
+          "text": "\n",
+          "origin": "accept",
+          "draft_guessed": "\n"
+        },
+        {
+          "text": "class",
+          "origin": "accept",
+          "draft_guessed": "class"
+        },
+        {
+          "text": " Node",
+          "origin": "correct",
+          "draft_guessed": " HashMap"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 35,
+      "gamma": 4,
+      "accepted": 4,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": ":\n",
+          "origin": "accept",
+          "draft_guessed": ":\n"
+        },
+        {
+          "text": "   ",
+          "origin": "accept",
+          "draft_guessed": "   "
+        },
+        {
+          "text": " def",
+          "origin": "accept",
+          "draft_guessed": " def"
+        },
+        {
+          "text": " __",
+          "origin": "accept",
+          "draft_guessed": " __"
+        },
+        {
+          "text": "init",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 36,
+      "gamma": 4,
+      "accepted": 4,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "__(",
+          "origin": "accept",
+          "draft_guessed": "__("
+        },
+        {
+          "text": "self",
+          "origin": "accept",
+          "draft_guessed": "self"
+        },
+        {
+          "text": ",",
+          "origin": "accept",
+          "draft_guessed": ","
+        },
+        {
+          "text": " key",
+          "origin": "accept",
+          "draft_guessed": " key"
+        },
+        {
+          "text": ",",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 37,
+      "gamma": 4,
+      "accepted": 4,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " value",
+          "origin": "accept",
+          "draft_guessed": " value"
+        },
+        {
+          "text": "):\n",
+          "origin": "accept",
+          "draft_guessed": "):\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".key",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 38,
+      "gamma": 5,
+      "accepted": 5,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " key",
+          "origin": "accept",
+          "draft_guessed": " key"
+        },
+        {
+          "text": "\n",
+          "origin": "accept",
+          "draft_guessed": "\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".value",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 39,
+      "gamma": 5,
+      "accepted": 5,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " value",
+          "origin": "accept",
+          "draft_guessed": " value"
+        },
+        {
+          "text": "\n",
+          "origin": "accept",
+          "draft_guessed": "\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".next",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 40,
+      "gamma": 6,
+      "accepted": 6,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " None",
+          "origin": "accept",
+          "draft_guessed": " None"
+        },
+        {
+          "text": "\n\n",
+          "origin": "accept",
+          "draft_guessed": "\n\n"
+        },
+        {
+          "text": "class",
+          "origin": "accept",
+          "draft_guessed": "class"
+        },
+        {
+          "text": " HashMap",
+          "origin": "accept",
+          "draft_guessed": " HashMap"
+        },
+        {
+          "text": ":\n",
+          "origin": "accept",
+          "draft_guessed": ":\n"
+        },
+        {
+          "text": "   ",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 41,
+      "gamma": 6,
+      "accepted": 6,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " def",
+          "origin": "accept",
+          "draft_guessed": " def"
+        },
+        {
+          "text": " __",
+          "origin": "accept",
+          "draft_guessed": " __"
+        },
+        {
+          "text": "init",
+          "origin": "accept",
+          "draft_guessed": "init"
+        },
+        {
+          "text": "__(",
+          "origin": "accept",
+          "draft_guessed": "__("
+        },
+        {
+          "text": "self",
+          "origin": "accept",
+          "draft_guessed": "self"
+        },
+        {
+          "text": ",",
+          "origin": "accept",
+          "draft_guessed": ","
+        },
+        {
+          "text": " size",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 42,
+      "gamma": 7,
+      "accepted": 7,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "=",
+          "origin": "accept",
+          "draft_guessed": "="
+        },
+        {
+          "text": "1",
+          "origin": "accept",
+          "draft_guessed": "1"
+        },
+        {
+          "text": "0",
+          "origin": "accept",
+          "draft_guessed": "0"
+        },
+        {
+          "text": "):\n",
+          "origin": "accept",
+          "draft_guessed": "):\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".size",
+          "origin": "accept",
+          "draft_guessed": ".size"
+        },
+        {
+          "text": " =",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 43,
+      "gamma": 7,
+      "accepted": 7,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " size",
+          "origin": "accept",
+          "draft_guessed": " size"
+        },
+        {
+          "text": "\n",
+          "origin": "accept",
+          "draft_guessed": "\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".table",
+          "origin": "accept",
+          "draft_guessed": ".table"
+        },
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " [",
+          "origin": "accept",
+          "draft_guessed": " ["
+        },
+        {
+          "text": "None",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 44,
+      "gamma": 8,
+      "accepted": 6,
+      "rate": 0.75,
+      "tokens": [
+        {
+          "text": "]",
+          "origin": "accept",
+          "draft_guessed": "]"
+        },
+        {
+          "text": " *",
+          "origin": "accept",
+          "draft_guessed": " *"
+        },
+        {
+          "text": " size",
+          "origin": "accept",
+          "draft_guessed": " size"
+        },
+        {
+          "text": "\n\n",
+          "origin": "accept",
+          "draft_guessed": "\n\n"
+        },
+        {
+          "text": "   ",
+          "origin": "accept",
+          "draft_guessed": "   "
+        },
+        {
+          "text": " def",
+          "origin": "accept",
+          "draft_guessed": " def"
+        },
+        {
+          "text": " _",
+          "origin": "correct",
+          "draft_guessed": " put"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 45,
+      "gamma": 8,
+      "accepted": 6,
+      "rate": 0.75,
+      "tokens": [
+        {
+          "text": "hash",
+          "origin": "accept",
+          "draft_guessed": "hash"
+        },
+        {
+          "text": "(self",
+          "origin": "accept",
+          "draft_guessed": "(self"
+        },
+        {
+          "text": ",",
+          "origin": "accept",
+          "draft_guessed": ","
+        },
+        {
+          "text": " key",
+          "origin": "accept",
+          "draft_guessed": " key"
+        },
+        {
+          "text": "):\n",
+          "origin": "accept",
+          "draft_guessed": "):\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " return",
+          "origin": "correct",
+          "draft_guessed": " #"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 46,
+      "gamma": 5,
+      "accepted": 5,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " hash",
+          "origin": "accept",
+          "draft_guessed": " hash"
+        },
+        {
+          "text": "(key",
+          "origin": "accept",
+          "draft_guessed": "(key"
+        },
+        {
+          "text": ")",
+          "origin": "accept",
+          "draft_guessed": ")"
+        },
+        {
+          "text": " %",
+          "origin": "accept",
+          "draft_guessed": " %"
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".size",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 47,
+      "gamma": 5,
+      "accepted": 5,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "\n\n",
+          "origin": "accept",
+          "draft_guessed": "\n\n"
+        },
+        {
+          "text": "   ",
+          "origin": "accept",
+          "draft_guessed": "   "
+        },
+        {
+          "text": " def",
+          "origin": "accept",
+          "draft_guessed": " def"
+        },
+        {
+          "text": " put",
+          "origin": "accept",
+          "draft_guessed": " put"
+        },
+        {
+          "text": "(self",
+          "origin": "accept",
+          "draft_guessed": "(self"
+        },
+        {
+          "text": ",",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 48,
+      "gamma": 7,
+      "accepted": 7,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " key",
+          "origin": "accept",
+          "draft_guessed": " key"
+        },
+        {
+          "text": ",",
+          "origin": "accept",
+          "draft_guessed": ","
+        },
+        {
+          "text": " value",
+          "origin": "accept",
+          "draft_guessed": " value"
+        },
+        {
+          "text": "):\n",
+          "origin": "accept",
+          "draft_guessed": "):\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " index",
+          "origin": "accept",
+          "draft_guessed": " index"
+        },
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " self",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 49,
+      "gamma": 7,
+      "accepted": 7,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "._",
+          "origin": "accept",
+          "draft_guessed": "._"
+        },
+        {
+          "text": "hash",
+          "origin": "accept",
+          "draft_guessed": "hash"
+        },
+        {
+          "text": "(key",
+          "origin": "accept",
+          "draft_guessed": "(key"
+        },
+        {
+          "text": ")\n",
+          "origin": "accept",
+          "draft_guessed": ")\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " if",
+          "origin": "accept",
+          "draft_guessed": " if"
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".table",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 50,
+      "gamma": 8,
+      "accepted": 8,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "[index",
+          "origin": "accept",
+          "draft_guessed": "[index"
+        },
+        {
+          "text": "]",
+          "origin": "accept",
+          "draft_guessed": "]"
+        },
+        {
+          "text": " is",
+          "origin": "accept",
+          "draft_guessed": " is"
+        },
+        {
+          "text": " None",
+          "origin": "accept",
+          "draft_guessed": " None"
+        },
+        {
+          "text": ":\n",
+          "origin": "accept",
+          "draft_guessed": ":\n"
+        },
+        {
+          "text": "           ",
+          "origin": "accept",
+          "draft_guessed": "           "
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".table",
+          "origin": "accept",
+          "draft_guessed": ".table"
+        },
+        {
+          "text": "[index",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 51,
+      "gamma": 8,
+      "accepted": 8,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "]",
+          "origin": "accept",
+          "draft_guessed": "]"
+        },
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " Node",
+          "origin": "accept",
+          "draft_guessed": " Node"
+        },
+        {
+          "text": "(key",
+          "origin": "accept",
+          "draft_guessed": "(key"
+        },
+        {
+          "text": ",",
+          "origin": "accept",
+          "draft_guessed": ","
+        },
+        {
+          "text": " value",
+          "origin": "accept",
+          "draft_guessed": " value"
+        },
+        {
+          "text": ")\n",
+          "origin": "accept",
+          "draft_guessed": ")\n"
+        },
+        {
+          "text": "       ",
+          "origin": "accept",
+          "draft_guessed": "       "
+        },
+        {
+          "text": " else",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 52,
+      "gamma": 8,
+      "accepted": 8,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": ":\n",
+          "origin": "accept",
+          "draft_guessed": ":\n"
+        },
+        {
+          "text": "           ",
+          "origin": "accept",
+          "draft_guessed": "           "
+        },
+        {
+          "text": " current",
+          "origin": "accept",
+          "draft_guessed": " current"
+        },
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " self",
+          "origin": "accept",
+          "draft_guessed": " self"
+        },
+        {
+          "text": ".table",
+          "origin": "accept",
+          "draft_guessed": ".table"
+        },
+        {
+          "text": "[index",
+          "origin": "accept",
+          "draft_guessed": "[index"
+        },
+        {
+          "text": "]\n",
+          "origin": "accept",
+          "draft_guessed": "]\n"
+        },
+        {
+          "text": "           ",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 53,
+      "gamma": 8,
+      "accepted": 2,
+      "rate": 0.25,
+      "tokens": [
+        {
+          "text": " while",
+          "origin": "accept",
+          "draft_guessed": " while"
+        },
+        {
+          "text": " current",
+          "origin": "accept",
+          "draft_guessed": " current"
+        },
+        {
+          "text": ":\n",
+          "origin": "correct",
+          "draft_guessed": ".next"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 54,
+      "gamma": 4,
+      "accepted": 4,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": "               ",
+          "origin": "accept",
+          "draft_guessed": "               "
+        },
+        {
+          "text": " if",
+          "origin": "accept",
+          "draft_guessed": " if"
+        },
+        {
+          "text": " current",
+          "origin": "accept",
+          "draft_guessed": " current"
+        },
+        {
+          "text": ".key",
+          "origin": "accept",
+          "draft_guessed": ".key"
+        },
+        {
+          "text": " ==",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 55,
+      "gamma": 4,
+      "accepted": 4,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " key",
+          "origin": "accept",
+          "draft_guessed": " key"
+        },
+        {
+          "text": ":\n",
+          "origin": "accept",
+          "draft_guessed": ":\n"
+        },
+        {
+          "text": "                   ",
+          "origin": "accept",
+          "draft_guessed": "                   "
+        },
+        {
+          "text": " current",
+          "origin": "accept",
+          "draft_guessed": " current"
+        },
+        {
+          "text": ".value",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 56,
+      "gamma": 6,
+      "accepted": 6,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " value",
+          "origin": "accept",
+          "draft_guessed": " value"
+        },
+        {
+          "text": "\n",
+          "origin": "accept",
+          "draft_guessed": "\n"
+        },
+        {
+          "text": "                   ",
+          "origin": "accept",
+          "draft_guessed": "                   "
+        },
+        {
+          "text": " return",
+          "origin": "accept",
+          "draft_guessed": " return"
+        },
+        {
+          "text": "\n",
+          "origin": "accept",
+          "draft_guessed": "\n"
+        },
+        {
+          "text": "               ",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 57,
+      "gamma": 6,
+      "accepted": 0,
+      "rate": 0.0,
+      "tokens": [
+        {
+          "text": " if",
+          "origin": "correct",
+          "draft_guessed": " current"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 58,
+      "gamma": 3,
+      "accepted": 3,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " current",
+          "origin": "accept",
+          "draft_guessed": " current"
+        },
+        {
+          "text": ".next",
+          "origin": "accept",
+          "draft_guessed": ".next"
+        },
+        {
+          "text": " is",
+          "origin": "accept",
+          "draft_guessed": " is"
+        },
+        {
+          "text": " None",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 59,
+      "gamma": 3,
+      "accepted": 3,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": ":\n",
+          "origin": "accept",
+          "draft_guessed": ":\n"
+        },
+        {
+          "text": "                   ",
+          "origin": "accept",
+          "draft_guessed": "                   "
+        },
+        {
+          "text": " current",
+          "origin": "accept",
+          "draft_guessed": " current"
+        },
+        {
+          "text": ".next",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 60,
+      "gamma": 4,
+      "accepted": 4,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " Node",
+          "origin": "accept",
+          "draft_guessed": " Node"
+        },
+        {
+          "text": "(key",
+          "origin": "accept",
+          "draft_guessed": "(key"
+        },
+        {
+          "text": ",",
+          "origin": "accept",
+          "draft_guessed": ","
+        },
+        {
+          "text": " value",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 61,
+      "gamma": 4,
+      "accepted": 4,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": ")\n",
+          "origin": "accept",
+          "draft_guessed": ")\n"
+        },
+        {
+          "text": "                   ",
+          "origin": "accept",
+          "draft_guessed": "                   "
+        },
+        {
+          "text": " return",
+          "origin": "accept",
+          "draft_guessed": " return"
+        },
+        {
+          "text": "\n",
+          "origin": "accept",
+          "draft_guessed": "\n"
+        },
+        {
+          "text": "               ",
+          "origin": "bonus",
+          "draft_guessed": null
+        }
+      ],
+      "seconds": 0.07288976451602666
+    },
+    {
+      "round": 62,
+      "gamma": 5,
+      "accepted": 5,
+      "rate": 1.0,
+      "tokens": [
+        {
+          "text": " current",
+          "origin": "accept",
+          "draft_guessed": " current"
+        },
+        {
+          "text": " =",
+          "origin": "accept",
+          "draft_guessed": " ="
+        },
+        {
+          "text": " current",
+          "origin": "accept",
+          "draft_guessed": " current"
+        }
+      ],
+      "seconds": 0.07288976451602666
+    }
+  ],
+  "target_path": "models/target-7b",
+  "draft_path": "models/draft-0.5b",
+  "compat": {
+    "transformers": "5.17.0",
+    "torch": "2.14.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "cache_ctor_path": "not-yet-called",
+    "dtype_kwarg_path": "dtype=",
+    "rollback_path": "StaticCache.cumulative_length rollback"
+  },
+  "utc": "2026-09-16T14:23:59.447812+00:00",
+  "controller_gamma_path": [
+    1,
+    2,
+    2,
+    2,
+    2,
+    3,
+    3,
+    2,
+    2,
+    2,
+    1,
+    1,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    3,
+    3,
+    2,
+    2,
+    3,
+    3,
+    4,
+    4,
+    4,
+    4,
+    5,
+    5,
+    6,
+    6,
+    7,
+    7,
+    8,
+    8,
+    5,
+    5,
+    7,
+    7,
+    8,
+    8,
+    8,
+    8,
+    4,
+    4,
+    6,
+    6,
+    3,
+    3,
+    4,
+    4,
+    5,
+    5
+  ]
+}

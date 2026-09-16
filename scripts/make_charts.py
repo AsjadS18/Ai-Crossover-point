@@ -183,6 +183,74 @@ def chart_regime_comparison() -> str | None:
     return path
 
 
+def chart_verify_width() -> str | None:
+    """The step function that explains the gamma=3 dip."""
+    path_in = "results/verify_width.json"
+    if not os.path.exists(path_in):
+        return None
+    with open(path_in, encoding="utf-8") as fh:
+        rows = json.load(fh)["widths"]
+    widths = [r["width"] for r in rows]
+    ms = [r["ms"] for r in rows]
+
+    fig, ax = plt.subplots(figsize=(7.5, 4.4), dpi=140)
+    ax.plot(widths, ms, marker="o", color=COLOURS["structured"])
+    ax.axvspan(3.5, 4.5, color="#d62728", alpha=0.12)
+    ax.annotate("width 4 = gamma 3:\npays the whole step,\nverifies only 4 tokens",
+                (4, ms[3]), textcoords="offset points", xytext=(18, -46),
+                fontsize=8, color="#d62728",
+                arrowprops={"arrowstyle": "->", "color": "#d62728"})
+    ax.set_xticks(widths)
+    ax.set_xticklabels([f"{w}\n(g={w - 1})" for w in widths], fontsize=7)
+    ax.set_xlabel("verify width in tokens (gamma = width - 1)")
+    ax.set_ylabel("ms per graphed target forward")
+    ax.set_title("Verify cost is a step function, not linear in gamma")
+    ax.grid(alpha=0.25)
+    out = f"{CHART_DIR}/verify_width.png"
+    fig.tight_layout(); fig.savefig(out); plt.close(fig)
+    return out
+
+
+def chart_controller_comparison() -> str | None:
+    """Every fixed gamma and both controllers, against the per-domain oracle."""
+    path_in = "results/controller_comparison.json"
+    if not os.path.exists(path_in):
+        return None
+    with open(path_in, encoding="utf-8") as fh:
+        data = json.load(fh)
+    cfg = data["configs"]
+    names = sorted(cfg, key=lambda k: -cfg[k]["mean_speedup"])
+    values = [cfg[n]["mean_speedup"] for n in names]
+
+    # Oracle: best fixed config per domain with hindsight, gamma=0 allowed.
+    domains = sorted({d for v in cfg.values() for d in v["by_domain"]})
+    oracle = statistics.mean(
+        max([1.0] + [v["by_domain"].get(d, 0.0) for k, v in cfg.items()
+                     if k.startswith("fixed_")])
+        for d in domains
+    )
+
+    colours = ["#1f77b4" if n.startswith("fixed") else "#ff7f0e" for n in names]
+    fig, ax = plt.subplots(figsize=(7.5, 4.6), dpi=140)
+    bars = ax.barh([n.replace("_", " ") for n in names], values, color=colours)
+    for bar, v in zip(bars, values):
+        ax.annotate(f"{v:.3f}x", (v, bar.get_y() + bar.get_height() / 2),
+                    xytext=(4, 0), textcoords="offset points", va="center",
+                    fontsize=8)
+    ax.axvline(1.0, color="#999", linestyle="--", linewidth=1)
+    ax.axvline(oracle, color="#2ca02c", linestyle=":", linewidth=1.5)
+    ax.annotate(f"per-domain oracle {oracle:.3f}x", (oracle, len(names) - 0.6),
+                xytext=(4, 0), textcoords="offset points", fontsize=8,
+                color="#2ca02c")
+    ax.invert_yaxis()
+    ax.set_xlabel("mean speedup over the graphed baseline, 210 prompts")
+    ax.set_title("Controllers vs fixed gamma (blue fixed, orange adaptive)")
+    ax.set_xlim(min(values) * 0.9, max(oracle, max(values)) * 1.08)
+    out = f"{CHART_DIR}/controller_comparison.png"
+    fig.tight_layout(); fig.savefig(out); plt.close(fig)
+    return out
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--regime", choices=sorted(SWEEPS), default=None)
@@ -212,6 +280,15 @@ def main() -> int:
         written.append(comparison)
     else:
         print("regime comparison needs BOTH sweeps; skipping")
+
+    for extra, needs in ((chart_verify_width, "results/verify_width.json"),
+                         (chart_controller_comparison,
+                          "results/controller_comparison.json")):
+        out = extra()
+        if out:
+            written.append(out)
+        else:
+            print(f"{needs} not present; skipping that chart")
 
     for path in written:
         size = os.path.getsize(path)

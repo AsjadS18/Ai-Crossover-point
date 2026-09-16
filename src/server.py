@@ -36,19 +36,26 @@ import threading
 from contextlib import asynccontextmanager
 from typing import Any
 
+import torch
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 from sse_starlette.sse import EventSourceResponse
 
 from src import compat
 from src.adaptive import AdaptiveGamma
-from src.baseline import baseline_generate
+from src.baseline import GraphedGreedyDecoder, baseline_generate
 from src.models import DRAFT_PATH, TARGET_PATH, chat_ids, load_pair
-from src.specdec import spec_generate
+from src.specdec import GraphedSpecDecoder, spec_generate
 
 WEB_INDEX = "web/index.html"
 DEFAULT_MAX_NEW_TOKENS = 128
 POLL_SECONDS = 0.02
+# Static caches cannot grow: prompt + max_new_tokens (<=256) + gamma headroom
+# must fit. 512 leaves room for prompts up to ~240 tokens.
+SERVER_CACHE_LEN = 512
+ADAPTIVE_GMAX = 8
+R_GRAPHED = 0.248
+R_EAGER = 0.64
 
 # The only global mutable state in the project, as Section 10 allows.
 _models: dict[str, Any] = {}
@@ -101,11 +108,17 @@ def config() -> JSONResponse:
     return JSONResponse({
         "compat": compat.describe(),
         "default_max_new_tokens": DEFAULT_MAX_NEW_TOKENS,
+        "default_regime": "graphed",
+        "default_gamma": 2,
         "measured": {
             "r_eager": 0.64,
             "r_graphed": 0.248,
-            "baseline_tok_per_s_eager": 21.5,
-            "baseline_tok_per_s_graphed": 38.9,
+            "baseline_tok_per_s_eager": 21.49,
+            "baseline_tok_per_s_graphed": 39.79,
+            "best_fixed_gamma_graphed": 2,
+            "best_fixed_speedup_graphed": 1.1168,
+            "adaptive_linear_speedup_graphed": 1.1020,
+            "per_domain_oracle_speedup_graphed": 1.1821,
         },
     })
 
@@ -117,11 +130,47 @@ def index() -> Any:
     return FileResponse(WEB_INDEX)
 
 
+def _graphed_baseline(target: Any) -> GraphedGreedyDecoder:
+    """The one graphed baseline decoder, captured on first use."""
+    if "g_base" not in _models:
+        _models["g_base"] = GraphedGreedyDecoder(
+            target, max_cache_len=SERVER_CACHE_LEN)
+    return _models["g_base"]
+
+
+def _graphed_spec(target: Any, draft: Any, mode: str,
+                  gamma: int) -> GraphedSpecDecoder:
+    """A graphed speculative decoder for this mode/gamma, cached.
+
+    Only ONE is kept alive. Each holds two static caches and captured graph
+    pools, so caching one per gamma a user happens to try would grow VRAM
+    without bound on a 12 GB card.
+    """
+    key = ("adaptive",) if mode == "adaptive" else ("fixed", gamma)
+    cached = _models.get("g_spec")
+    if cached is not None and cached[0] == key:
+        return cached[1]
+    if cached is not None:
+        _models.pop("g_spec")
+        del cached
+        torch.cuda.empty_cache()
+    if mode == "adaptive":
+        decoder = GraphedSpecDecoder(
+            target, draft, gamma=1, max_cache_len=SERVER_CACHE_LEN,
+            capture_gammas=tuple(range(1, ADAPTIVE_GMAX + 1)))
+    else:
+        decoder = GraphedSpecDecoder(
+            target, draft, gamma=gamma, max_cache_len=SERVER_CACHE_LEN)
+    _models["g_spec"] = (key, decoder)
+    return decoder
+
+
 def _run_generation(
     mode: str,
     prompt: str,
     gamma: int,
     max_new_tokens: int,
+    regime: str,
     trace: list,
     result: dict,
 ) -> None:
@@ -129,27 +178,46 @@ def _run_generation(
 
     Holds _generation_lock for the whole generation: the models' caches are
     shared state and two generations at once would corrupt each other.
+
+    regime="graphed" (the default) uses the CUDA-graph decoders, which measured
+    ~40 tok/s baseline against ~21.5 eager. regime="eager" keeps the original
+    DynamicCache path. Speedups are only meaningful WITHIN one regime:
+    StaticCache and DynamicCache drift apart numerically over long decodes.
     """
     tokenizer, target, draft = _load_once()
     try:
         with _generation_lock:
             ids = chat_ids(tokenizer, prompt)
             result["prompt_tokens"] = ids.shape[1]
-            if mode == "baseline":
-                seq, stats = baseline_generate(
-                    target, ids, max_new_tokens=max_new_tokens,
-                    eos_id=tokenizer.eos_token_id)
+            eos = tokenizer.eos_token_id
+            controller = None
+
+            if regime == "graphed":
+                if mode == "baseline":
+                    seq, stats = _graphed_baseline(target).generate(
+                        ids, max_new_tokens=max_new_tokens, eos_id=eos)
+                else:
+                    if mode == "adaptive":
+                        controller = AdaptiveGamma(
+                            r=R_GRAPHED, gmax=ADAPTIVE_GMAX, cooldown=2)
+                    decoder = _graphed_spec(target, draft, mode, gamma)
+                    seq, stats = decoder.generate(
+                        ids, max_new_tokens=max_new_tokens, eos_id=eos,
+                        adaptive=controller, trace=trace, tokenizer=tokenizer)
             else:
-                controller = (
-                    AdaptiveGamma(r=0.64, gmax=12)
-                    if mode == "adaptive" else None
-                )
-                seq, stats = spec_generate(
-                    target, draft, ids, max_new_tokens=max_new_tokens,
-                    gamma=gamma, eos_id=tokenizer.eos_token_id,
-                    adaptive=controller, trace=trace, tokenizer=tokenizer)
-                if controller is not None:
-                    stats["controller_history"] = controller.history[-50:]
+                if mode == "baseline":
+                    seq, stats = baseline_generate(
+                        target, ids, max_new_tokens=max_new_tokens, eos_id=eos)
+                else:
+                    if mode == "adaptive":
+                        controller = AdaptiveGamma(r=R_EAGER, gmax=12)
+                    seq, stats = spec_generate(
+                        target, draft, ids, max_new_tokens=max_new_tokens,
+                        gamma=gamma, eos_id=eos, adaptive=controller,
+                        trace=trace, tokenizer=tokenizer)
+
+            if controller is not None:
+                stats["controller_history"] = controller.history[-50:]
             result["stats"] = stats
             result["text"] = tokenizer.decode(
                 seq[0, ids.shape[1]:], skip_special_tokens=True)
@@ -163,16 +231,24 @@ def _run_generation(
 async def stream(
     prompt: str = Query(..., min_length=1),
     mode: str = Query("spec", pattern="^(spec|baseline|adaptive)$"),
-    gamma: int = Query(5, ge=0, le=16),
+    gamma: int = Query(2, ge=0, le=16),
     max_new_tokens: int = Query(DEFAULT_MAX_NEW_TOKENS, ge=1, le=256),
+    regime: str = Query("graphed", pattern="^(graphed|eager)$"),
 ) -> EventSourceResponse:
-    """Stream one generation, one SSE event per speculative round."""
+    """Stream one generation, one SSE event per speculative round.
+
+    Defaults are the measured best single configuration: graphed regime,
+    fixed gamma=2 (1.1168x over the graphed baseline across 210 prompts).
+    """
     trace: list = []
     result: dict[str, Any] = {}
 
+    if regime == "graphed" and mode == "spec" and gamma == 0:
+        mode = "baseline"      # a graphed spec decoder needs gamma >= 1
+
     worker = threading.Thread(
         target=_run_generation,
-        args=(mode, prompt, gamma, max_new_tokens, trace, result),
+        args=(mode, prompt, gamma, max_new_tokens, regime, trace, result),
         daemon=True,
     )
 
@@ -184,7 +260,7 @@ async def stream(
 
         yield {"event": "message", "data": json.dumps({
             "type": "start", "mode": mode, "gamma": gamma,
-            "regime": "eager",
+            "regime": regime,
             "prompt_tokens": result.get("prompt_tokens"),
             "max_new_tokens": max_new_tokens,
         })}

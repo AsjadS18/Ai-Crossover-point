@@ -37,6 +37,8 @@ class AdaptiveGamma:
         alpha_init: float = 0.5,
         beta: float = 0.85,
         cooldown: int = 3,
+        verify_cost: dict[int, float] | None = None,
+        probe_every: int = 20,
     ) -> None:
         """Configure the controller.
 
@@ -46,6 +48,27 @@ class AdaptiveGamma:
         alpha_init starting acceptance estimate, before any evidence
         beta       EMA weight on the existing estimate; higher is smoother
         cooldown   minimum rounds between gamma changes, to stop oscillation
+
+        verify_cost optional MEASURED cost of one verify forward, keyed by token
+                   width (gamma+1), in units of a single-token forward. The
+                   default None uses the textbook linear model, cost = gamma*r+1.
+
+                   That linear model is WRONG on this machine, measurably.
+                   scripts/measure_verify_width.py found the graphed verify cost
+                   is a STEP function: 23.5 / 31.5 / 39.0 ms at widths 1/2/3,
+                   then 50.4 ms at width 4 and almost flat to 52.7 ms at width
+                   13. So gamma=3 pays the entire step while verifying only four
+                   tokens, and gamma>=5 pays the same step while amortising it
+                   over more. A linear model cannot represent that, and a
+                   controller using it parks in gamma 2-4, the worst region.
+
+        probe_every how often to force a probe round at gamma=1 while sitting at
+                   gamma=0.  Without this gamma=0 is an ABSORBING STATE: a round
+                   that drafts nothing produces no acceptance evidence, so alpha
+                   freezes and gamma can never rise again.  Measured: a
+                   controller that reached gamma=0 stayed there for all 1045
+                   rounds of a run and scored 0.44x.  Set 0 to disable probing
+                   (and accept that gamma=0 becomes permanent).
         """
         if not 0.0 < r:
             raise ValueError(f"r must be positive, got {r}")
@@ -64,6 +87,10 @@ class AdaptiveGamma:
         self.alpha = alpha_init
         self.beta = beta
         self.cooldown = cooldown
+        self.verify_cost = dict(verify_cost) if verify_cost else None
+        self.probe_every = probe_every
+        self._rounds_at_zero: int = 0
+        self.probes: int = 0
 
         self.gamma: int = self.best_gamma(self.alpha)
         self.rounds: int = 0
@@ -83,7 +110,23 @@ class AdaptiveGamma:
         return (1.0 - alpha ** (gamma + 1)) / (1.0 - alpha)
 
     def round_cost(self, gamma: int) -> float:
-        """Cost of one round in units of one target forward pass."""
+        """Cost of one round in units of one single-token target forward.
+
+        With a measured verify_cost table, the round is gamma draft steps plus
+        the real cost of a width-(gamma+1) verify.  Without one, the textbook
+        linear model gamma*r + 1 -- which is wrong on this machine, see
+        __init__.  Widths beyond the table reuse its largest entry, since the
+        measured curve is flat there.
+        """
+        if self.verify_cost:
+            width = gamma + 1
+            if width in self.verify_cost:
+                verify = self.verify_cost[width]
+            else:
+                widest = max(self.verify_cost)
+                verify = self.verify_cost[widest if width > widest
+                                          else min(self.verify_cost)]
+            return gamma * self.r + verify
         return gamma * self.r + 1.0
 
     def expected_speedup(self, alpha: float, gamma: int) -> float:
@@ -120,12 +163,27 @@ class AdaptiveGamma:
         if gamma_used > 0:
             observed = accepted / gamma_used
             self.alpha = self.beta * self.alpha + (1.0 - self.beta) * observed
+            self._rounds_at_zero = 0
+        else:
+            # No drafting means no acceptance evidence, so alpha cannot move.
+            self._rounds_at_zero += 1
 
         candidate = self.best_gamma(self.alpha)
         if candidate != self.gamma:
             if self.rounds - self._last_change >= self.cooldown:
                 self.gamma = candidate
                 self._last_change = self.rounds
+
+        # Escape the gamma=0 absorbing state. Sitting at 0 generates no
+        # evidence, so without an occasional probe the controller can never
+        # learn that acceptance has improved and speculation would stay off for
+        # the rest of the session.
+        if (self.gamma == 0 and self.probe_every > 0
+                and self._rounds_at_zero >= self.probe_every):
+            self.gamma = max(1, self.gmin)
+            self._rounds_at_zero = 0
+            self._last_change = self.rounds
+            self.probes += 1
 
         self.history.append((accepted, self.alpha, self.gamma))
         return self.gamma
