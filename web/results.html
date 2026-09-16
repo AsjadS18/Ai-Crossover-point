@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Results · The Crossover Point</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  .toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+  .best-cards { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+  @media (max-width: 1000px) { .best-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .best-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .best-card { padding: 14px; border-radius: 14px; border: 1px solid var(--border); background: rgba(255,255,255,.03); text-align: center; transition: transform .2s; }
+  .best-card:hover { transform: translateY(-3px); }
+  .best-card .ico { font-size: 22px; }
+  .best-card .g { font-size: 22px; font-weight: 800; margin-top: 4px; }
+  .best-card .s { font-size: 13px; color: var(--muted); }
+  .ctrl-row { display: grid; grid-template-columns: 210px 1fr 70px; gap: 12px; align-items: center; margin: 10px 0; font-size: 14px; }
+  @media (max-width: 640px) { .ctrl-row { grid-template-columns: 1fr 60px; } .ctrl-row .track { grid-column: 1 / -1; order: 3; } }
+  .track { position: relative; height: 24px; border-radius: 8px; background: rgba(255,255,255,.05); }
+  .track > i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 8px; transition: width .9s cubic-bezier(.2,.8,.2,1); }
+  .track .mark { position: absolute; top: -6px; bottom: -6px; width: 2px; }
+  .ctrl-row .v { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .hist { display: flex; align-items: flex-end; gap: 6px; height: 120px; margin-top: 10px; }
+  .hist div { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; font-size: 11px; color: var(--faint); }
+  .hist i { display: block; width: 100%; border-radius: 6px 6px 2px 2px; height: 0; transition: height .8s cubic-bezier(.2,.8,.2,1); }
+  .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  @media (max-width: 900px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .gallery { grid-template-columns: 1fr; } }
+  .limits li { margin: 8px 0; color: var(--muted); }
+  .limits li b { color: var(--text); }
+  .donut-wrap { display: grid; grid-template-columns: 180px 1fr; gap: 20px; align-items: center; }
+  @media (max-width: 560px) { .donut-wrap { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-page="results">
+
+<section style="padding:44px 0 10px">
+  <div class="container reveal">
+    <span class="eyebrow">Results</span>
+    <h2><span id="n-runs">All</span> timed runs, read live from <code>results/</code></h2>
+    <p class="lead">210 prompts × 6 domains, baseline + six values of γ, in two execution regimes. Nothing on this page is typed in by hand: every number comes from the result files.</p>
+  </div>
+</section>
+
+<!-- ------------------------------------------------ heatmap -->
+<section style="padding-top:20px">
+  <div class="container">
+    <div class="card reveal">
+      <div class="card-head" style="flex-wrap:wrap">
+        <span class="card-title">Where speculation pays · domain × γ <i data-info="crossover"></i></span>
+      </div>
+      <div class="toolbar">
+        <div class="segmented" id="regime"><button data-v="graphed" class="on">⚡ CUDA graphs</button><button data-v="eager">Eager</button></div>
+        <div class="segmented" id="metric"><button data-v="speedup" class="on">Speedup</button><button data-v="acceptance">Acceptance</button></div>
+        <span class="muted" style="font-size:13px" id="heat-note"></span>
+      </div>
+      <div class="table-wrap"><table class="heat" id="heat"></table></div>
+      <div class="legend" style="margin-top:10px">
+        <span><i class="sw" style="background:rgba(251,113,133,.7)"></i>slower than baseline</span>
+        <span><i class="sw" style="background:rgba(52,211,153,.7)"></i>faster</span>
+        <span>★ best γ for that domain</span>
+        <span>γ=0 means speculation off</span>
+      </div>
+      <div class="best-cards" id="best-cards"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------ verify width -->
+<section>
+  <div class="container grid g2">
+    <div class="card reveal">
+      <div class="card-head"><span class="card-title">Verify cost by width · the staircase <i data-info="verifystep"></i></span></div>
+      <canvas class="chart" id="vw"></canvas>
+      <p class="muted" style="font-size:14px;margin:12px 0 0" id="vw-note"></p>
+    </div>
+    <div class="card reveal">
+      <div class="card-head"><span class="card-title">Losslessness <i data-info="lossless"></i></span></div>
+      <div class="donut-wrap">
+        <canvas id="donut" style="width:180px;height:180px"></canvas>
+        <div id="lossless-text"></div>
+      </div>
+      <div class="callout info" style="margin-top:16px"><div class="ico">🔬</div><div class="muted" style="font-size:14px" id="div-text">Loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------ controller -->
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Honest negative result</span>
+      <h2>The adaptive controller vs fixed γ</h2>
+      <p class="lead">Mean speedup over 210 prompts in the graphed regime. The dashed line is the <span class="term" data-term="oracle">oracle</span>; the red line is break-even.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card reveal" id="ctrl-card">
+        <div class="card-title" style="margin-bottom:8px">Mean speedup by configuration <i data-info="controller"></i></div>
+        <div id="ctrl-rows"></div>
+        <div class="callout warn" style="margin-top:14px"><div class="ico">📉</div><div class="muted" style="font-size:14px" id="ctrl-verdict"></div></div>
+      </div>
+      <div class="card reveal">
+        <div class="card-head">
+          <span class="card-title">Which γ did each controller pick?</span>
+          <div class="segmented" id="hist-pick"></div>
+        </div>
+        <div class="hist" id="hist"></div>
+        <p class="muted" style="font-size:14px;margin:14px 0 0" id="hist-note"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------ gallery -->
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Figures</span>
+      <h2>Chart gallery</h2>
+      <p class="lead">Generated by <code>scripts/make_charts.py</code>. Click to enlarge.</p>
+    </div>
+    <div class="gallery stagger" id="gallery"></div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------ limitations -->
+<section>
+  <div class="container">
+    <div class="card reveal">
+      <div class="card-title" style="margin-bottom:6px">⚠️ Read before quoting numbers</div>
+      <ul class="limits">
+        <li><b>One machine.</b> RTX 3060, Ryzen 5 5600, Windows WDDM. The host-bound finding depends on WDDM's kernel-launch cost and will be weaker on Linux.</li>
+        <li><b>Batch size 1, greedy only.</b> No sampling, no batching.</li>
+        <li><b>Regimes ran on slightly different prompt sets.</b> 21 prompts were fixed between the eager and graphed sweeps; math, reasoning and prose are directly comparable, code and translation are not.</li>
+        <li><b>Eval set provenance.</b> 12 prompts hand-written; 198 drafted with a 32B model and hand-edited, 21 of them substantively rewritten.</li>
+        <li><b>Graphed mismatches are not individually classified.</b> Their rate matches eager, consistent with the same fp16-tie cause, but that is inferred.</li>
+        <li><b>Speculative decoding is not new.</b> Leviathan et al. 2022; Chen et al. 2023. The contribution here is measurement on consumer hardware.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="scrim" id="lb-scrim"></div>
+<div class="lightbox" id="lightbox"><img alt="" id="lb-img"></div>
+
+<script src="/assets/common.js"></script>
+<script src="/assets/results.js"></script>
+</body>
+</html>

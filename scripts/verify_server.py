@@ -62,6 +62,18 @@ with TestClient(app) as client:
 
     r = client.get("/")
     check("/ serves the UI", r.status_code == 200 and "Crossover" in r.text)
+    for page in ("/demo", "/how", "/results", "/assets/style.css",
+                 "/assets/common.js", "/assets/demo.js", "/assets/how.js",
+                 "/assets/results.js"):
+        r = client.get(page)
+        check(f"{page} served", r.status_code == 200, f"HTTP {r.status_code}")
+    r = client.get("/api/summary")
+    body = r.json() if r.status_code == 200 else {}
+    check("/api/summary has both sweeps",
+          bool(body.get("graphed")) and bool(body.get("eager")))
+    r = client.get("/api/trace?limit=5")
+    check("/api/trace returns rounds",
+          r.status_code == 200 and len(r.json().get("rounds", [])) == 5)
 
     texts: dict[str, str] = {}
     for label, url in (

@@ -6,13 +6,14 @@ at gamma=3 and recovers by gamma=5 (math 1.239 -> 1.178 -> 1.362, structured
 baselines and identical prompts, so it is not contamination.
 
 A speculative round verifies gamma+1 tokens in ONE forward, so gamma=3 means a
-width-4 forward. If width 4 lands on a worse GEMM tile than widths 3 and 6, the
-verify cost is not linear in gamma, the cost model gamma*r+1 cannot predict the
-optimum, and the dip is a hardware artifact rather than anything about
-speculation.
+width-4 forward. This times the captured verify graph directly at every width.
 
-This times the captured verify graph directly, per width, and reports cost per
-token so the non-linearity is visible.
+ANSWER (measured): the original hypothesis -- a per-token GEMM tiling dip at
+width 4 -- was WRONG; cost per token is monotone. The cause is a STEP in
+absolute cost: ~7.6 ms per extra token up to width 3, a +11 ms jump into width
+4, then nearly flat (~3 ms across widths 4-13). gamma=3 pays the whole step
+while verifying only four tokens, which makes it the pessimal gamma, and the
+linear cost model gamma*r+1 cannot represent it.
 
     python scripts/measure_verify_width.py
 """
@@ -85,25 +86,32 @@ def main() -> int:
               f"{row['ms_per_token']:10.3f} {row['ms'] / base:11.3f}",
               flush=True)
 
-    # A dip means width w costs MORE per token than both its neighbours.
-    print("\nnon-monotonic points (ms/token worse than both neighbours):")
-    flagged = []
-    for i in range(1, len(rows) - 1):
-        prev, cur, nxt = rows[i - 1], rows[i], rows[i + 1]
-        if cur["ms_per_token"] > prev["ms_per_token"] and \
-           cur["ms_per_token"] > nxt["ms_per_token"]:
-            flagged.append(cur["width"])
-            print(f"  width {cur['width']} (gamma={cur['width'] - 1}): "
-                  f"{cur['ms_per_token']:.3f} ms/token vs "
-                  f"{prev['ms_per_token']:.3f} and {nxt['ms_per_token']:.3f}")
-    if not flagged:
-        print("  none -- cost per token is monotone, so the gamma=3 dip needs "
-              "another explanation")
+    # The explanation turned out NOT to be a per-token dip (cost per token is
+    # monotone). It is a STEP in absolute cost: the largest single jump between
+    # consecutive widths, after which cost is nearly flat. A gamma whose verify
+    # width sits just past the step pays for the step without amortising it.
+    deltas = [(rows[i]["width"], rows[i]["ms"] - rows[i - 1]["ms"])
+              for i in range(1, len(rows))]
+    step_width, step_ms = max(deltas, key=lambda d: d[1])
+    after = [r["ms"] for r in rows if r["width"] >= step_width]
+    plateau_span = max(after) - min(after)
+    before = [d for w, d in deltas if w < step_width]
+    per_token_before = sum(before) / len(before) if before else 0.0
+    widths_after = [r["width"] for r in rows if r["width"] >= step_width]
+
+    print(f"\nlargest jump: +{step_ms:.1f} ms into width {step_width} "
+          f"(gamma={step_width - 1})")
+    print(f"before it:    ~{per_token_before:.1f} ms per extra token")
+    print(f"after it:     widths {widths_after[0]}-{widths_after[-1]} span only "
+          f"{plateau_span:.1f} ms in total")
 
     record = {
         "widths": rows,
-        "non_monotonic_widths": flagged,
-        "gamma3_is_width4_dip": 4 in flagged,
+        "step_width": step_width,
+        "step_ms": step_ms,
+        "plateau_span_ms": plateau_span,
+        "ms_per_extra_token_before_step": per_token_before,
+        "pessimal_gamma": step_width - 1,
         "timed_runs": TIMED,
         "max_cache_len": MAX_CACHE,
         "target_path": TARGET_PATH,
@@ -115,9 +123,14 @@ def main() -> int:
         json.dump(record, fh, indent=2)
         fh.flush()
     print(f"\nwrote {OUT_PATH}")
-    print("VERDICT:", "width 4 IS a per-token cost dip -- explains gamma=3"
-          if 4 in flagged else
-          "width 4 is NOT a cost dip -- the gamma=3 dip is something else")
+    is_step = plateau_span < step_ms
+    print("VERDICT:",
+          f"verify cost is a STEP at width {step_width}: gamma={step_width - 1} "
+          f"pays the full step while verifying only {step_width} tokens, so it is "
+          f"the pessimal gamma. Use gamma <= {step_width - 2} or a much larger "
+          "gamma that amortises the step."
+          if is_step else
+          "no clear step -- cost grows smoothly with width")
     return 0
 
 

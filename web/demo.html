@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Demo · The Crossover Point</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  .demo-grid { display: grid; grid-template-columns: 360px 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 1000px) { .demo-grid { grid-template-columns: 1fr; } }
+  .controls .field { margin-bottom: 18px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .gamma-row { display: flex; align-items: center; gap: 14px; }
+  .gamma-val { font-size: 30px; font-weight: 800; min-width: 48px; text-align: center; font-variant-numeric: tabular-nums; }
+  .ticks { display: flex; justify-content: space-between; font-size: 11px; color: var(--faint); margin-top: 6px; padding: 0 3px; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .actions .btn.wide { grid-column: 1 / -1; padding: 14px; font-size: 15px; }
+  .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .status { font-size: 13px; color: var(--muted); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .race-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 760px) { .race-cols { grid-template-columns: 1fr; } }
+  .race-cols .token-stream { min-height: 140px; max-height: 260px; font-size: 13px; }
+  .race-lane { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; }
+  .verdict-box { margin-top: 14px; padding: 16px; border-radius: 12px; border: 1px dashed var(--border-strong); text-align: center; color: var(--muted); }
+  .verdict-box.ok { border: 1px solid rgba(52,211,153,.5); background: rgba(52,211,153,.07); color: var(--text); animation: pop .5s both; }
+  .verdict-box.bad { border: 1px solid rgba(251,113,133,.5); background: rgba(251,113,133,.07); color: var(--text); animation: pop .5s both; }
+  .tokcard { position: fixed; z-index: 120; pointer-events: none; background: #0f1628; border: 1px solid var(--border-strong); border-radius: 12px; padding: 10px 12px; font-size: 13px; box-shadow: 0 18px 50px -12px rgba(0,0,0,.8); opacity: 0; transition: opacity .12s; max-width: 280px; }
+  .tokcard.show { opacity: 1; }
+  .tokcard code { font-size: 12px; }
+  .round-sep { display: inline-block; width: 1px; height: 14px; background: rgba(255,255,255,.12); margin: 0 2px; vertical-align: -2px; }
+  .empty { color: var(--faint); font-family: var(--sans); display: grid; place-items: center; min-height: 180px; text-align: center; }
+</style>
+</head>
+<body data-page="demo">
+
+<section style="padding:44px 0 10px">
+  <div class="container reveal">
+    <span class="eyebrow">Live demo</span>
+    <h2>Watch the draft guess and the target decide</h2>
+    <p class="lead">Pick a prompt, choose how many tokens the draft may guess, and press Run. Every token is coloured by who produced it.
+      New here? Press <kbd>?</kbd> or the help button for every term.</p>
+  </div>
+</section>
+
+<section style="padding-top:18px">
+  <div class="container demo-grid">
+
+    <!-- ---------------- controls ---------------- -->
+    <aside class="card controls reveal">
+      <div class="field">
+        <label>Prompt <i data-info="domain"></i></label>
+        <div class="presets" id="presets"></div>
+        <textarea class="input" id="prompt" rows="4">Return a JSON object describing a book: title, author, year, tags.</textarea>
+      </div>
+
+      <div class="field">
+        <label>Mode <i data-info="specdec"></i></label>
+        <div class="segmented" id="mode">
+          <button data-v="spec" class="on">Speculative</button>
+          <button data-v="baseline">Baseline</button>
+          <button data-v="adaptive">Adaptive</button>
+        </div>
+        <div class="hint" id="mode-hint"></div>
+      </div>
+
+      <div class="field" id="gamma-field">
+        <label>Guesses per round γ <i data-info="gamma"></i></label>
+        <div class="gamma-row">
+          <input type="range" id="gamma" min="0" max="12" step="1" value="2">
+          <div class="gamma-val gradient-text" id="gamma-val">2</div>
+        </div>
+        <div class="ticks"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+        <div class="hint" id="gamma-hint"></div>
+      </div>
+
+      <div class="field">
+        <label>Regime <i data-info="regime"></i></label>
+        <div class="segmented" id="regime">
+          <button data-v="graphed" class="on">⚡ CUDA graphs</button>
+          <button data-v="eager">Eager</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Max new tokens <i data-info="token"></i> <span id="mnt-val" style="margin-left:auto;color:var(--text)">128</span></label>
+        <input type="range" id="mnt" min="16" max="256" step="8" value="128">
+      </div>
+
+      <div class="actions">
+        <button class="btn wide" id="go">▶ Run</button>
+        <button class="btn ghost" id="race" title="Baseline then speculative, same prompt">🏁 Race</button>
+        <button class="btn ghost" id="replay" title="No GPU needed">⏯ Replay</button>
+        <button class="btn warm wide" id="stop" style="display:none">■ Stop watching</button>
+      </div>
+      <p class="faint" style="font-size:12px;margin:14px 0 0">The first run in a regime loads models and captures CUDA graphs, which can take a minute. Replay needs no GPU.</p>
+    </aside>
+
+    <!-- ---------------- output ---------------- -->
+    <div class="grid" style="gap:18px">
+      <div class="card glow reveal">
+        <div class="card-head">
+          <span class="card-title">Token stream</span>
+          <span class="live" id="live"><span class="pulse"></span><span id="live-text">idle</span></span>
+        </div>
+        <div class="token-stream" id="stream"><div class="empty">Press ▶ Run, or ⏯ Replay to see a recorded run without the GPU.</div></div>
+        <div class="stackbar" style="margin-top:12px" title="share of tokens by origin">
+          <i id="sb-accept" style="background:var(--accept);width:0"></i>
+          <i id="sb-correct" style="background:var(--correct);width:0"></i>
+          <i id="sb-bonus" style="background:var(--bonus);width:0"></i>
+        </div>
+        <div class="legend" style="margin-top:10px">
+          <span class="term" data-term="accept"><i class="sw" style="background:var(--accept)"></i>draft guessed right · <b id="c-accept">0</b></span>
+          <span class="term" data-term="correct"><i class="sw" style="background:var(--correct)"></i>target corrected · <b id="c-correct">0</b></span>
+          <span class="term" data-term="bonus"><i class="sw" style="background:var(--bonus)"></i>free bonus · <b id="c-bonus">0</b></span>
+        </div>
+        <div class="status" id="status" style="margin-top:10px"></div>
+      </div>
+
+      <div class="kpis reveal">
+        <div class="kpi"><div class="k">γ now <i data-info="gamma"></i></div><div class="v" id="k-gamma">–</div></div>
+        <div class="kpi"><div class="k">acceptance <i data-info="acceptance"></i></div><div class="v" id="k-acc" style="color:var(--emerald)">–</div></div>
+        <div class="kpi"><div class="k">tok / round <i data-info="tpr"></i></div><div class="v" id="k-tpr" style="color:var(--violet)">–</div></div>
+        <div class="kpi"><div class="k">tok/s <i data-info="tps"></i></div><div class="v" id="k-tps" style="color:var(--cyan)">–</div></div>
+        <div class="kpi"><div class="k">speedup <i data-info="speedup"></i></div><div class="v" id="k-speed">–</div></div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card reveal">
+          <div class="card-head"><span class="card-title">Acceptance per round <i data-info="acceptance"></i></span><span class="faint" style="font-size:12px">last 60</span></div>
+          <canvas class="chart" id="spark"></canvas>
+        </div>
+        <div class="card reveal">
+          <div class="card-head"><span class="card-title">γ chosen per round <i data-info="controller"></i></span><span class="faint" style="font-size:12px">bar = γ, fill = accepted</span></div>
+          <canvas class="chart" id="gtimeline"></canvas>
+        </div>
+      </div>
+
+      <div class="card reveal" id="race-card">
+        <div class="card-head">
+          <span class="card-title">🏁 Race · baseline vs speculative <i data-info="race"></i></span>
+          <span class="faint" style="font-size:12px">sequential — one GPU</span>
+        </div>
+        <div class="race-cols">
+          <div>
+            <div class="race-lane"><b>Baseline</b><span id="rb-tps" class="muted">–</span></div>
+            <div class="bar" style="margin-bottom:8px"><i id="rb-bar" style="background:var(--sky)"></i></div>
+            <div class="token-stream" id="race-base"></div>
+          </div>
+          <div>
+            <div class="race-lane"><b>Speculative <span class="faint" id="rs-gamma"></span></b><span id="rs-tps" class="muted">–</span></div>
+            <div class="bar" style="margin-bottom:8px"><i id="rs-bar"></i></div>
+            <div class="token-stream" id="race-spec"></div>
+          </div>
+        </div>
+        <div class="verdict-box" id="race-verdict">Press 🏁 Race to generate the same prompt both ways and compare them character by character.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tokcard" id="tokcard"></div>
+
+<script src="/assets/common.js"></script>
+<script src="/assets/demo.js"></script>
+</body>
+</html>

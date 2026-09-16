@@ -13,6 +13,19 @@ here runs on one RTX 3060 (12 GB) under Windows.
 
 To reproduce everything from zero, follow **[REPRODUCE.md](REPRODUCE.md)**.
 
+**Live site:** run `python -m uvicorn src.server:app --port 8000` and open
+`http://127.0.0.1:8000/` — a home page, a live interactive demo, an animated
+"how it works" walkthrough, and a full results dashboard, all reading live
+from the files in `results/` and `charts/`.
+
+**Project extras:** [PRESENTATION.pptx](PRESENTATION.pptx) (15-slide deck) ·
+[VIDEO_GUIDE.md](VIDEO_GUIDE.md) (video recording steps) ·
+[SESSION_HANDOFF.md](SESSION_HANDOFF.md) (dev continuation notes) ·
+[PUBLIC_REPO_CLEANUP.md](PUBLIC_REPO_CLEANUP.md) (pre-public checklist)
+
+> **Status:** working research prototype, not a production product. See
+> [Limitations](#limitations--read-before-quoting-numbers) below.
+
 ---
 
 ## Headline results
@@ -141,9 +154,11 @@ This was intended as a contribution. Measured honestly, it does not hold
 | eager | 1220 / 1260 (96.8%) |
 | graphed | 1218 / 1260 (96.7%) |
 
-All 40 eager mismatches were re-measured (`results/divergence_analysis.json`):
-**every one** is a position where the target's top two logits differ by exactly
-0 or exactly 1 fp16 ULP. **Zero decoder bugs.** At such a tie, the baseline's own
+The eager mismatches were re-measured (`results/divergence_analysis.json`):
+**36 of 40** reproduce, and **every one of those** sits where the target's top
+two logits differ by exactly 0 or exactly 1 fp16 ULP. **Zero decoder bugs.** The
+other 4 belong to two prompts (`cd_029`, `cd_030`) that were rewritten after
+the sweep, so they cannot be re-measured on the current prompt set. At such a tie, the baseline's own
 choice depends on floating-point reduction order, so "greedy output" is not
 well defined there. The accurate claim is: *byte-identical wherever the target
 has a representable preference*, not an unqualified 100%.

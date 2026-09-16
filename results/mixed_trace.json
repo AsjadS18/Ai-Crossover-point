@@ -6,8 +6,8 @@
   "prompt_tokens": 62,
   "text": "A hash map, also known as a dictionary, is a data structure that stores key-value pairs and allows for fast retrieval of values based on their keys. Lookups are fast because the hash map uses a hash function to compute an index into an array where the value is stored, minimizing the number of comparisons needed to find the value.\n\nHere's a short Python class `HashMap` using separate chaining to handle collisions:\n\n```python\nclass Node:\n    def __init__(self, key, value):\n        self.key = key\n        self.value = value\n        self.next = None\n\nclass HashMap:\n    def __init__(self, size=10):\n        self.size = size\n        self.table = [None] * size\n\n    def _hash(self, key):\n        return hash(key) % self.size\n\n    def put(self, key, value):\n        index = self._hash(key)\n        if self.table[index] is None:\n            self.table[index] = Node(key, value)\n        else:\n            current = self.table[index]\n            while current:\n                if current.key == key:\n                    current.value = value\n                    return\n                if current.next is None:\n                    current.next = Node(key, value)\n                    return\n                current = current",
   "identical_to_graphed_baseline": true,
-  "baseline_tok_per_s": 40.39723102229148,
-  "speedup": 1.4022651173620746,
+  "baseline_tok_per_s": 40.849098944643444,
+  "speedup": 1.3967567931152163,
   "origin_counts": {
     "accept": 195,
     "bonus": 46,
@@ -15,8 +15,8 @@
   },
   "stats": {
     "tokens": 256,
-    "seconds": 4.519165399993653,
-    "tok_per_s": 56.6476279005764,
+    "seconds": 4.486799800004519,
+    "tok_per_s": 57.05625644356634,
     "rounds": 62,
     "proposed": 235,
     "accepted": 197,
@@ -42,7 +42,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 2,
@@ -61,7 +61,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 3,
@@ -85,7 +85,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 4,
@@ -104,7 +104,7 @@
           "draft_guessed": " hash"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 5,
@@ -128,7 +128,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 6,
@@ -152,7 +152,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 7,
@@ -181,7 +181,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 8,
@@ -195,7 +195,7 @@
           "draft_guessed": "."
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 9,
@@ -209,7 +209,7 @@
           "draft_guessed": " uses"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 10,
@@ -233,7 +233,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 11,
@@ -247,7 +247,7 @@
           "draft_guessed": " and"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 12,
@@ -266,7 +266,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 13,
@@ -285,7 +285,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 14,
@@ -309,7 +309,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 15,
@@ -333,7 +333,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 16,
@@ -352,7 +352,7 @@
           "draft_guessed": " they"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 17,
@@ -381,7 +381,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 18,
@@ -410,7 +410,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 19,
@@ -424,7 +424,7 @@
           "draft_guessed": " the"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 20,
@@ -448,7 +448,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 21,
@@ -467,7 +467,7 @@
           "draft_guessed": " of"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 22,
@@ -486,7 +486,7 @@
           "draft_guessed": " values"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 23,
@@ -510,7 +510,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 24,
@@ -524,7 +524,7 @@
           "draft_guessed": " which"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 25,
@@ -548,7 +548,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 26,
@@ -572,7 +572,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 27,
@@ -596,7 +596,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 28,
@@ -625,7 +625,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 29,
@@ -639,7 +639,7 @@
           "draft_guessed": " Python"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 30,
@@ -663,7 +663,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 31,
@@ -687,7 +687,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 32,
@@ -716,7 +716,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 33,
@@ -745,7 +745,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 34,
@@ -769,7 +769,7 @@
           "draft_guessed": " HashMap"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 35,
@@ -803,7 +803,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 36,
@@ -837,7 +837,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 37,
@@ -871,7 +871,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 38,
@@ -910,7 +910,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 39,
@@ -949,7 +949,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 40,
@@ -993,7 +993,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 41,
@@ -1037,7 +1037,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 42,
@@ -1086,7 +1086,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 43,
@@ -1135,7 +1135,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 44,
@@ -1179,7 +1179,7 @@
           "draft_guessed": " put"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 45,
@@ -1223,7 +1223,7 @@
           "draft_guessed": " #"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 46,
@@ -1262,7 +1262,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 47,
@@ -1301,7 +1301,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 48,
@@ -1350,7 +1350,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 49,
@@ -1399,7 +1399,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 50,
@@ -1453,7 +1453,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 51,
@@ -1507,7 +1507,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 52,
@@ -1561,7 +1561,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 53,
@@ -1585,7 +1585,7 @@
           "draft_guessed": ".next"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 54,
@@ -1619,7 +1619,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 55,
@@ -1653,7 +1653,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 56,
@@ -1697,7 +1697,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 57,
@@ -1711,7 +1711,7 @@
           "draft_guessed": " current"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 58,
@@ -1740,7 +1740,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 59,
@@ -1769,7 +1769,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 60,
@@ -1803,7 +1803,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 61,
@@ -1837,7 +1837,7 @@
           "draft_guessed": null
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     },
     {
       "round": 62,
@@ -1861,7 +1861,7 @@
           "draft_guessed": " current"
         }
       ],
-      "seconds": 0.07288976451602666
+      "seconds": 0.0723677387097503
     }
   ],
   "target_path": "models/target-7b",
@@ -1875,7 +1875,7 @@
     "dtype_kwarg_path": "dtype=",
     "rollback_path": "StaticCache.cumulative_length rollback"
   },
-  "utc": "2026-09-16T14:23:59.447812+00:00",
+  "utc": "2026-09-16T16:10:03.802874+00:00",
   "controller_gamma_path": [
     1,
     2,

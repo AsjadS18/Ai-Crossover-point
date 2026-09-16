@@ -100,12 +100,27 @@ def main() -> int:
             (i for i, (a, b) in enumerate(zip(base_toks, spec_toks)) if a != b),
             min(len(base_toks), len(spec_toks)),
         )
+        if base_toks == spec_toks:
+            # The mismatch recorded in the sweep does not happen now. The usual
+            # cause is that the prompt in data/eval.jsonl was edited after the
+            # sweep ran (the sweep stores ids, not prompt text), so this row is
+            # being re-run on different input. It is NOT evidence either way.
+            findings.append({
+                "id": pid, "domain": row["domain"], "gamma": gamma,
+                "classification": "did not reproduce",
+            })
+            print(f"{pid} g={gamma}: identical on current prompt text "
+                  f"-> did not reproduce (prompt likely edited after the sweep)",
+                  flush=True)
+            continue
         if first == 0 or first >= len(base_toks):
             findings.append({
                 "id": pid, "domain": row["domain"], "gamma": gamma,
                 "classification": "length-only difference",
                 "first_diff_token_index": first,
             })
+            print(f"{pid} g={gamma}: outputs differ only in length "
+                  f"-> length-only difference", flush=True)
             continue
 
         prefix = base_seq[:, : prompt_len + first]
@@ -154,10 +169,16 @@ def main() -> int:
 
     bugs = [f for f in findings if f["classification"] == "DECODER BUG"]
     ambiguous = [f for f in findings if f["classification"] == "numerically ambiguous"]
+    stale = [f for f in findings if f["classification"] == "did not reproduce"]
+    length_only = [f for f in findings
+                   if f["classification"] == "length-only difference"]
 
     report = {
         "mismatches": len(bad),
         "numerically_ambiguous": len(ambiguous),
+        "did_not_reproduce": len(stale),
+        "did_not_reproduce_ids": sorted({f["id"] for f in stale}),
+        "length_only_difference": len(length_only),
         "decoder_bugs": len(bugs),
         "ulp_tolerance": ULP_TOLERANCE,
         "sweep_rows": len(rows),
@@ -169,7 +190,13 @@ def main() -> int:
         json.dump(report, fh, indent=2, ensure_ascii=False)
         fh.flush()
 
-    print(f"\n{len(ambiguous)} numerically ambiguous, {len(bugs)} decoder bugs")
+    print(f"\n{len(bad)} mismatches in the sweep: "
+          f"{len(ambiguous)} numerically ambiguous, "
+          f"{len(stale)} did not reproduce, "
+          f"{len(length_only)} length-only, {len(bugs)} decoder bugs")
+    if stale:
+        print(f"did not reproduce: {sorted({f['id'] for f in stale})} -- "
+              "re-run on edited prompt text, so neither confirmed nor refuted")
     print(f"wrote {OUT_PATH}")
     print("VERDICT:", "PASS (no decoder bugs)" if not bugs else "FAIL (real bug)")
     return 0 if not bugs else 1

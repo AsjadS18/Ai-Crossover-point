@@ -32,6 +32,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import statistics
 import threading
 from contextlib import asynccontextmanager
 from typing import Any
@@ -39,6 +40,7 @@ from typing import Any
 import torch
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from sse_starlette.sse import EventSourceResponse
 
 from src import compat
@@ -123,11 +125,181 @@ def config() -> JSONResponse:
     })
 
 
+# --------------------------------------------------------------------- website
+# A small multi-page site: plain HTML/CSS/JS, no build step. Pages are files in
+# web/, shared assets in web/assets/, figures from charts/.
+
+WEB_DIR = "web"
+PAGES = {"": "index.html", "demo": "demo.html", "how": "how.html",
+         "results": "results.html"}
+DOMAINS = ("structured", "code", "math", "reasoning", "prose", "translation")
+
+if os.path.isdir(os.path.join(WEB_DIR, "assets")):
+    app.mount("/assets", StaticFiles(directory=os.path.join(WEB_DIR, "assets")),
+              name="assets")
+if os.path.isdir("charts"):
+    app.mount("/charts", StaticFiles(directory="charts"), name="charts")
+
+
+def _page(name: str) -> FileResponse:
+    path = os.path.join(WEB_DIR, name)
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail=f"{path} not found")
+    return FileResponse(path)
+
+
 @app.get("/")
 def index() -> Any:
-    if not os.path.exists(WEB_INDEX):
-        raise HTTPException(status_code=404, detail=f"{WEB_INDEX} not found")
-    return FileResponse(WEB_INDEX)
+    return _page(PAGES[""])
+
+
+@app.get("/demo")
+def demo_page() -> Any:
+    return _page(PAGES["demo"])
+
+
+@app.get("/how")
+def how_page() -> Any:
+    return _page(PAGES["how"])
+
+
+@app.get("/results")
+def results_page() -> Any:
+    return _page(PAGES["results"])
+
+
+def _read_json(path: str) -> Any:
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _read_runs(path: str) -> list[dict[str, Any]]:
+    if not os.path.exists(path):
+        return []
+    rows = []
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if rec.get("record") == "run":
+                rows.append(rec)
+    return rows
+
+
+def _mean(values: list[float]) -> float | None:
+    return statistics.mean(values) if values else None
+
+
+def _summarise_sweep(path: str) -> dict[str, Any] | None:
+    """Per-domain, per-gamma mean speedup and acceptance from one sweep file."""
+    runs = _read_runs(path)
+    if not runs:
+        return None
+    spec = [r for r in runs if r["mode"] == "spec"]
+    base = [r for r in runs if r["mode"] == "baseline"]
+    gammas = sorted({r["gamma"] for r in spec})
+    domains = [d for d in DOMAINS if any(r["domain"] == d for r in spec)]
+
+    speedup: dict[str, dict[str, float | None]] = {}
+    acceptance: dict[str, dict[str, float | None]] = {}
+    best: dict[str, dict[str, Any]] = {}
+    for d in domains:
+        speedup[d], acceptance[d] = {}, {}
+        best_gamma, best_value = 0, 1.0          # gamma 0 = speculation off
+        for g in gammas:
+            rows = [r for r in spec if r["domain"] == d and r["gamma"] == g]
+            s = _mean([r["speedup"] for r in rows if r.get("speedup")])
+            a = _mean([r["acceptance_rate"] for r in rows])
+            speedup[d][str(g)] = s
+            acceptance[d][str(g)] = a
+            if s is not None and s > best_value:
+                best_gamma, best_value = g, s
+        best[d] = {"gamma": best_gamma, "speedup": best_value}
+
+    checked = [r for r in spec if r.get("identical_to_baseline") is not None]
+    return {
+        "gammas": gammas,
+        "domains": domains,
+        "baseline_tok_per_s": _mean([r["tok_per_s"] for r in base]),
+        "speedup": speedup,
+        "acceptance": acceptance,
+        "best": best,
+        "identical": sum(1 for r in checked if r["identical_to_baseline"]),
+        "checked": len(checked),
+        "prompts": len({r["id"] for r in base}),
+    }
+
+
+@app.get("/api/summary")
+def api_summary() -> JSONResponse:
+    """Every headline number the website shows, read from results/ on request.
+
+    Nothing on the site is typed in by hand: if a result file changes, the
+    pages change with it.
+    """
+    controller = _read_json("results/controller_comparison.json")
+    if controller:
+        cfg = controller.get("configs", {})
+        doms = sorted({d for v in cfg.values() for d in v.get("by_domain", {})})
+        oracle = _mean([
+            max([1.0] + [v["by_domain"].get(d, 0.0) for k, v in cfg.items()
+                         if k.startswith("fixed_")])
+            for d in doms
+        ])
+        controller = {
+            "configs": {k: {"mean_speedup": v["mean_speedup"],
+                            "by_domain": v.get("by_domain", {}),
+                            "gamma_histogram": v.get("gamma_histogram")}
+                        for k, v in cfg.items()},
+            "oracle": oracle,
+            "verdict": controller.get("verdict"),
+        }
+
+    divergence = _read_json("results/divergence_analysis.json")
+    if divergence:
+        divergence = {k: divergence.get(k) for k in
+                      ("mismatches", "numerically_ambiguous", "decoder_bugs",
+                       "did_not_reproduce", "did_not_reproduce_ids")}
+
+    trace = _read_json("results/mixed_trace.json")
+    if trace:
+        trace = {k: trace.get(k) for k in
+                 ("speedup", "identical_to_graphed_baseline",
+                  "baseline_tok_per_s", "origin_counts")}
+
+    return JSONResponse({
+        "eager": _summarise_sweep("results/sweep.jsonl"),
+        "graphed": _summarise_sweep("results/sweep_graphed.jsonl"),
+        "controller": controller,
+        "verify_width": _read_json("results/verify_width.json"),
+        "cost_ratio": _read_json("results/cost_ratio.json"),
+        "divergence": divergence,
+        "mixed_trace": trace,
+        "r_graphed": R_GRAPHED,
+    })
+
+
+@app.get("/api/trace")
+def api_trace(limit: int = Query(40, ge=1, le=500)) -> JSONResponse:
+    """Real recorded rounds, for the animated walkthrough on /how."""
+    payload = _read_json("results/mixed_trace.json")
+    if not payload:
+        raise HTTPException(status_code=404,
+                            detail="results/mixed_trace.json not found; "
+                                   "run scripts/mixed_trace.py")
+    return JSONResponse({
+        "prompt": payload.get("prompt"),
+        "speedup": payload.get("speedup"),
+        "identical": payload.get("identical_to_graphed_baseline"),
+        "rounds": payload.get("trace", [])[:limit],
+    })
 
 
 def _graphed_baseline(target: Any) -> GraphedGreedyDecoder:
@@ -328,6 +500,10 @@ async def replay(
         yield {"event": "message", "data": json.dumps({
             "type": "done", "stats": payload.get("stats", {}),
             "text": payload.get("text", ""),
+            # Measured when the trace was recorded, against that run's own
+            # graphed baseline -- not recomputed against anything live.
+            "speedup": payload.get("speedup"),
+            "baseline_tok_per_s": payload.get("baseline_tok_per_s"),
         })}
 
     return EventSourceResponse(events())

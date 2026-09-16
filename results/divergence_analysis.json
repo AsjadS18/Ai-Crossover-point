@@ -1,6 +1,6 @@
 {
   "mismatches": 40,
-  "numerically_ambiguous": 40,
+  "numerically_ambiguous": 36,
   "decoder_bugs": 0,
   "ulp_tolerance": 2.0,
   "sweep_rows": 1470,
@@ -10,7 +10,8 @@
     "cuda": "13.0",
     "gpu": "NVIDIA GeForce RTX 3060",
     "cache_ctor_path": "DynamicCache(config=model.config)",
-    "dtype_kwarg_path": "dtype="
+    "dtype_kwarg_path": "dtype=",
+    "rollback_path": "DynamicCache.crop(negative)"
   },
   "findings": [
     {
@@ -197,61 +198,29 @@
       "id": "cd_029",
       "domain": "code",
       "gamma": 1,
-      "first_diff_token_index": 45,
-      "baseline_token_text": " it",
-      "spec_token_text": " rather",
-      "logit_magnitude": 18.984375,
-      "fp16_ulp_at_magnitude": 0.015625,
-      "gap_single_token_path": 0.015625,
-      "gap_chunked_path": 0.0,
-      "gap_in_ulps": 0.0,
-      "max_logit_delta_between_paths": 0.015625,
-      "classification": "numerically ambiguous"
+      "classification": "length-only difference",
+      "first_diff_token_index": 128
     },
     {
       "id": "cd_029",
       "domain": "code",
       "gamma": 2,
-      "first_diff_token_index": 45,
-      "baseline_token_text": " it",
-      "spec_token_text": " rather",
-      "logit_magnitude": 18.984375,
-      "fp16_ulp_at_magnitude": 0.015625,
-      "gap_single_token_path": 0.015625,
-      "gap_chunked_path": 0.0,
-      "gap_in_ulps": 0.0,
-      "max_logit_delta_between_paths": 0.015625,
-      "classification": "numerically ambiguous"
+      "classification": "length-only difference",
+      "first_diff_token_index": 128
     },
     {
       "id": "cd_030",
       "domain": "code",
       "gamma": 5,
-      "first_diff_token_index": 47,
-      "baseline_token_text": "Update",
-      "spec_token_text": "Check",
-      "logit_magnitude": 20.234375,
-      "fp16_ulp_at_magnitude": 0.015625,
-      "gap_single_token_path": 0.015625,
-      "gap_chunked_path": 0.0,
-      "gap_in_ulps": 0.0,
-      "max_logit_delta_between_paths": 0.015625,
-      "classification": "numerically ambiguous"
+      "classification": "length-only difference",
+      "first_diff_token_index": 128
     },
     {
       "id": "cd_030",
       "domain": "code",
       "gamma": 12,
-      "first_diff_token_index": 47,
-      "baseline_token_text": "Update",
-      "spec_token_text": "Check",
-      "logit_magnitude": 20.234375,
-      "fp16_ulp_at_magnitude": 0.015625,
-      "gap_single_token_path": 0.015625,
-      "gap_chunked_path": 0.0,
-      "gap_in_ulps": 0.0,
-      "max_logit_delta_between_paths": 0.015625,
-      "classification": "numerically ambiguous"
+      "classification": "length-only difference",
+      "first_diff_token_index": 128
     },
     {
       "id": "rs_006",

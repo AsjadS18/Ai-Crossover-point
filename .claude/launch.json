@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site-lazy",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "set CROSSOVER_LAZY_LOAD=1&& C:\\Users\\PC\\miniconda3\\envs\\crossover\\python.exe -m uvicorn src.server:app --port 8765"],
+      "port": 8765
+    }
+  ]
+}
