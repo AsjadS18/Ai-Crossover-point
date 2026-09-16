@@ -44,9 +44,16 @@ def make_cache(model: Any) -> DynamicCache:
     return cache
 
 
-def cache_length(cache: DynamicCache) -> int:
-    """Return the number of tokens currently stored in ``cache`` (tokens)."""
-    return cache.get_seq_length()
+def cache_length(cache: Any) -> int:
+    """Return the number of tokens currently stored in ``cache`` (tokens).
+
+    Always a Python int.  A StaticCache tracks its length in a CUDA TENSOR, and
+    returning that leaks into arithmetic: a width computed from it becomes a
+    tensor, so dict lookups keyed by width silently miss and graphed paths fall
+    back to eager without any error.
+    """
+    length = cache.get_seq_length()
+    return int(length)
 
 
 def make_static_cache(model: Any, max_cache_len: int) -> StaticCache:

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Crossover Point</title>
+<style>
+  :root {
+    --bg: #14161a; --panel: #1c1f26; --line: #2c313b;
+    --text: #e6e8ec; --dim: #8b93a3;
+    --accept: #3fb950; --correct: #d29922; --bonus: #6e7681;
+    --accent: #58a6ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 16px; background: var(--bg); color: var(--text);
+    font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  }
+  h1 { font-size: 17px; margin: 0 0 2px; font-weight: 650; }
+  .sub { color: var(--dim); font-size: 12px; margin-bottom: 14px; }
+  .grid { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 8px; padding: 12px;
+  }
+  .panel h2 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--dim); margin: 0 0 10px; font-weight: 600;
+  }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  input[type=text], select {
+    background: #0f1115; color: var(--text); border: 1px solid var(--line);
+    border-radius: 6px; padding: 7px 9px; font: inherit;
+  }
+  input[type=text] { flex: 1 1 320px; min-width: 200px; }
+  button {
+    background: var(--accent); color: #06121f; border: 0; border-radius: 6px;
+    padding: 7px 14px; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  button.ghost { background: #262c36; color: var(--text); }
+  button:disabled { opacity: .5; cursor: default; }
+  #stream {
+    font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space: pre-wrap; word-break: break-word; min-height: 190px;
+    max-height: 340px; overflow-y: auto;
+  }
+  .tok { border-radius: 2px; }
+  .accept  { color: var(--accept); }
+  .correct { color: var(--correct); background: rgba(210,153,34,.14);
+             cursor: help; text-decoration: underline dotted; }
+  .bonus   { color: var(--bonus); }
+  .legend { display: flex; gap: 14px; font-size: 11px; color: var(--dim);
+            margin-top: 10px; flex-wrap: wrap; }
+  .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px;
+            margin-right: 5px; vertical-align: middle; }
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 14px; }
+  .stat { border-left: 2px solid var(--line); padding-left: 9px; }
+  .stat .k { font-size: 10px; text-transform: uppercase; color: var(--dim);
+             letter-spacing: .05em; }
+  .stat .v { font-size: 19px; font-variant-numeric: tabular-nums; }
+  .bar { height: 8px; background: #0f1115; border-radius: 4px; overflow: hidden;
+         margin-top: 5px; }
+  .bar > i { display: block; height: 100%; background: var(--accent); width: 0; }
+  canvas { width: 100%; height: 70px; display: block; }
+  .race { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .race > div { min-width: 0; }
+  .race h3 { font-size: 11px; color: var(--dim); margin: 0 0 6px;
+             text-transform: uppercase; letter-spacing: .05em; }
+  .race pre {
+    margin: 0; font: 12px/1.6 ui-monospace, Consolas, monospace;
+    white-space: pre-wrap; word-break: break-word; background: #0f1115;
+    border: 1px solid var(--line); border-radius: 6px; padding: 8px;
+    max-height: 200px; overflow-y: auto;
+  }
+  .verdict { margin-top: 9px; font-variant-numeric: tabular-nums; font-size: 13px; }
+  .ok { color: var(--accept); } .bad { color: #f85149; }
+  .sliders label { display: block; font-size: 11px; color: var(--dim);
+                   margin: 9px 0 3px; }
+  input[type=range] { width: 100%; }
+  .note { color: var(--dim); font-size: 11px; margin-top: 9px; }
+  code { background: #0f1115; padding: 1px 5px; border-radius: 4px;
+         font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>The Crossover Point</h1>
+<div class="sub">
+  Adaptive speculative decoding &middot; output identical to greedy decoding from
+  the target alone, wherever the target has a representable preference.
+</div>
+
+<div class="controls">
+  <input type="text" id="prompt"
+         value="Return a JSON object describing a book: title, author, year, tags."
+         placeholder="prompt">
+  <select id="mode">
+    <option value="spec">spec</option>
+    <option value="baseline">baseline</option>
+    <option value="adaptive">adaptive</option>
+  </select>
+  <select id="gamma">
+    <option>0</option><option>1</option><option selected>2</option>
+    <option>3</option><option>5</option><option>8</option><option>12</option>
+  </select>
+  <button id="go">Run</button>
+  <button id="race" class="ghost">Race vs baseline</button>
+  <button id="replay" class="ghost">Replay recorded</button>
+</div>
+
+<div class="grid">
+
+  <div class="panel" style="grid-column: 1 / -1;">
+    <h2>1 &middot; Token stream</h2>
+    <div id="stream"></div>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--accept)"></i>draft guessed right</span>
+      <span><i class="swatch" style="background:var(--correct)"></i>target overrode it (hover for the guess)</span>
+      <span><i class="swatch" style="background:var(--bonus)"></i>free bonus token</span>
+      <span id="status" style="margin-left:auto"></span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>2 &middot; Controller</h2>
+    <div class="stats">
+      <div class="stat"><div class="k">gamma</div><div class="v" id="s-gamma">&ndash;</div>
+        <div class="bar"><i id="s-gamma-bar"></i></div></div>
+      <div class="stat"><div class="k">acceptance</div><div class="v" id="s-acc">&ndash;</div></div>
+      <div class="stat"><div class="k">tokens / round</div><div class="v" id="s-tpr">&ndash;</div></div>
+      <div class="stat"><div class="k">tokens / sec</div><div class="v" id="s-tps">&ndash;</div></div>
+    </div>
+    <div class="note">acceptance, last 50 rounds</div>
+    <canvas id="spark" height="70"></canvas>
+  </div>
+
+  <div class="panel">
+    <h2>3 &middot; Race &middot; baseline vs speculative</h2>
+    <div class="race">
+      <div><h3>baseline</h3><pre id="race-base"></pre></div>
+      <div><h3>speculative</h3><pre id="race-spec"></pre></div>
+    </div>
+    <div class="verdict" id="race-verdict">
+      Runs sequentially: one GPU, and the models' KV caches cannot be shared.
+    </div>
+  </div>
+
+  <div class="panel" style="grid-column: 1 / -1;">
+    <h2>4 &middot; Crossover explorer &middot; no server, pure arithmetic</h2>
+    <div class="grid" style="grid-template-columns: 240px 1fr;">
+      <div class="sliders">
+        <label>acceptance &alpha; = <span id="v-alpha">0.85</span></label>
+        <input type="range" id="a-alpha" min="0" max="0.99" step="0.01" value="0.85">
+        <label>draft cost ratio r = <span id="v-r">0.248</span></label>
+        <input type="range" id="a-r" min="0.02" max="1.0" step="0.002" value="0.248">
+        <div class="note">
+          measured here: <code>r = 0.64</code> eager,
+          <code>r = 0.248</code> with CUDA graphs.
+        </div>
+        <div class="note" id="explorer-best"></div>
+      </div>
+      <canvas id="curve" height="210"></canvas>
+    </div>
+    <div class="note">
+      E[tokens] = (1 &minus; &alpha;<sup>&gamma;+1</sup>) / (1 &minus; &alpha;)
+      &nbsp;&middot;&nbsp; cost = &gamma;r + 1
+      &nbsp;&middot;&nbsp; speedup = E / cost.
+      E saturates, cost grows linearly &mdash; so past some &gamma; speculation
+      costs more than it returns.
+    </div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const streamEl = $("stream"), statusEl = $("status");
+let es = null, accHistory = [], baselineTps = null;
+
+function setBusy(busy) {
+  ["go", "race", "replay"].forEach((id) => { $(id).disabled = busy; });
+}
+
+function addToken(t) {
+  const span = document.createElement("span");
+  span.className = "tok " + t.origin;
+  span.textContent = t.text;
+  if (t.origin === "correct" && t.draft_guessed != null) {
+    span.title = "draft guessed " + JSON.stringify(t.draft_guessed) +
+                 " → target chose " + JSON.stringify(t.text);
+  } else if (t.origin === "bonus") {
+    span.title = "free token from the target's own prediction";
+  }
+  streamEl.appendChild(span);
+  streamEl.scrollTop = streamEl.scrollHeight;
+}
+
+function drawSpark() {
+  const c = $("spark"), ctx = c.getContext("2d");
+  const w = c.width = c.clientWidth, h = c.height;
+  ctx.clearRect(0, 0, w, h);
+  const data = accHistory.slice(-50);
+  // break-even reference line
+  ctx.strokeStyle = "#2c313b"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke();
+  if (data.length < 2) return;
+  ctx.strokeStyle = "#58a6ff"; ctx.lineWidth = 2; ctx.beginPath();
+  data.forEach((v, i) => {
+    const x = (i / (data.length - 1)) * w, y = h - v * h;
+    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  });
+  ctx.stroke();
+}
+
+function onEvent(ev) {
+  const d = JSON.parse(ev.data);
+  if (d.type === "start") {
+    statusEl.textContent = `${d.mode} · γ=${d.gamma} · ` +
+      `${d.prompt_tokens ?? "?"} prompt tokens` +
+      (d.replay_of ? ` · replay of ${d.replay_of}` : "");
+  } else if (d.type === "round") {
+    (d.tokens || []).forEach(addToken);
+    $("s-gamma").textContent = d.gamma;
+    $("s-gamma-bar").style.width = Math.min(100, (d.gamma / 12) * 100) + "%";
+    $("s-acc").textContent = d.rate.toFixed(3);
+    accHistory.push(d.rate);
+    drawSpark();
+  } else if (d.type === "done") {
+    const s = d.stats || {};
+    if (s.tokens_per_round != null)
+      $("s-tpr").textContent = s.tokens_per_round.toFixed(2);
+    if (s.acceptance_rate != null)
+      $("s-acc").textContent = s.acceptance_rate.toFixed(3);
+    if (s.tok_per_s != null) {
+      $("s-tps").textContent = s.tok_per_s.toFixed(1);
+      statusEl.textContent += ` · ${s.tok_per_s.toFixed(1)} tok/s` +
+        (baselineTps ? ` (${(s.tok_per_s / baselineTps).toFixed(2)}× baseline)` : "");
+    }
+    close();
+  } else if (d.type === "error") {
+    statusEl.textContent = "error: " + d.message;
+    close();
+  }
+}
+
+function close() { if (es) { es.close(); es = null; } setBusy(false); }
+
+function open(url) {
+  close();
+  streamEl.textContent = ""; accHistory = []; drawSpark();
+  setBusy(true);
+  statusEl.textContent = "connecting…";
+  es = new EventSource(url);
+  es.onmessage = onEvent;
+  es.onerror = () => { statusEl.textContent = "connection closed"; close(); };
+}
+
+$("go").onclick = () => {
+  const q = new URLSearchParams({
+    prompt: $("prompt").value, mode: $("mode").value, gamma: $("gamma").value,
+  });
+  open("/stream?" + q);
+};
+
+$("replay").onclick = () => open("/replay?file=results/mixed_trace.json&speed=1");
+
+// Race: sequential by necessity, then compare character by character.
+$("race").onclick = async () => {
+  setBusy(true);
+  $("race-base").textContent = ""; $("race-spec").textContent = "";
+  $("race-verdict").textContent = "running baseline…";
+  const run = (mode, gamma) => new Promise((resolve) => {
+    const q = new URLSearchParams({ prompt: $("prompt").value, mode, gamma });
+    const src = new EventSource("/stream?" + q);
+    let text = "", tps = null;
+    src.onmessage = (ev) => {
+      const d = JSON.parse(ev.data);
+      if (d.type === "done") {
+        text = d.text || ""; tps = (d.stats || {}).tok_per_s;
+        src.close(); resolve({ text, tps });
+      } else if (d.type === "error") { src.close(); resolve({ text: "", tps: null }); }
+    };
+    src.onerror = () => { src.close(); resolve({ text, tps }); };
+  });
+
+  const base = await run("baseline", 0);
+  $("race-base").textContent = base.text;
+  baselineTps = base.tps;
+  $("race-verdict").textContent = "running speculative…";
+  const spec = await run("spec", $("gamma").value);
+  $("race-spec").textContent = spec.text;
+
+  let same = 0;
+  const n = Math.min(base.text.length, spec.text.length);
+  while (same < n && base.text[same] === spec.text[same]) same++;
+  const identical = base.text === spec.text;
+  const speed = (base.tps && spec.tps) ? (spec.tps / base.tps).toFixed(2) : "?";
+  $("race-verdict").innerHTML = identical
+    ? `<span class="ok">identical: ${base.text.length} / ${base.text.length} ✓</span>
+       &nbsp;&middot;&nbsp; ${speed}× throughput`
+    : `<span class="bad">diverged at character ${same} of ${base.text.length}</span>
+       &nbsp;&middot;&nbsp; ${speed}× throughput`;
+  setBusy(false);
+};
+
+// ---- Panel 4: the same arithmetic as src/adaptive.py, client side only.
+function expectedTokens(alpha, gamma) {
+  if (gamma <= 0) return 1;
+  if (alpha >= 1) return gamma + 1;
+  return (1 - Math.pow(alpha, gamma + 1)) / (1 - alpha);
+}
+function speedup(alpha, r, gamma) {
+  return expectedTokens(alpha, gamma) / (gamma * r + 1);
+}
+
+function drawCurve() {
+  const alpha = parseFloat($("a-alpha").value), r = parseFloat($("a-r").value);
+  $("v-alpha").textContent = alpha.toFixed(2);
+  $("v-r").textContent = r.toFixed(3);
+
+  const c = $("curve"), ctx = c.getContext("2d");
+  const w = c.width = c.clientWidth, h = c.height;
+  const pad = 30, GMAX = 16;
+  ctx.clearRect(0, 0, w, h);
+
+  const vals = [];
+  for (let g = 0; g <= GMAX; g++) vals.push(speedup(alpha, r, g));
+  const top = Math.max(1.35, Math.ceil(Math.max(...vals) * 10) / 10 + 0.1);
+  const X = (g) => pad + (g / GMAX) * (w - pad - 12);
+  const Y = (v) => h - pad - (v / top) * (h - pad - 14);
+
+  // axes
+  ctx.strokeStyle = "#2c313b"; ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad, 8); ctx.lineTo(pad, h - pad); ctx.lineTo(w - 8, h - pad);
+  ctx.stroke();
+
+  // break-even at 1.0
+  ctx.strokeStyle = "#f85149"; ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(pad, Y(1)); ctx.lineTo(w - 8, Y(1)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = "#f85149"; ctx.font = "10px system-ui";
+  ctx.fillText("break-even 1.0×", pad + 4, Y(1) - 4);
+
+  // curve
+  ctx.strokeStyle = "#58a6ff"; ctx.lineWidth = 2; ctx.beginPath();
+  vals.forEach((v, g) => { g ? ctx.lineTo(X(g), Y(v)) : ctx.moveTo(X(g), Y(v)); });
+  ctx.stroke();
+
+  // peak
+  let best = 0;
+  vals.forEach((v, g) => { if (v > vals[best]) best = g; });
+  ctx.fillStyle = "#3fb950";
+  ctx.beginPath(); ctx.arc(X(best), Y(vals[best]), 4, 0, Math.PI * 2); ctx.fill();
+
+  ctx.fillStyle = "#8b93a3"; ctx.font = "10px system-ui";
+  for (let g = 0; g <= GMAX; g += 4) ctx.fillText(String(g), X(g) - 3, h - pad + 13);
+  ctx.fillText("γ", w - 16, h - pad + 13);
+  ctx.fillText(top.toFixed(1) + "×", 4, 14);
+
+  $("explorer-best").innerHTML = vals[best] > 1
+    ? `best <code>γ = ${best}</code> at <code>${vals[best].toFixed(2)}×</code>`
+    : `<span class="bad">no γ pays at this α and r</span> &mdash;
+       speculation should be switched off`;
+}
+
+["a-alpha", "a-r"].forEach((id) => { $(id).oninput = drawCurve; });
+window.addEventListener("resize", () => { drawCurve(); drawSpark(); });
+drawCurve(); drawSpark();
+</script>
+</body>
+</html>
