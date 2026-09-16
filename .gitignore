@@ -8,3 +8,5 @@ __pycache__/
 
 # cloned repo sitting in the project root - not part of this tree
 /Ai crossover point/
+.claude/ 
+.pytest_cache/ 
